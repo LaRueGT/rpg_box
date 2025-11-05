@@ -1,4 +1,4 @@
-from  panda3d.core import loadPrcFile
+from panda3d.core import loadPrcFile
 from direct.showbase.ShowBase import ShowBase
 from panda3d.core import WindowProperties
 from direct.gui.DirectGui import *

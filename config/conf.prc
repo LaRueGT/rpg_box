@@ -1,4 +1,4 @@
 win-size 1280 720
-window-title GUI Experiments
+window-title RPG box
 fullscreen false
 sync-video true
