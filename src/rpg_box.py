@@ -17,6 +17,7 @@ class MyApp(ShowBase):
         self.win.requestProperties(properties)
 
         self.accept('escape', sys.exit)
+        self.intro_sequence()
 
     def intro_sequence(self):
         color_sequence = [(0, 0, 1, 1), (1, 0, 1, 1), (1, 1, 0, 1), (0, 1, 0, 1)]
