@@ -15,8 +15,8 @@ class MyApp(ShowBase):
         #setting up the window
         self.disableMouse()
 
-        self.accept('escape', sys.exit)
-        slideshow.display_intro_sequence(self)
+        intro = slideshow.slideshow(self)
+        intro.display_intro_sequence()
 
 
 
