@@ -18,7 +18,5 @@ class MyApp(ShowBase):
         intro = slideshow.slideshow(self)
         intro.display_intro_sequence()
 
-
-
 app = MyApp()
 app.run()
