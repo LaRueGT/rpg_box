@@ -6,6 +6,7 @@ from panda3d.core import WindowProperties
 import sys
 #My Stuff
 import slideshow
+import gui
 
 loadPrcFile("../config/conf.prc")
 
@@ -14,8 +15,8 @@ class MyApp(ShowBase):
         super().__init__(self)
         #setting up the window
         self.disableMouse()
-
-        intro = slideshow.slideshow(self)
+        ui = gui.gui(self)
+        intro = slideshow.slideshow(self, ui)
         intro.display_intro_sequence()
 
 app = MyApp()
