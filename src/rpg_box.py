@@ -1,7 +1,6 @@
 #Panda Stuff
 from panda3d.core import loadPrcFile
 from direct.showbase.ShowBase import ShowBase
-from panda3d.core import NodePath
 #Python Stuff
 import sys
 #My Stuff
@@ -24,7 +23,7 @@ class MyApp(ShowBase):
         ui.clear_gui()
         narrative_frame, text_label = ui.narrative_frame()
         narrative_test = narrative.Narrative(self, narrative_frame, text_label)
-        narrative_test.display_dummy_narative()
+        narrative_test.display_dummy_narrative()
 
 app = MyApp()
 app.run()

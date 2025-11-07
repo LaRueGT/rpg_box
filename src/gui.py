@@ -34,4 +34,4 @@ class Gui():
         self.text_label = DirectLabel(parent=self.text_frame,
                                       text="Initial Text",
                                       pos=(0, 0, 0))
-        return (self.art_frame, self.text_label)
+        return self.art_frame, self.text_label
