@@ -39,4 +39,26 @@ class Narrative(DirectObject.DirectObject):
             cm = CardMaker("card")
             cm.setFrame(-1.715, 1.715, -.88, .94)
             self.card = self.picture_frame.attachNewNode(cm.generate())
-            taskMgr.add(self.display_slides, "display_slides")
+            taskMgr.add(self.display_narrative, "display_narrative")
+
+        def display_narrative(self, task):
+            if self.active_picture != self.picture_position:
+                picture_tex = self.base_window.loader.loadTexture(self.sequence[self.picture_position])
+                self.card.setTexture(picture_tex)
+                self.active_slide = self.picture_position
+                self.active_narrative = -1
+            if self.active_narrative != self.narrative_position:
+                self.label.setText(self.narrative_text[self.picture_position][self.narrative_position])
+                self.active_narrative = self.narrative_position
+            if self.page_flag == False:
+                return Task.cont
+            else:
+                self.page_flag = False
+                if self.narrative_position < len(self.narrative_text[self.picture_position]) - 1:
+                    self.narrative_position += 1
+                    return Task.again
+                if self.picture_position < len(self.picture_sequence) - 1:
+                    self.picture_position += 1
+                    return Task.again
+                else:
+                    return Task.done
