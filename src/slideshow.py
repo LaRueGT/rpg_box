@@ -3,7 +3,7 @@ from direct.task import Task
 from direct.task.TaskManagerGlobal import taskMgr
 from panda3d.core import CardMaker, NodePath
 
-class slideshow(DirectObject.DirectObject):
+class Slideshow(DirectObject.DirectObject):
     def __init__(self, base, gui_node):
         #placeholders and defaults
         super().__init__()

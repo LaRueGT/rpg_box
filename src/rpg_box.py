@@ -15,8 +15,8 @@ class MyApp(ShowBase):
         super().__init__(self)
         #setting up the window
         self.disableMouse()
-        ui = gui.gui(self)
-        intro = slideshow.slideshow(self, ui)
+        ui = gui.Gui(self)
+        intro = slideshow.Slideshow(self, ui)
         intro.display_intro_sequence()
 
 app = MyApp()
