@@ -47,6 +47,7 @@ class Narrative(DirectObject.DirectObject):
             self.card.setTexture(picture_tex)
             self.active_picture = self.picture_position
             self.active_narrative = -1
+            self.narrative_position = 0
             print(f"turning to picture {self.picture_position}, page is {self.narrative_position}")
         if self.active_narrative != self.narrative_position:
             self.label.setText(self.narrative_text[self.picture_position][self.narrative_position])
