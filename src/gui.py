@@ -31,4 +31,7 @@ class Gui():
                                      frameColor=(0, 0, 0, 1),
                                      frameSize=(-1.715, 1.715, -.88, -.47),
                                      pos=(0, 0, 0))
-        return (self.art_frame, self.text_frame)
+        self.text_label = DirectLabel(parent=self.text_frame,
+                                      text="Initial Text",
+                                      pos=(0, 0, 0))
+        return (self.art_frame, self.text_label)

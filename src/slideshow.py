@@ -4,7 +4,7 @@ from direct.task.TaskManagerGlobal import taskMgr
 from panda3d.core import CardMaker, NodePath
 
 class Slideshow(DirectObject.DirectObject):
-    def __init__(self, base, gui_node):
+    def __init__(self, base, frame):
         #placeholders and defaults
         super().__init__()
         self.ignore('escape')
@@ -12,12 +12,11 @@ class Slideshow(DirectObject.DirectObject):
         self.sequence = []
         self.position = 0
         self.active_slide = -1
-        self.ui_node = gui_node
-        self.base_window = base
-        self.art_frame = NodePath()
         self.card = NodePath()
         self.interrupt_flag = False
         #setup
+        self.base_window = base
+        self.art_frame = frame
         self.accept('escape', self.interrupt_slide)
         self.accept('space', self.interrupt_slide)
 
@@ -26,7 +25,6 @@ class Slideshow(DirectObject.DirectObject):
 
     def display_intro_sequence(self):
         self.sequence = ['../assets/slide1.png', '../assets/slide2.png', '../assets/slide3.png', '../assets/slide4.png', '../assets/slide5.png']
-        self.art_frame = self.ui_node.centerfold_frame()
         cm = CardMaker("card")
         cm.setFrame(-1.715, 1.715, -.88, .94)
         self.card = self.art_frame.attachNewNode(cm.generate())
