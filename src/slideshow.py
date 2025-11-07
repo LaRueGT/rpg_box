@@ -6,6 +6,7 @@ from panda3d.core import CardMaker, NodePath
 
 class slideshow(DirectObject.DirectObject):
     def __init__(self, base):
+        super().__init__()
         self.ignore('escape')
         self.ignore('space')
         self.sequence = []
