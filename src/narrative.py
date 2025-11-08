@@ -1,9 +1,10 @@
-from direct.showbase import DirectObject
+from direct.showbase.DirectObject import DirectObject
+from direct.showbase.MessengerGlobal import messenger
 from direct.task import Task
 from direct.task.TaskManagerGlobal import taskMgr
-from panda3d.core import CardMaker, NodePath, TextNode
+from panda3d.core import CardMaker, NodePath
 
-class Narrative(DirectObject.DirectObject):
+class Narrative(DirectObject):
     def __init__(self, base, card, label):
         #placeholders and defaults
         super().__init__()

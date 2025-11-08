@@ -12,8 +12,6 @@ class RPGBox(ShowBase):
         #setting up the window
         self.disableMouse()
         myFSM = master_fsm.MasterFSM(self)
-        myFSM.request('Intro')
-
 
 world = RPGBox()
 world.run()

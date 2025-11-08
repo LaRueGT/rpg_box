@@ -1,9 +1,10 @@
-from direct.showbase import DirectObject
+from direct.showbase.DirectObject import DirectObject
+from direct.showbase.MessengerGlobal import messenger
 from direct.task import Task
 from direct.task.TaskManagerGlobal import taskMgr
 from panda3d.core import CardMaker, NodePath
 
-class Slideshow(DirectObject.DirectObject):
+class Slideshow(DirectObject):
     def __init__(self, base, frame):
         #placeholders and defaults
         super().__init__()
@@ -43,4 +44,5 @@ class Slideshow(DirectObject.DirectObject):
                 self.position += 1
                 return Task.again
             else:
+                messenger.send("slide_finished")
                 return Task.done
