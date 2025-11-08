@@ -15,14 +15,14 @@ class CoverMenu(DirectObject):
         self.accept('q', self.handle_quit)
         self.accept('escape', self.handle_quit)
 
-        #button handlers
-        def handle_play_button(self):
-            messenger.send('play_button_pressed')
-            self.ignore('p')
+    #button handlers
+    def handle_play_button(self):
+        messenger.send('play_button_pressed')
+        self.ignore('p')
 
-        def handle_demo_button(self):
-            messenger.send('demo_button_pressed')
-            self.ignore('d')
+    def handle_demo_button(self):
+        messenger.send('demo_button_pressed')
+        self.ignore('d')
 
-        def display_cover_menu(self):
-            self.label.setText("RPG Box v0 11/7/2025")
+    def display_cover_menu(self):
+        self.label.setText("RPG Box v0 11/7/2025")
