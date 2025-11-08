@@ -4,7 +4,6 @@ from panda3d.core import NodePath
 class Gui():
     def __init__(self,base):
         self.base_window = base
-        self.base_window.aspect2d.node().removeAllChildren()
 
     def clear_gui(self):
         self.base_window.aspect2d.node().removeAllChildren()
