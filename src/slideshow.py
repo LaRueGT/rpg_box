@@ -8,8 +8,6 @@ class Slideshow(DirectObject):
     def __init__(self, base, frame):
         #placeholders and defaults
         super().__init__()
-        self.ignore('escape')
-        self.ignore('space')
         self.sequence = []
         self.position = 0
         self.active_slide = -1

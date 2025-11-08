@@ -18,6 +18,23 @@ class Gui():
                                      pos=(0, 0, 0))
         return self.art_frame
 
+    def cover_frame(self) -> (NodePath, NodePath):
+        self.base_frame = DirectFrame(frameColor=(1, 0, 0, 1),
+                                      frameSize=(-1.778, 1.778, -1, 1),
+                                      pos=(0, 0, 0))
+        self.cover_label_frame = DirectFrame(parent=self.base_frame,
+                                     frameColor=(0, 0, 0, 1),
+                                     frameSize=(-1.715, 1.715, -.88, .94),
+                                     pos=(0, 0, 0))
+        self.cover_label = DirectLabel(parent=self.cover_label_frame,
+                                      text="Initial Text",
+                                      pos=(0, 0, 0))
+        self.button_frame = DirectFrame(parent=self.base_frame,
+                                       frameColor=(0, 0, 0, 1),
+                                       frameSize=(-1.715, 1.715, -.88, .94),
+                                       pos=(0, 0, 0))
+        return self.cover_label_frame, self.button_frame
+
     def narrative_frame(self) -> (NodePath, NodePath):
         self.base_frame = DirectFrame(frameColor=(1, 0, 0, 1),
                                       frameSize=(-1.778, 1.778, -1, 1),
