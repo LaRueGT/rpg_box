@@ -40,14 +40,15 @@ class Gui():
                                       frameSize=(-1.778, 1.778, -1, 1),
                                       pos=(0, 0, 0))
         self.art_frame = DirectFrame(parent=self.base_frame,
-                                     frameColor=(0, 0, 0, 1),
-                                     frameSize=(-1.715, 1.715, -.48, .94),
+                                     frameColor=(0, 0, 1, 1),
+                                     frameSize=(-1.715, 1.715, -.46, .94),
                                      pos=(0, 0, 0))
         self.text_frame = DirectFrame(parent=self.base_frame,
-                                     frameColor=(0, 0, 0, 1),
-                                     frameSize=(-1.715, 1.715, -.88, -.47),
-                                     pos=(0, 0, 0))
+                                     frameColor=(0, 1, 0, 1),
+                                     frameSize=(-1.715, 1.715, -.205, 0.205),
+                                     pos=(0, 0, -0.675))
         self.text_label = DirectLabel(parent=self.text_frame,
                                       text="Initial Text",
-                                      pos=(0, 0, 0))
+                                      text_scale=(0.1,0.1),
+                                      text_pos=(0,-0.025))
         return self.art_frame, self.text_label

@@ -38,7 +38,7 @@ class Narrative(DirectObject):
                                3: ['slide4 - page1'],
                                4: ['slide5 - page1', 'slide5 - page2', 'slide5 - page3', 'slide5 - page4', 'slide5 - page5']}
         cm = CardMaker("card")
-        cm.setFrame(-1.715, 1.715, -.88, .94)
+        cm.setFrame(-1.715, 1.715, -.88, -.47)
         self.card = self.picture_frame.attachNewNode(cm.generate())
         taskMgr.add(self.display_narrative, "display_narrative")
 
