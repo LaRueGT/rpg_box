@@ -5,23 +5,20 @@ from direct.task.TaskManagerGlobal import taskMgr
 from panda3d.core import CardMaker, NodePath
 
 class Narrative(DirectObject):
-    def __init__(self, base, card, label):
+    def __init__(self, base, frame, label):
         #placeholders and defaults
         super().__init__()
-        self.ignore('enter')
-        self.ignore('space')
         self.picture_sequence = []
         self.narrative_text = {}
         self.picture_position = 0
         self.narrative_position = 0
         self.active_picture = -1
         self.active_narrative = -1
-        self.picture_frame = NodePath()
-        self.text_frame = NodePath()
+        self.card = NodePath()
         self.page_flag = False
         #setup
         self.base_window = base
-        self.card = card
+        self.art_frame = frame
         self.label = label
         self.accept('enter', self.page_turn)
         self.accept('space', self.page_turn)
@@ -38,8 +35,16 @@ class Narrative(DirectObject):
                                3: ['slide4 - page1'],
                                4: ['slide5 - page1', 'slide5 - page2', 'slide5 - page3', 'slide5 - page4', 'slide5 - page5']}
         cm = CardMaker("card")
-        cm.setFrame(-1.715, 1.715, -.88, -.47)
-        self.card = self.picture_frame.attachNewNode(cm.generate())
+        cm.setFrame(-1.715, 1.715, -.46, .94)
+        self.card = self.art_frame.attachNewNode(cm.generate())
+        # Load the initial texture
+        initial_tex = self.base_window.loader.loadTexture(self.picture_sequence[0])
+        if initial_tex:
+            self.card.setTexture(initial_tex)
+            print("Initial texture loaded successfully")
+        else:
+            print("Failed to load initial texture")
+        #the image test should have loaded by now, wtf
         taskMgr.add(self.display_narrative, "display_narrative")
 
     def display_narrative(self, task):

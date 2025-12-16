@@ -5,7 +5,6 @@ from direct.showbase.DirectObject import DirectObject
 import gui, slideshow, narrative
 from src import covermenu
 
-
 class MasterFSM(FSM, DirectObject):
     def __init__(self, base):
         FSM.__init__(self, 'MasterFSM')
@@ -36,8 +35,8 @@ class MasterFSM(FSM, DirectObject):
 
     def enterNarrative(self):
         narrative_frame, text_label = self.ui.narrative_frame()
-        testnarrative = narrative.Narrative(self.base_window, narrative_frame, text_label)
-        testnarrative.display_dummy_narrative()
+        test_narrative = narrative.Narrative(self.base_window, narrative_frame, text_label)
+        test_narrative.display_dummy_narrative()
 
     def exitNarrative(self):
         self.ui.clear_gui()
