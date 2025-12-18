@@ -2,7 +2,11 @@
 from direct.fsm.FSM import FSM
 from direct.showbase.DirectObject import DirectObject
 #My Stuff
-import gui, slideshow, narrative, covermenu
+import gui
+import narrative
+import slideshow
+import covermenu
+
 
 class MasterFSM(FSM, DirectObject):
     def __init__(self, base):

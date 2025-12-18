@@ -4,4 +4,10 @@
     <option name="sdkName" value="Python 3.10 (rpg_box)" />
   </component>
   <component name="ProjectRootManager" version="2" project-jdk-name="uv (rpg_box)" project-jdk-type="Python SDK" />
+  <component name="RuffConfiguration">
+    <option name="enabled" value="true" />
+  </component>
+  <component name="TyConfiguration">
+    <option name="enabled" value="true" />
+  </component>
 </project>

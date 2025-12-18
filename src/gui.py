@@ -1,7 +1,8 @@
 from direct.gui.DirectGui import *
 from panda3d.core import NodePath
 
-class Gui():
+
+class Gui:
     def __init__(self,base):
         self.base_window = base
 

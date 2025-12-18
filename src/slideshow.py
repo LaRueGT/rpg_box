@@ -2,7 +2,9 @@ from direct.showbase.DirectObject import DirectObject
 from direct.showbase.MessengerGlobal import messenger
 from direct.task import Task
 from direct.task.TaskManagerGlobal import taskMgr
-from panda3d.core import CardMaker, NodePath
+from panda3d.core import CardMaker
+from panda3d.core import NodePath
+
 
 class Slideshow(DirectObject):
     def __init__(self, base, frame):
@@ -34,7 +36,7 @@ class Slideshow(DirectObject):
             slide_tex = self.base_window.loader.loadTexture(self.sequence[self.position])
             self.card.setTexture(slide_tex)
             self.active_slide = self.position
-        if task.time < 5.0 and self.interrupt_flag == False:
+        if task.time < 5.0 and not self.interrupt_flag:
             return Task.cont
         else:
             self.interrupt_flag = False

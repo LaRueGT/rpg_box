@@ -5,4 +5,8 @@ description = "Add your description here"
 requires-python = ">=3.14"
 dependencies = [
     "panda3d==1.10.15",
+    "types-panda3d>=0.4.1",
 ]
+
+[tool.ty.environment]
+root = ["./src"]

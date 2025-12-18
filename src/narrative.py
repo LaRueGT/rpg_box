@@ -2,7 +2,9 @@ from direct.showbase.DirectObject import DirectObject
 from direct.showbase.MessengerGlobal import messenger
 from direct.task import Task
 from direct.task.TaskManagerGlobal import taskMgr
-from panda3d.core import CardMaker, NodePath
+from panda3d.core import CardMaker
+from panda3d.core import NodePath
+
 
 class Narrative(DirectObject):
     def __init__(self, base, frame, label):
@@ -59,7 +61,7 @@ class Narrative(DirectObject):
             self.label.setText(self.narrative_text[self.picture_position][self.narrative_position])
             self.active_narrative = self.narrative_position
             print(f"picture is {self.picture_position}, turning to page {self.narrative_position}")
-        if self.page_flag == False:
+        if not self.page_flag:
             return Task.cont
         else:
             self.page_flag = False
