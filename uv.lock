@@ -1,0 +1,29 @@
+version = 1
+revision = 3
+requires-python = ">=3.14"
+
+[[package]]
+name = "panda3d"
+version = "1.10.15"
+source = { registry = "https://pypi.org/simple" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/dd/2f/beb5e5ded6469fe681f97b7083e323ecda7b1fa55d3d46845e28c43f1906/panda3d-1.10.15-cp314-cp314-macosx_11_0_universal2.whl", hash = "sha256:878551093ddefd1f5f78974a4692733796a1691ed4ec57ecdf23fe7930421597", size = 120861864, upload-time = "2025-12-01T16:27:31.334Z" },
+    { url = "https://files.pythonhosted.org/packages/bf/4f/e62bddae628d6ee9d63dc8b81d3d7ead5e048a12b1ecd6aacf942d1f21f2/panda3d-1.10.15-cp314-cp314-manylinux2014_x86_64.whl", hash = "sha256:2af5a22e73e8c91bd723d65c3756f296f520a8f8196efe2ea1aae5ac61cf7e36", size = 53981040, upload-time = "2025-12-01T16:27:37.387Z" },
+    { url = "https://files.pythonhosted.org/packages/33/0d/d281aea6155b75262fcd45d9098a4f4b5530c87331e037a3cd1722698b5d/panda3d-1.10.15-cp314-cp314-win32.whl", hash = "sha256:01372bcdd5ae8157dfa0203b953c37fb4d1178006ae4de6c12af4b984da92584", size = 57068557, upload-time = "2025-12-03T15:14:50.254Z" },
+    { url = "https://files.pythonhosted.org/packages/ef/f4/26b657863fef6c000a036077090c7ab6f8910d9c90a4a188bfba76778d1d/panda3d-1.10.15-cp314-cp314-win_amd64.whl", hash = "sha256:ab9984400e764c22768ea1a0b78c0b8e1352603458801381acaeba721354ff68", size = 69832090, upload-time = "2025-12-01T16:27:41.991Z" },
+    { url = "https://files.pythonhosted.org/packages/0f/41/9e8f083297ac2ea8065bb7d8bb952de10fd35ba082803fcb9291c313b3f4/panda3d-1.10.15-cp314-cp314t-macosx_11_0_universal2.whl", hash = "sha256:bbd2c2b7f87ba64521987197f681357830240eefd7312d4e0985fda1a647c0ba", size = 126687769, upload-time = "2025-12-01T16:27:48.481Z" },
+    { url = "https://files.pythonhosted.org/packages/37/dc/9eb34834a14ba960bd8ea2d2f95d8e33daad562466d7e467a90c1620f26a/panda3d-1.10.15-cp314-cp314t-manylinux2014_x86_64.whl", hash = "sha256:a60dda22ddcc50a159d4e323f8c2c8f57d40a518cb33b27554a1bee2b06b5ff1", size = 54427128, upload-time = "2025-12-01T16:27:53.434Z" },
+    { url = "https://files.pythonhosted.org/packages/9c/e9/68f5535d95223d1b8b04d7c3e4c78c4b06e8739aa2964c49e16d721c401f/panda3d-1.10.15-cp314-cp314t-win32.whl", hash = "sha256:c3565023452d0312469264b02653665940a1a789947a824eadc50796195c57e5", size = 57188239, upload-time = "2025-12-03T15:14:54.918Z" },
+    { url = "https://files.pythonhosted.org/packages/8c/87/39201d4b53efbdeeccf4b220d84a9162afb44481d3632decf9de69429dbd/panda3d-1.10.15-cp314-cp314t-win_amd64.whl", hash = "sha256:3532657ce78f63ded9b887c8f9febebb8df2f9be37f32b59347136709f866c9e", size = 69899274, upload-time = "2025-12-01T16:27:58.196Z" },
+]
+
+[[package]]
+name = "rpg-box"
+version = "0.1.0"
+source = { virtual = "." }
+dependencies = [
+    { name = "panda3d" },
+]
+
+[package.metadata]
+requires-dist = [{ name = "panda3d", specifier = "==1.10.15" }]
