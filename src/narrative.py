@@ -38,13 +38,13 @@ class Narrative(DirectObject):
         cm.setFrame(-1.715, 1.715, -.46, .94)
         self.card = self.art_frame.attachNewNode(cm.generate())
         # Load the initial texture
-        initial_tex = self.base_window.loader.loadTexture(self.picture_sequence[0])
-        if initial_tex:
-            self.card.setTexture(initial_tex)
-            print("Initial texture loaded successfully")
-        else:
-            print("Failed to load initial texture")
-        #the image test should have loaded by now, wtf
+        # initial_tex = self.base_window.loader.loadTexture(self.picture_sequence[0])
+        # if initial_tex:
+        #    self.card.setTexture(initial_tex)
+        #    print("Initial texture loaded successfully")
+        # else:
+        #    print("Failed to load initial texture")
+        # the image test should have loaded by now, wtf
         taskMgr.add(self.display_narrative, "display_narrative")
 
     def display_narrative(self, task):
