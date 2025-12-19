@@ -44,5 +44,5 @@ class Slideshow(DirectObject):
                 self.position += 1
                 return Task.again
             else:
-                messenger.send("slide_finished")
+                messenger.send("slides_finished")
                 return Task.done

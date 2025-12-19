@@ -7,6 +7,8 @@ import narrative
 import slideshow
 import covermenu
 
+#NB: FSM uses non-snake function naming with (enterState, exitState, filterState)
+#NB:
 
 class MasterFSM(FSM, DirectObject):
     def __init__(self, base):
@@ -17,11 +19,11 @@ class MasterFSM(FSM, DirectObject):
 
     #state transition event handlers
     def handle_intro_done(self):
-        self.request('Narrative')
+        self.request('Cover')
 
     #state methods
     def enterIntro(self):
-        self.accept('slide_finished', self.handle_intro_done)
+        self.accept('slides_finished', self.handle_intro_done)
         slide_frame = self.ui.centerfold_frame()
         intro = slideshow.Slideshow(self.base_window, slide_frame)
         intro.display_intro_sequence()
@@ -30,11 +32,12 @@ class MasterFSM(FSM, DirectObject):
         self.ignore('escape')
         self.ignore('space')
         self.ui.clear_gui()
-        self.ignore('slide_finished')
+        self.ignore('slides_finished')
 
     def enterCover(self):
         cover_label, cover_button_frame = self.ui.cover_frame()
         cover = covermenu.CoverMenu(self.base_window, cover_label, cover_button_frame)
+        cover.display_cover_menu()
 
     def enterNarrative(self):
         narrative_frame, text_label = self.ui.narrative_frame()

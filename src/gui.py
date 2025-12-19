@@ -1,4 +1,5 @@
-from direct.gui.DirectGui import DirectFrame, DirectLabel
+from direct.gui.DirectGui import DirectFrame
+from direct.gui.DirectGui import DirectLabel
 from panda3d.core import NodePath
 
 
@@ -27,17 +28,18 @@ class Gui:
 
     def cover_frame(self) -> tuple[NodePath, NodePath]:
         self.cover_label_frame = DirectFrame(parent=self.base_frame,
-                                     frameColor=(0, 0, 0, 1),
+                                     frameColor=(.25, .25, .25, 1),
                                      frameSize=(-1.715, 1.715, -.88, .94),
                                      pos=(0, 0, 0))
         self.cover_label = DirectLabel(parent=self.cover_label_frame,
                                       text="Initial Text",
+                                      text_scale=(0.1, 0.1),
                                       pos=(0, 0, 0))
         self.button_frame = DirectFrame(parent=self.base_frame,
                                        frameColor=(0, 0, 0, 1),
-                                       frameSize=(-1.715, 1.715, -.88, .94),
-                                       pos=(0, 0, 0))
-        return self.cover_label_frame, self.button_frame
+                                       frameSize=(-.25, .25, -.25, .25),
+                                       pos=(0, 0, -0.675))
+        return self.cover_label, self.button_frame
 
     def narrative_frame(self) -> tuple[NodePath, NodePath]:
         self.art_frame = DirectFrame(parent=self.base_frame,
