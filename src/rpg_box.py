@@ -9,7 +9,7 @@ loadPrcFile("../config/conf.prc")
 
 class RPGBox(ShowBase):
     def __init__(self):
-        super().__init__(self)
+        super().__init__()
         #setting up the window
         self.disableMouse()
         game_state = master_fsm.MasterFSM(self)

@@ -1,4 +1,5 @@
-from direct.gui.DirectGui import *
+from direct.gui.DirectGui import DirectFrame
+from direct.gui.DirectGui import DirectLabel
 from panda3d.core import NodePath
 
 
