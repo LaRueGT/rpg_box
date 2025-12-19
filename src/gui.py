@@ -1,29 +1,31 @@
-from direct.gui.DirectGui import DirectFrame
-from direct.gui.DirectGui import DirectLabel
+from direct.gui.DirectGui import DirectFrame, DirectLabel
 from panda3d.core import NodePath
 
 
 class Gui:
     def __init__(self,base):
         self.base_window = base
-
-    def clear_gui(self):
-        self.base_window.aspect2d.node().removeAllChildren()
-
-    def centerfold_frame(self) -> NodePath:
         self.base_frame = DirectFrame(frameColor=(1, 0, 0, 1),
                                       frameSize=(-1.778, 1.778, -1, 1),
                                       pos=(0, 0, 0))
+        self.art_frame = NodePath()
+        self.cover_label_frame = NodePath()
+        self.cover_label = NodePath()
+        self.button_frame = NodePath()
+        self.text_frame = NodePath()
+        self.text_label = NodePath()
+
+    def clear_gui(self):
+        self.base_frame.node().removeAllChildren()
+
+    def centerfold_frame(self) -> NodePath:
         self.art_frame = DirectFrame(parent=self.base_frame,
                                      frameColor=(0, 0, 0, 1),
                                      frameSize=(-1.715, 1.715, -.88, .94),
                                      pos=(0, 0, 0))
         return self.art_frame
 
-    def cover_frame(self) -> (NodePath, NodePath):
-        self.base_frame = DirectFrame(frameColor=(1, 0, 0, 1),
-                                      frameSize=(-1.778, 1.778, -1, 1),
-                                      pos=(0, 0, 0))
+    def cover_frame(self) -> tuple[NodePath, NodePath]:
         self.cover_label_frame = DirectFrame(parent=self.base_frame,
                                      frameColor=(0, 0, 0, 1),
                                      frameSize=(-1.715, 1.715, -.88, .94),
@@ -37,10 +39,7 @@ class Gui:
                                        pos=(0, 0, 0))
         return self.cover_label_frame, self.button_frame
 
-    def narrative_frame(self) -> (NodePath, NodePath):
-        self.base_frame = DirectFrame(frameColor=(1, 0, 0, 1),
-                                      frameSize=(-1.778, 1.778, -1, 1),
-                                      pos=(0, 0, 0))
+    def narrative_frame(self) -> tuple[NodePath, NodePath]:
         self.art_frame = DirectFrame(parent=self.base_frame,
                                      frameColor=(0, 0, 1, 1),
                                      frameSize=(-1.715, 1.715, -.46, .94),
