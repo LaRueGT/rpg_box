@@ -1,0 +1,10 @@
+repos:
+  - repo: local
+    hooks:
+      - id: update-cover-date
+        name: Update Cover Label Date
+        entry: python update_date.py
+        language: python
+        additional_dependencies: []
+        files: ^src/covermenu\.py$
+        pass_filenames: false

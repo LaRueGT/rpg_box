@@ -23,8 +23,6 @@ def update_cover_date():
         with open(file_path, "w") as f:
             f.write(new_content)
         print(f"Updated {file_path} with date: {today_str}")
-        # Stage the file so the change is included in the current commit
-        os.system(f"git add {file_path}")
     else:
         print("No date update needed or pattern not found.")
 

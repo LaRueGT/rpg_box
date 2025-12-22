@@ -11,3 +11,8 @@ dependencies = [
 
 [tool.ty.environment]
 root = ["./src"]
+
+[dependency-groups]
+dev = [
+    "pre-commit>=4.5.1",
+]
