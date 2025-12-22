@@ -17,7 +17,9 @@ def update_cover_date():
     # Regex to find the RPG Box version string and replace the date
     # It looks for: setText("RPG Box v[anything] [date-pattern]")
     pattern = r'(self\.cover_label\.setText\("RPG Box v\d+\s+)(\d{1,2}/\d{1,2}/\d{4})("\))'
-    new_content = re.sub(pattern, rf'\1{today_str}\3', content)
+    replacement = r'\g<1>' + today_str + r'\g<3>'
+
+    new_content = re.sub(pattern, replacement, content)
 
     if content != new_content:
         with open(file_path, "w") as f:

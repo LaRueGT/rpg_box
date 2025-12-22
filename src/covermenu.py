@@ -32,7 +32,7 @@ class CoverMenu(DirectObject):
         sys.exit(0)
 
     def display_cover_menu(self):
-        J/22/2025")
+        self.cover_label.setText("RPG Box v0 12/22/2025")
         play_button = DirectButton(parent=self.button_frame, text="Play", scale=.05, command=self.handle_play_button)
         demo_button = DirectButton(parent=self.button_frame, text="Demo", scale=.05, command=self.handle_demo_button)
         quit_button = DirectButton(parent=self.button_frame, text="Quit", scale=.05, command=self.handle_quit_button)
