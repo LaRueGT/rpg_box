@@ -21,6 +21,12 @@ class MasterFSM(FSM, DirectObject):
     def handle_intro_done(self):
         self.request('Cover')
 
+    def cover_play(self):
+        self.request('MainMenu')
+
+    def cover_demo(self):
+        self.request('Narrative')
+
     #state methods
     def enterIntro(self):
         self.accept('slides_finished', self.handle_intro_done)
@@ -31,13 +37,23 @@ class MasterFSM(FSM, DirectObject):
     def exitIntro(self):
         self.ignore('escape')
         self.ignore('space')
-        self.ui.clear_gui()
         self.ignore('slides_finished')
+        self.ui.clear_gui()
 
     def enterCover(self):
+        self.accept('play_button_pressed', self.cover_play)
+        self.accept('demo_button_pressed', self.cover_demo)
         cover_label, cover_button_frame = self.ui.cover_frame()
         cover = covermenu.CoverMenu(self.base_window, cover_label, cover_button_frame)
         cover.display_cover_menu()
+
+    def exitCover(self):
+        self.ignore('p')
+        self.ignore('d')
+        self.ignore('q')
+        self.ignore('play_button_pressed')
+        self.ignore('demo_button_pressed')
+        self.ui.clear_gui()
 
     def enterNarrative(self):
         narrative_frame, text_label = self.ui.narrative_frame()

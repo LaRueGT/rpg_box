@@ -1,6 +1,9 @@
+from direct.gui import DirectGuiGlobals as DGG
 from direct.showbase.DirectObject import DirectObject
 from direct.gui.DirectGui import DirectButton
 from direct.showbase.MessengerGlobal import messenger
+from DirectGuiExtension.DirectAutoSizer import DirectAutoSizer
+from DirectGuiExtension.DirectBoxSizer import DirectBoxSizer
 from panda3d.core import NodePath
 import sys
 
@@ -19,11 +22,10 @@ class CoverMenu(DirectObject):
     #button handlers
     def handle_play_button(self):
         messenger.send('play_button_pressed')
-        self.ignore('p')
 
     def handle_demo_button(self):
-        messenger.send('demo_button_pressed')
         self.ignore('d')
+        messenger.send('demo_button_pressed')
 
     def handle_quit_button(self):
         self.ignore('q')
@@ -31,6 +33,9 @@ class CoverMenu(DirectObject):
 
     def display_cover_menu(self):
         self.cover_label.setText("RPG Box v0 11/7/2025")
-        play_button = DirectButton(parent = self.button_frame, text="Play", scale=.05, command=self.handle_play_button)
+        play_button = DirectButton(parent=self.button_frame, text="Play", scale=.05, command=self.handle_play_button)
         demo_button = DirectButton(parent=self.button_frame, text="Demo", scale=.05, command=self.handle_demo_button)
         quit_button = DirectButton(parent=self.button_frame, text="Quit", scale=.05, command=self.handle_quit_button)
+        self.button_frame.addItem(play_button)
+        self.button_frame.addItem(demo_button)
+        self.button_frame.addItem(quit_button)

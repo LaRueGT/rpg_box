@@ -1,5 +1,7 @@
 from direct.gui.DirectGui import DirectFrame
 from direct.gui.DirectGui import DirectLabel
+from direct.gui import DirectGuiGlobals as DGG
+from DirectGuiExtension.DirectBoxSizer import DirectBoxSizer
 from panda3d.core import NodePath
 
 
@@ -35,10 +37,11 @@ class Gui:
                                       text="Initial Text",
                                       text_scale=(0.1, 0.1),
                                       pos=(0, 0, 0))
-        self.button_frame = DirectFrame(parent=self.base_frame,
+        self.button_frame = DirectBoxSizer(orientation=DGG.HORIZONTAL,
+                                       parent=self.base_frame,
                                        frameColor=(0, 0, 0, 1),
                                        frameSize=(-.25, .25, -.25, .25),
-                                       pos=(0, 0, -0.675))
+                                       pos=(-1.715, 0, -0.91))
         return self.cover_label, self.button_frame
 
     def narrative_frame(self) -> tuple[NodePath, NodePath]:
