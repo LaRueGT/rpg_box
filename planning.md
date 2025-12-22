@@ -1,8 +1,7 @@
 -[x] cover menu - play, demo, quit buttons  
 -[x] auto align buttons  
--[x] move dummy narrative test to after demo button
-
-git pre-commit hook to update date in cover text
+-[x] move dummy narrative test to after demo button  
+-[x] git pre-commit hook to update date in cover text  
 
 main menu gui frame, buttons
 
