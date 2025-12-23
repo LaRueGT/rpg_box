@@ -72,4 +72,5 @@ class Narrative(DirectObject):
                 self.picture_position += 1
                 return Task.again
             else:
+                messenger.send("demo_finished")
                 return Task.done

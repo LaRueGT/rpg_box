@@ -21,11 +21,14 @@ class MasterFSM(FSM, DirectObject):
     def handle_intro_done(self):
         self.request('Cover')
 
+    def handle_demo_done(self):
+        self.request('Cover')
+
     def cover_play(self):
         self.request('Main')
 
     def cover_demo(self):
-        self.request('Narrative')
+        self.request('Demo')
 
     #state methods
     def enterIntro(self):
@@ -55,10 +58,14 @@ class MasterFSM(FSM, DirectObject):
         self.ignore('demo_button_pressed')
         self.ui.clear_gui()
 
-    def enterNarrative(self):
+    def enterDemo(self):
+        self.accept('demo_finished', self.handle_intro_done)
         narrative_frame, text_label = self.ui.narrative_frame()
         test_narrative = narrative.Narrative(self.base_window, narrative_frame, text_label)
         test_narrative.display_dummy_narrative()
 
-    def exitNarrative(self):
+    def exitDemo(self):
+        self.ignore('escape')
+        self.ignore('space')
+        self.ignore('demo_finished')
         self.ui.clear_gui()

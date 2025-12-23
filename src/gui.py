@@ -2,6 +2,7 @@ from direct.gui.DirectGui import DirectFrame
 from direct.gui.DirectGui import DirectLabel
 from direct.gui import DirectGuiGlobals as DGG
 from DirectGuiExtension.DirectBoxSizer import DirectBoxSizer
+from DirectGuiExtension.DirectGridSizer import DirectGridSizer
 from panda3d.core import NodePath
 
 
@@ -53,7 +54,9 @@ class Gui:
                                       text="Initial Text",
                                       text_scale=(0.1, 0.1),
                                       text_pos=(0, -0.025))
-        self.button_frame = DirectFrame(parent=self.base_frame,
+        self.button_frame = DirectGridSizer(numColumns=2, numRows=5,
+                                     itemMargin=[0.01, 0.01, 0.01, 0.01],
+                                     parent=self.base_frame,
                                      frameColor=(0, 1, 0, 1),
                                      frameSize=(-1.715, 1.715, -.205, 0.205),
                                      pos=(0, 0, -0.675))
