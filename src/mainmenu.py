@@ -19,8 +19,36 @@ class MainMenu(DirectObject):
         self.ignore('q')
         sys.exit(0)
 
+    def handle_create_button(self):
+        print("create button pressed")
+
+    def handle_delete_button(self):
+        print("delete button pressed")
+
+    def handle_modify_button(self):
+        print("modify button pressed")
+
+    def handle_view_button(self):
+        print("view button pressed")
+
+    def handle_play_button(self):
+        print("play button pressed")
+
+    def handle_add_button(self):
+        print("add button pressed")
+
+    def handle_remove_button(self):
+        print("remove button pressed")
+
+    def handle_load_button(self):
+        print("load button pressed")
+
+    def handle_save_button(self):
+        print("save button pressed")
+
+
+
     def display_main_menu(self):
-        self.cover_label.setText("RPG Box v0 12/22/2025")
         ##column 1
         create_button = DirectButton(parent=self.button_frame, text="Create Character", scale=.05,
                                      command=self.handle_create_button)

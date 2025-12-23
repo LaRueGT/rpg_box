@@ -6,6 +6,9 @@ import gui
 import narrative
 import slideshow
 import covermenu
+import mainmenu
+#python
+import sys
 
 #NB: FSM uses non-snake function naming with (enterState, exitState, filterState)
 #NB:
@@ -29,6 +32,9 @@ class MasterFSM(FSM, DirectObject):
 
     def cover_demo(self):
         self.request('Demo')
+
+    def handle_main_done(self):
+        sys.exit(0)
 
     #state methods
     def enterIntro(self):
@@ -68,4 +74,16 @@ class MasterFSM(FSM, DirectObject):
         self.ignore('escape')
         self.ignore('space')
         self.ignore('demo_finished')
+        self.ui.clear_gui()
+
+    def enterMain(self):
+        self.accept('main_finished', self.handle_main_done)
+        party_label, button_grid = self.ui.narrative_frame()
+        main_menu = mainmenu.MainMenu(self.base_window, party_label, button_grid)
+        main_menu.display_main_menu()
+
+    def exitMain(self):
+        self.ignore('escape')
+        self.ignore('space')
+        self.ignore('main_finished')
         self.ui.clear_gui()
