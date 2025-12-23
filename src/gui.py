@@ -44,6 +44,22 @@ class Gui:
                                        pos=(-1.715, 0, -0.91))
         return self.cover_label, self.button_frame
 
+    def main_frame(self) -> tuple[NodePath, NodePath]:
+        self.text_frame = DirectFrame(parent=self.base_frame,
+                                     frameColor=(0, 1, 1, 1),
+                                     frameSize=(-1.715, 1.715, -.46, .94),
+                                     pos=(0, 0, 0))
+        self.text_label = DirectLabel(parent=self.text_frame,
+                                      text="Initial Text",
+                                      text_scale=(0.1, 0.1),
+                                      text_pos=(0, -0.025))
+        self.button_frame = DirectFrame(parent=self.base_frame,
+                                     frameColor=(0, 1, 0, 1),
+                                     frameSize=(-1.715, 1.715, -.205, 0.205),
+                                     pos=(0, 0, -0.675))
+
+        return self.text_label, self.button_frame
+
     def narrative_frame(self) -> tuple[NodePath, NodePath]:
         self.art_frame = DirectFrame(parent=self.base_frame,
                                      frameColor=(0, 0, 1, 1),

@@ -22,7 +22,7 @@ class MasterFSM(FSM, DirectObject):
         self.request('Cover')
 
     def cover_play(self):
-        self.request('MainMenu')
+        self.request('Main')
 
     def cover_demo(self):
         self.request('Narrative')
