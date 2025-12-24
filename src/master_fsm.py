@@ -78,7 +78,7 @@ class MasterFSM(FSM, DirectObject):
 
     def enterMain(self):
         self.accept('main_finished', self.handle_main_done)
-        party_label, button_grid = self.ui.narrative_frame()
+        party_label, button_grid = self.ui.main_frame()
         main_menu = mainmenu.MainMenu(self.base_window, party_label, button_grid)
         main_menu.display_main_menu()
 
