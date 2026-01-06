@@ -1,0 +1,51 @@
+Acrobat
+Requirements none
+PrimeReq Dex
+
+Assassin
+Requirements none
+PrimeReq Dex
+
+Barbarian
+Requirements Dex 9
+PrimeReq Con and STR
+
+Bard
+Requirements Dex 9 Int 9
+PrimeReq Cha
+
+Cleric
+Requirements none
+PrimeReq Wis
+
+Druid
+Requirements None
+PrimeReq Wis
+
+Fighter
+Requirements None
+PrimeReq Str
+
+Illusionist
+Requirements Dex 9
+PrimeReq Int
+
+Knight
+Requirements Con 9 Dex 9
+PrimeReq Str
+
+Magic-User
+Requirements None
+PrimeReq Int
+
+Paladin
+Requirements Cha 9
+PrimeReq Str and Wis
+
+Ranger
+Requirements Con 9 Wis 9
+PrimeReq Str
+
+Thief
+Requirements None
+PrimeReq Dex

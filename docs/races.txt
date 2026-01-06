@@ -1,0 +1,94 @@
+Drow
+Requirements Int 9
+Mods -1 Con, +1 Dex
+Acrobat 10
+Assassin 10
+Cleric 11
+Fighter 7
+Knight 9
+Magic-User 9
+Ranger 9
+Thief 11
+
+Duergar
+Requirements Con 9, Int 9
+Mods -1 Cha, +1 Con
+Assassin 9
+Cleric 8
+Fighter 9
+Thief 9
+
+Dwarf
+Requirements Con 9
+Mods -1 Cha, +1 Con
+Assassin 9
+Clerid 8
+Fighter 10
+Thief 9
+
+Elf
+Requirements Int 9
+Mods -1 Con, +1 Dex
+Acrobat 10
+Assassin 10
+Cleric 7
+Druid 8
+Fighter 7
+Knight 11
+Magic-User 11
+Ranger 11
+Thief 10
+
+Gnome
+Requirements Con 9, Int 9
+Mods None
+Assassin 6
+Cleric 7
+Fighter 6
+Illusionist 7
+Thief 8
+
+Half-Elf
+Requirements Cha 9, Con 9
+Mods None
+Acrobat 12
+Assassin 11
+Bard 12
+Cleric 5
+Druid 12
+Fighter 8
+Knight 12
+Magic-User 8
+Paladin 12
+Ranger 8
+Thief 12
+
+Halfling
+Requirements Con 9, Dex 9
+Mods -1 Dex, -1 Str
+Druid 6
+Fighter 6
+Thief 8
+
+Half-Orc
+Requirements None
+Mods -2 Cha, +1 Con
+Acrobat 8
+Assassin 8
+Cleric 4
+Fighter 10
+Thief 8
+
+Human
+Requirements None
+Mods None
+All 14
+
+Svirfneblin
+Requirements Con 9
+Mods None
+Assassin 8
+Cleric 7
+Fighter 6
+Illusionist 7
+Thief 8
