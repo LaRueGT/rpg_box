@@ -11,6 +11,7 @@ class RPGBox(ShowBase):
     def __init__(self):
         super().__init__()
         #setting up the window
+        self.camNode.setActive(False)
         self.disableMouse()
         game_state = master_fsm.MasterFSM(self)
 
