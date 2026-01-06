@@ -9,5 +9,5 @@ character generator gui frame, buttons, radio list
 display region, dice rolls  
 physics dice roll simulation ?  
 sqlite database with game tables, starting with character races/classes  
-text panel font  
+text panel font eb garamond  
 console panel text interaction  
