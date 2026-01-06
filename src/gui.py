@@ -9,9 +9,10 @@ from panda3d.core import NodePath, TextNode
 class Gui:
     def __init__(self, base):
         self.base_window = base
-        self.base_frame = DirectFrame(frameColor=(1, 0, 0, 1),
+        self.base_frame = DirectFrame(frameColor=(1, 1, 1, 1),
                                       frameSize=(-1.778, 1.778, -1, 1),
-                                      pos=(0, 0, 0))
+                                      pos=(0, 0, 0),
+                                      frameTexture='../assets/wood_table_tex.jpg')
         self.art_frame = NodePath()
         self.cover_label_frame = NodePath()
         self.cover_label = NodePath()
@@ -79,5 +80,6 @@ class Gui:
                                       text_scale=(0.07, 0.07),
                                       text_align=TextNode.ALeft,
                                       text_wordwrap=48,
-                                      text_pos=(-1.65, 0.13))
+                                      text_pos=(-1.65, 0.13),
+                                      frameColor=(0, 0, 0, 0))
         return self.art_frame, self.text_label
