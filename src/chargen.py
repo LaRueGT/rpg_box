@@ -17,6 +17,7 @@ class Chargen(DirectObject):
         self.button_frame = button_frame
         self.roll_button = NodePath()
         self.label_font = self.base.loader.loadFont('../fonts/EBGaramond-VariableFont_wght.ttf')
+        self.races = []
         self.race_buttons = []
         self.selected_race = [None]
         self.new_char = character.Character()
@@ -37,6 +38,9 @@ class Chargen(DirectObject):
         self.new_char.charisma = diceroll.roll(3, 6)
         print(f"Charisma roll total = {self.new_char.charisma}!")
         self.ability_label.setText(f"Roll Ability Scores\nStrength:\t\t{self.new_char.strength}\nIntelligence:\t\t{self.new_char.intelligence}\nWisdom:\t\t{self.new_char.wisdom}\nDexterity:\t\t{self.new_char.dexterity}\nConstitution:\t{self.new_char.constitution}\nCharisma:\t\t{self.new_char.charisma}",)
+        for race_index in range(len(self.races)):
+            if race.meets_requirements(self.races[race_index], self.new_char.strength, self.new_char.intelligence, self.new_char.wisdom, self.new_char.dexterity, self.new_char.constitution, self.new_char.charisma):
+                self.race_buttons[race_index]['state'] = DGG.NORMAL
 
     def handle_done_button(self):
         print("done button pressed")
@@ -64,6 +68,7 @@ class Chargen(DirectObject):
     def display_race_picker(self):
         self.race_buttons = []
         for race_index, race_option in enumerate(race.Race):
+            self.races.append(race_option)
             btn = DirectRadioButton(parent=self.race_list_frame,
                                     text=race_option.name,
                                     scale=0.07,
@@ -73,6 +78,8 @@ class Chargen(DirectObject):
                                     others=self.race_buttons,
                                     text_font=self.label_font,
                                     text_align=TextNode.ALeft,
-                                    boxPlacement='left')
+                                    boxPlacement='left',
+                                    state=DGG.DISABLED,
+                                    text3_fg=(0.6, 0.6, 0.6, 1))
             btn.setOthers(self.race_buttons)
             self.race_buttons.append(btn)

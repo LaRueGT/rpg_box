@@ -7,8 +7,8 @@
 - [x] text panel font eb garamond
 - [x] character generator gui frame, buttons
 - [x] race select radio list
-- [ ] racial stats requirements table
-- [ ] gray out interactions with stat requirements not met
+- [x] racial stats requirements table
+- [x] gray out interactions with stat requirements not met
 - [ ] alignment select radio list  
 - [ ] class select radio list  
 

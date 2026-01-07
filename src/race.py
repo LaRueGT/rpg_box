@@ -34,3 +34,8 @@ race_requirements = {
     Race.Human: [0,0,0,0,0,0],
     Race.Svirfneblin: [0,0,0,0,9,0]
 }
+
+def meets_requirements(race, strength, intelligence, wisdom, dexterity, constitution, charisma) -> bool:
+    return all(
+        race_requirements[race][i] <= stat for i, stat in enumerate([strength, intelligence, wisdom, dexterity, constitution, charisma])
+    )
