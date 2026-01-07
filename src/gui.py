@@ -19,6 +19,10 @@ class Gui:
         self.button_frame = NodePath()
         self.text_frame = NodePath()
         self.text_label = NodePath()
+        self.chargen_screen_frame = NodePath()
+        self.abilities_label = NodePath()
+        self.race_heading = NodePath()
+        self.racelist_frame = NodePath()
         self.label_font = self.base_window.loader.loadFont('../fonts/EBGaramond-VariableFont_wght.ttf')
 
     def clear_gui(self):
@@ -48,23 +52,34 @@ class Gui:
         return self.cover_label, self.button_frame
 
     def chargen_frame(self) -> tuple[NodePath, NodePath]:
-        self.chargen_label_frame = DirectFrame(parent=self.base_frame,
+        self.chargen_screen_frame = DirectFrame(parent=self.base_frame,
                                              frameColor=(.25, .25, .25, 1),
                                              frameSize=(-1.715, 1.715, -.88, .94),
                                              pos=(0, 0, 0))
-        self.abilities_label = DirectLabel(parent=self.chargen_label_frame,
+        self.abilities_label = DirectLabel(parent=self.chargen_screen_frame,
                                            text_font=self.label_font,
                                            text="Roll Ability Scores\nStrength:\t\tROLL READY\nIntelligence:\t\tROLL READY\nWisdom:\t\tROLL READY\nDexterity:\t\tROLL READY\nConstitution:\tROLL READY\nCharisma:\t\tROLL READY",
                                            text_scale=(0.07, 0.07),
                                            text_align=TextNode.ALeft,
                                            text_pos=(-1.65, 0.85),
                                            frameColor=(0, 0, 0, 0))
+        self.racelist_frame = DirectFrame(parent=self.chargen_screen_frame,
+                                          frameColor=(.25, .25, .25, 1),
+                                          frameSize=(0, 0.8, -0.8, .0),
+                                          pos=(-1.65, 0, 0.15))
+        self.race_heading = DirectLabel(parent=self.racelist_frame,
+                                   text="Choose Race",
+                                   text_font=self.label_font,
+                                   text_scale=0.07,
+                                   text_align=TextNode.ALeft,
+                                   pos=(0, 0, 0.05),
+                                   frameColor=(0, 0, 0, 0))
         self.button_frame = DirectBoxSizer(orientation=DGG.HORIZONTAL,
                                            parent=self.base_frame,
                                            frameColor=(0, 0, 0, 1),
                                            frameSize=(-.25, .25, -.25, .25),
                                            pos=(-1.715, 0, -0.91))
-        return self.abilities_label, self.button_frame
+        return self.abilities_label, self.racelist_frame, self.button_frame
 
     def main_frame(self) -> tuple[NodePath, NodePath]:
         self.text_frame = DirectFrame(parent=self.base_frame,

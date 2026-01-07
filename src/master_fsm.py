@@ -98,9 +98,10 @@ class MasterFSM(FSM, DirectObject):
 
     def enterChargen(self):
         self.accept('chargen_finished', self.handle_chargen_done)
-        ability_label, button_row = self.ui.chargen_frame()
-        chargen_screen = chargen.Chargen(self.base_window, ability_label, button_row)
+        ability_label, race_list, button_row = self.ui.chargen_frame()
+        chargen_screen = chargen.Chargen(self.base_window, ability_label,race_list, button_row)
         chargen_screen.display_chargen_buttons()
+        chargen_screen.display_race_picker()
 
     def exitChargen(self):
         self.ignore('escape')

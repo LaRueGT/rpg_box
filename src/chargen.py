@@ -1,16 +1,23 @@
 from direct.showbase.DirectObject import DirectObject
 from direct.gui.DirectGui import DirectButton
+from panda3d.core import TextNode
+from direct.gui.DirectRadioButton import DirectRadioButton
 from direct.showbase.MessengerGlobal import messenger
 
 import diceroll
 import character
+import race
 
 class Chargen(DirectObject):
-    def __init__(self, base, ability_label, button_frame):
+    def __init__(self, base, ability_label, racelist_frame, button_frame):
         super().__init__()
         self.base = base
         self.ability_label = ability_label
+        self.race_list_frame = racelist_frame
         self.button_frame = button_frame
+        self.label_font = self.base.loader.loadFont('../fonts/EBGaramond-VariableFont_wght.ttf')
+        self.race_buttons = []
+        self.selected_race = [None]
         self.new_char = character.Character()
 
     def handle_roll_button(self):
@@ -44,3 +51,19 @@ class Chargen(DirectObject):
         self.button_frame.addItem(roll_button)
         self.button_frame.addItem(done_button)
         self.button_frame.addItem(exit_button)
+
+    def display_race_picker(self):
+        self.race_buttons = []
+        for race_index, race_option in enumerate(race.Race):
+            btn = DirectRadioButton(parent=self.race_list_frame,
+                                    text=race_option.name,
+                                    scale=0.07,
+                                    pos=(0.1, 0, -0.05 - (race_index * 0.1)),
+                                    variable=self.selected_race,
+                                    value=[race_option.value],
+                                    others=self.race_buttons,
+                                    text_font=self.label_font,
+                                    text_align=TextNode.ALeft,
+                                    boxPlacement='left')
+            btn.setOthers(self.race_buttons)
+            self.race_buttons.append(btn)
