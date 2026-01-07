@@ -8,7 +8,7 @@ def update_cover_date():
     if not os.path.exists(file_path):
         print(f"Error: {file_path} not found.")
         return
-
+    print("running update cover label date script...")
     today_str = datetime.now().strftime("%m/%d/%Y")
 
     with open(file_path, "r") as f:
