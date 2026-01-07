@@ -7,6 +7,7 @@ import narrative
 import slideshow
 import covermenu
 import mainmenu
+import chargen
 #python
 import sys
 
@@ -32,6 +33,12 @@ class MasterFSM(FSM, DirectObject):
 
     def cover_demo(self):
         self.request('Demo')
+
+    def handle_chargen_done(self):
+        self.request('Main')
+
+    def main_chargen(self):
+        self.request('Chargen')
 
     def handle_main_done(self):
         sys.exit(0)
@@ -78,6 +85,7 @@ class MasterFSM(FSM, DirectObject):
 
     def enterMain(self):
         self.accept('main_finished', self.handle_main_done)
+        self.accept('chargen_button_pressed', self.main_chargen)
         party_label, button_grid = self.ui.main_frame()
         main_menu = mainmenu.MainMenu(self.base_window, party_label, button_grid)
         main_menu.display_main_menu()
@@ -86,4 +94,15 @@ class MasterFSM(FSM, DirectObject):
         self.ignore('escape')
         self.ignore('space')
         self.ignore('main_finished')
+        self.ui.clear_gui()
+
+    def enterChargen(self):
+        self.accept('chargen_finished', self.handle_chargen_done)
+        ability_label, button_row = self.ui.chargen_frame()
+        chargen_screen = chargen.Chargen(self.base_window, ability_label, button_row)
+        chargen_screen.display_chargen_buttons()
+
+    def exitChargen(self):
+        self.ignore('escape')
+        self.ignore('chargen_finished')
         self.ui.clear_gui()

@@ -21,6 +21,7 @@ class MainMenu(DirectObject):
 
     def handle_create_button(self):
         print("create button pressed")
+        messenger.send("chargen_button_pressed")
 
     def handle_delete_button(self):
         print("delete button pressed")
@@ -45,7 +46,6 @@ class MainMenu(DirectObject):
 
     def handle_save_button(self):
         print("save button pressed")
-
 
 
     def display_main_menu(self):
