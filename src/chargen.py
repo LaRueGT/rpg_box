@@ -1,6 +1,6 @@
 from direct.showbase.DirectObject import DirectObject
-from direct.gui.DirectGui import DirectButton
-from panda3d.core import TextNode
+from direct.gui.DirectGui import DirectButton, DGG
+from panda3d.core import TextNode, NodePath
 from direct.gui.DirectRadioButton import DirectRadioButton
 from direct.showbase.MessengerGlobal import messenger
 
@@ -15,6 +15,7 @@ class Chargen(DirectObject):
         self.ability_label = ability_label
         self.race_list_frame = racelist_frame
         self.button_frame = button_frame
+        self.roll_button = NodePath()
         self.label_font = self.base.loader.loadFont('../fonts/EBGaramond-VariableFont_wght.ttf')
         self.race_buttons = []
         self.selected_race = [None]
@@ -22,6 +23,7 @@ class Chargen(DirectObject):
 
     def handle_roll_button(self):
         print("roll button pressed")
+        self.roll_button['state'] = DGG.DISABLED
         self.new_char.strength = diceroll.roll(3, 6)
         print(f"Strength roll total = {self.new_char.strength}!")
         self.new_char.intelligence = diceroll.roll(3, 6)
@@ -45,10 +47,17 @@ class Chargen(DirectObject):
         messenger.send("chargen_finished")
 
     def display_chargen_buttons(self):
-        roll_button = DirectButton(parent=self.button_frame, text="Roll Stats", scale=.05, command=self.handle_roll_button)
+        self.roll_button = DirectButton(
+            parent=self.button_frame,
+            text="Roll Stats",
+            scale=.05,
+            command=self.handle_roll_button,
+            text_fg=(0, 0, 0, 1),
+            text3_fg=(0.6, 0.6, 0.6, 1)  # Color for state 3 (Disabled)
+        )
         done_button = DirectButton(parent=self.button_frame, text="Done", scale=.05, command=self.handle_done_button)
         exit_button = DirectButton(parent=self.button_frame, text="Exit", scale=.05, command=self.handle_exit_button)
-        self.button_frame.addItem(roll_button)
+        self.button_frame.addItem(self.roll_button)
         self.button_frame.addItem(done_button)
         self.button_frame.addItem(exit_button)
 
