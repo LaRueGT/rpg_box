@@ -54,7 +54,7 @@ class Gui:
                                              pos=(0, 0, 0))
         self.abilities_label = DirectLabel(parent=self.chargen_label_frame,
                                            text_font=self.label_font,
-                                           text="STR:\nINT:\nWIS:\nDEX:\nCON:\nCHR:\nTOTAL:",
+                                           text="Roll Ability Scores\nStrength:\t\tROLL READY\nIntelligence:\t\tROLL READY\nWisdom:\t\tROLL READY\nDexterity:\t\tROLL READY\nConstitution:\tROLL READY\nCharisma:\t\tROLL READY",
                                            text_scale=(0.07, 0.07),
                                            text_align=TextNode.ALeft,
                                            text_pos=(-1.65, 0.85),
