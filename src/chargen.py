@@ -73,6 +73,8 @@ class Chargen(DirectObject):
                                     text=race_option.name,
                                     scale=0.07,
                                     pos=(0.1, 0, -0.05 - (race_index * 0.1)),
+                                    frameSize=(0, 10, -0.5, 1),
+                                    text_pos=(1.2, 0),
                                     variable=self.selected_race,
                                     value=[race_option.value],
                                     others=self.race_buttons,

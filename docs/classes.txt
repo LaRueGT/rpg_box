@@ -5,6 +5,7 @@ PrimeReq Dex
 Assassin
 Requirements none
 PrimeReq Dex
+Alignment Not Lawful
 
 Barbarian
 Requirements Dex 9
@@ -21,6 +22,7 @@ PrimeReq Wis
 Druid
 Requirements None
 PrimeReq Wis
+Alignment Neutral
 
 Fighter
 Requirements None
@@ -33,6 +35,7 @@ PrimeReq Int
 Knight
 Requirements Con 9 Dex 9
 PrimeReq Str
+Alignment (must match liege)
 
 Magic-User
 Requirements None
@@ -41,10 +44,12 @@ PrimeReq Int
 Paladin
 Requirements Cha 9
 PrimeReq Str and Wis
+Alignment Lawful
 
 Ranger
 Requirements Con 9 Wis 9
 PrimeReq Str
+Alignment Lawful or Neutral
 
 Thief
 Requirements None
