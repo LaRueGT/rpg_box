@@ -10,5 +10,5 @@ class Character:
         self.dexterity = 0
         self.constitution = 0
         self.charisma = 0
-        self.char_race = race.Race.Human
-        self.char_alignment = alignment.Alignment.Neutral
+        self.char_race = None
+        self.char_alignment = None

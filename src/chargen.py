@@ -3,19 +3,22 @@ from direct.showbase.DirectObject import DirectObject
 from direct.gui.DirectGui import DirectButton, DGG
 from panda3d.core import TextNode, NodePath
 from direct.gui.DirectRadioButton import DirectRadioButton
+from direct.gui.DirectCheckButton import DirectCheckButton
 from direct.showbase.MessengerGlobal import messenger
 
 import diceroll
 import character
 import race
+import pcclass
 
 class Chargen(DirectObject):
-    def __init__(self, base, ability_label, racelist_frame, alignment_frame, button_frame):
+    def __init__(self, base, ability_label, racelist_frame, alignment_frame, classlist_frame, button_frame):
         super().__init__()
         self.base = base
         self.ability_label = ability_label
         self.race_list_frame = racelist_frame
         self.alignment_frame = alignment_frame
+        self.class_list_frame = classlist_frame
         self.button_frame = button_frame
         self.roll_button = NodePath()
         self.label_font = self.base.loader.loadFont('../fonts/EBGaramond-VariableFont_wght.ttf')
@@ -25,6 +28,8 @@ class Chargen(DirectObject):
         self.alignments = []
         self.alignment_buttons = []
         self.selected_alignment = [None]
+        self.class_buttons = []
+        self.selected_classes = []
         self.new_char = character.Character()
 
     def handle_roll_button(self):
@@ -43,13 +48,47 @@ class Chargen(DirectObject):
         for btn in self.alignment_buttons:
             btn['state'] = DGG.NORMAL
 
+    def update_class_buttons(self):
+        """Enables or disables class buttons based on requirements and the 3-selection limit."""
+        if self.new_char.char_race is None or self.new_char.char_alignment is None:
+            return
+
+        num_selected = len(self.selected_classes)
+        for btn in self.class_buttons:
+            cls = btn['extraArgs'][0]
+            meets = pcclass.meets_requirements(
+                cls, self.new_char.char_race, self.new_char.char_alignment,
+                self.new_char.strength, self.new_char.intelligence, self.new_char.wisdom,
+                self.new_char.dexterity, self.new_char.constitution, self.new_char.charisma
+            )
+
+            if not meets:
+                btn['state'] = DGG.DISABLED
+            elif num_selected >= 3 and cls not in self.selected_classes:
+                btn['state'] = DGG.DISABLED
+            else:
+                btn['state'] = DGG.NORMAL
+
     def handle_race_button(self, race_index):
         self.new_char.char_race = self.races[race_index]
         print(f"Selected race: {self.new_char.char_race.name}")
+        self.update_class_buttons()
 
     def handle_alignment_button(self, align_index):
         self.new_char.char_alignment = self.alignments[align_index]
         print(f"Selected alignemnt: {self.new_char.char_alignment.name}")
+        self.update_class_buttons()
+
+    def handle_class_button(self, status, pc_class):
+        if status:
+            if pc_class not in self.selected_classes:
+                self.selected_classes.append(pc_class)
+        else:
+            if pc_class in self.selected_classes:
+                self.selected_classes.remove(pc_class)
+
+        print(f"Selected classes: {[str(c) for c in self.selected_classes]}")
+        self.update_class_buttons()
 
     def handle_done_button(self):
         print("done button pressed")
@@ -120,3 +159,20 @@ class Chargen(DirectObject):
                                     text3_fg=(0.6, 0.6, 0.6, 1))
             btn.setOthers(self.alignment_buttons)
             self.alignment_buttons.append(btn)
+
+    def display_class_picker(self):
+        self.class_buttons = []
+        for class_index, class_option in enumerate(pcclass.PCClass):
+            btn = DirectCheckButton(parent=self.class_list_frame,
+                                    text=str(class_option),
+                                    scale=0.07,
+                                    pos=(0.1, 0, -0.05 - (class_index * 0.1)),
+                                    text_pos=(1.2, 0),
+                                    text_font=self.label_font,
+                                    text_align=TextNode.ALeft,
+                                    boxPlacement='left',
+                                    state=DGG.DISABLED,
+                                    command=self.handle_class_button,
+                                    extraArgs=[class_option],
+                                    text3_fg=(0.6, 0.6, 0.6, 1))
+            self.class_buttons.append(btn)

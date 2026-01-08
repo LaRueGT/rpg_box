@@ -26,6 +26,7 @@ class Gui:
         self.racelist_frame = NodePath()
         self.alignment_heading = NodePath()
         self.alignment_frame = NodePath()
+        self.classlist_frame = NodePath()
         self.label_font = self.base_window.loader.loadFont('../fonts/EBGaramond-VariableFont_wght.ttf')
 
     def clear_gui(self):
@@ -54,7 +55,7 @@ class Gui:
                                            pos=(-1.715, 0, -0.91))
         return self.cover_label, self.button_frame
 
-    def chargen_frame(self) -> tuple[NodePath, NodePath, NodePath, NodePath]:
+    def chargen_frame(self) -> tuple[NodePath, NodePath, NodePath, NodePath, NodePath]:
         self.chargen_screen_frame = DirectFrame(parent=self.base_frame,
                                              frameColor=(.25, .25, .25, 1),
                                              frameSize=(-1.715, 1.715, -.88, .94),
@@ -88,12 +89,23 @@ class Gui:
                                              text_align=TextNode.ALeft,
                                              pos=(0, 0, 0.05),
                                              frameColor=(0, 0, 0, 0))
+        self.classlist_frame = DirectFrame(parent=self.chargen_screen_frame,
+                                           frameColor=(.25, .25, .25, 1),
+                                           frameSize=(0, 0.8, -1.4, .0),
+                                           pos=(0.15, 0, 0.75))
+        self.class_heading = DirectLabel(parent=self.classlist_frame,
+                                         text="Choose Classes (Max 3)",
+                                         text_font=self.label_font,
+                                         text_scale=0.07,
+                                         text_align=TextNode.ALeft,
+                                         pos=(0, 0, 0.05),
+                                         frameColor=(0, 0, 0, 0))
         self.button_frame = DirectBoxSizer(orientation=DGG.HORIZONTAL,
                                            parent=self.base_frame,
                                            frameColor=(0, 0, 0, 1),
                                            frameSize=(-.25, .25, -.25, .25),
                                            pos=(-1.715, 0, -0.91))
-        return self.abilities_label, self.racelist_frame, self.alignment_frame, self.button_frame
+        return self.abilities_label, self.racelist_frame, self.alignment_frame, self.classlist_frame, self.button_frame
 
     def main_frame(self) -> tuple[NodePath, NodePath]:
         self.text_frame = DirectFrame(parent=self.base_frame,
