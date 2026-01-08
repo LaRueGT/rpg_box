@@ -12,6 +12,13 @@ class Race(Enum):
     Human = 9
     Svirfneblin = 10
 
+    def __str__(self):
+        if self.name == "HalfElf":
+            return "Half-Elf"
+        if self.name == "HalfOrc":
+            return "Half-Orc"
+        return self.name
+
 
 """
     Requirements listed in lists in this order:
