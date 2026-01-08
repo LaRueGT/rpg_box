@@ -1,5 +1,6 @@
 import race
 import alignment
+import pcclass
 
 class Character:
     def __init__(self):

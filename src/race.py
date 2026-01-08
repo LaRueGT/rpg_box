@@ -29,20 +29,19 @@ class Race(Enum):
         constitution
         charisma
 """
-race_requirements = {
-    Race.Drow: [0,9,0,0,0,0],
-    Race.Duegar: [0,9,0,0,9,0],
-    Race.Dwarf: [0,0,0,0,9,0],
-    Race.Elf: [0,9,0,0,0,0],
-    Race.Gnome: [0,9,0,0,9,0],
-    Race.HalfElf: [0,0,0,0,9,9],
-    Race.Halfling: [0,0,0,9,9,0],
-    Race.HalfOrc: [0,0,0,0,0,0],
-    Race.Human: [0,0,0,0,0,0],
-    Race.Svirfneblin: [0,0,0,0,9,0]
-}
-
 def meets_requirements(race, strength, intelligence, wisdom, dexterity, constitution, charisma) -> bool:
+    race_requirements = {
+        Race.Drow: [0, 9, 0, 0, 0, 0],
+        Race.Duegar: [0, 9, 0, 0, 9, 0],
+        Race.Dwarf: [0, 0, 0, 0, 9, 0],
+        Race.Elf: [0, 9, 0, 0, 0, 0],
+        Race.Gnome: [0, 9, 0, 0, 9, 0],
+        Race.HalfElf: [0, 0, 0, 0, 9, 9],
+        Race.Halfling: [0, 0, 0, 9, 9, 0],
+        Race.HalfOrc: [0, 0, 0, 0, 0, 0],
+        Race.Human: [0, 0, 0, 0, 0, 0],
+        Race.Svirfneblin: [0, 0, 0, 0, 9, 0]
+    }
     return all(
         race_requirements[race][i] <= stat for i, stat in enumerate([strength, intelligence, wisdom, dexterity, constitution, charisma])
     )

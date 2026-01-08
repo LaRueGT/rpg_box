@@ -22,7 +22,7 @@ Dwarf
 Requirements Con 9
 Mods -1 Cha, +1 Con
 Assassin 9
-Clerid 8
+Cleric 8
 Fighter 10
 Thief 9
 
