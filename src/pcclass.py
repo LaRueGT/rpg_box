@@ -33,58 +33,57 @@ class PCClass(Enum):
         charisma
 """
 
-def meets_requirements(test_class, race, alignment, strength, intelligence, wisdom, dexterity, constitution, charisma) -> bool:
+def meets_requirements(test_class, test_race, alignment, strength, intelligence, wisdom, dexterity, constitution, charisma) -> bool:
     class_requirements = {
         PCClass.Acrobat: [
-            lambda: race in [race.Race.Drow, race.Race.Elf, race.Race.HalfElf, race.Race.HalfOrc, race.Race.Human]
+            lambda: test_race in [race.Race.Drow, race.Race.Elf, race.Race.HalfElf, race.Race.HalfOrc, race.Race.Human]
         ],
         PCClass.Assassin: [
-            lambda: race in [race.Race.Drow, race.Race.Duegar, race.Race.Dwarf, race.Race.Elf, race.Race.Gnome, race.Race.HalfElf, race.Race.HalfOrc, race.Race.Human, race.Race.Svirfneblin],
+            lambda: test_race in [race.Race.Drow, race.Race.Duegar, race.Race.Dwarf, race.Race.Elf, race.Race.Gnome, race.Race.HalfElf, race.Race.HalfOrc, race.Race.Human, race.Race.Svirfneblin],
             lambda: alignment != alignment.Alignment.Lawful
         ],
         PCClass.Barbarian: [
             lambda: dexterity >= 9,
-            lambda: race in [race.Race.Human],
+            lambda: test_race in [race.Race.Human],
         ],
         PCClass.Bard: [
             lambda: dexterity >= 9,
             lambda: intelligence >= 9,
-            lambda: race in [race.Race.HalfElf, race.Race.Human]
+            lambda: test_race in [race.Race.HalfElf, race.Race.Human]
         ],
         PCClass.Cleric: [
-            lambda: race in [race.Race.Drow, race.Race.Duegar, race.Race.Dwarf, race.Race.Elf, race.Race.Gnome, race.Race.HalfElf, race.Race.HalfOrc, race.Race.Human, race.Race.Svirfneblin]
+            lambda: test_race in [race.Race.Drow, race.Race.Duegar, race.Race.Dwarf, race.Race.Elf, race.Race.Gnome, race.Race.HalfElf, race.Race.HalfOrc, race.Race.Human, race.Race.Svirfneblin]
         ],
         PCClass.Druid: [
             lambda: alignment == alignment.Alignment.Neutral,
-            lambda: race in [race.Race.Elf, race.Race.HalfElf, race.Race.Halfling, race.Race.Human]
+            lambda: test_race in [race.Race.Elf, race.Race.HalfElf, race.Race.Halfling, race.Race.Human]
         ],
         PCClass.Fighter: [
             lambda: True
         ],
         PCClass.Illusionist: [
             lambda: dexterity >= 9,
-            lambda: race in [race.Race.Gnome, race.Race.Human, race.Race.Svirfneblin]
+            lambda: test_race in [race.Race.Gnome, race.Race.Human, race.Race.Svirfneblin]
         ],
         PCClass.Knight: [
             lambda: dexterity >= 9,
             lambda: constitution >= 9,
-            lambda: race in [race.Race.Drow, race.Race.Elf, race.Race.HalfElf, race.Race.Human]
+            lambda: test_race in [race.Race.Drow, race.Race.Elf, race.Race.HalfElf, race.Race.Human]
         ],
         PCClass.MagicUser: [
-            lambda: race in [race.Race.Drow, race.Race.Elf, race.Race.HalfElf, race.Race.Human]
+            lambda: test_race in [race.Race.Drow, race.Race.Elf, race.Race.HalfElf, race.Race.Human]
         ],
         PCClass.Paladin: [
             lambda: charisma >= 9,
-            lambda: race in [race.Race.HalfElf, race.Race.Human]
+            lambda: test_race in [race.Race.HalfElf, race.Race.Human]
         ],
         PCClass.Ranger: [
             lambda: constitution >= 9,
             lambda: wisdom >= 9,
-            lambda: race in [race.Race.Drow, race.Race.Elf, race.Race.HalfElf, race.Race.Human]
+            lambda: test_race in [race.Race.Drow, race.Race.Elf, race.Race.HalfElf, race.Race.Human]
         ],
         PCClass.Thief: [
             lambda: True
         ],
     }
     result = all(condition() for condition in class_requirements[test_class])
-    print(f"{test_class}: {result}")
