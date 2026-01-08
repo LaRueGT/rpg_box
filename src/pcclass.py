@@ -34,7 +34,6 @@ class PCClass(Enum):
 """
 
 def meets_requirements(test_class, race, alignment, strength, intelligence, wisdom, dexterity, constitution, charisma) -> bool:
-    print("Foo")
     class_requirements = {
         PCClass.Acrobat: [
             lambda: race in [race.Race.Drow, race.Race.Elf, race.Race.HalfElf, race.Race.HalfOrc, race.Race.Human]
@@ -87,4 +86,5 @@ def meets_requirements(test_class, race, alignment, strength, intelligence, wisd
             lambda: True
         ],
     }
-    return all(class_requirements[test_class])
+    result = all(condition() for condition in class_requirements[test_class])
+    print(f"{test_class}: {result}")
