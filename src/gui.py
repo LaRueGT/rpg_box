@@ -5,12 +5,25 @@ from direct.gui import DirectGuiGlobals as DGG
 from DirectGuiExtension.DirectBoxSizer import DirectBoxSizer
 from DirectGuiExtension.DirectGridSizer import DirectGridSizer
 from panda3d.core import NodePath, TextNode
+from panda3d.core import TextProperties, TextPropertiesManager
 from panda3d.core import TextureStage
 
 
 class Gui:
     def __init__(self, base):
         self.base_window = base
+
+        self.label_font = self.base_window.loader.loadFont('../fonts/EBGaramond-VariableFont_wght.ttf')
+        tpm = TextPropertiesManager.getGlobalPtr()
+        tp_red = TextProperties()
+        tp_red.setTextColor(1.0, 0.0, 0.0, 1.0)  # Red (R, G, B, A)
+        tpm.setProperties("red", tp_red)
+        tp_green = TextProperties()
+        tp_green.setTextColor(0.0, 1.0, 0.0, 1.0)  # Green
+        tpm.setProperties("green", tp_green)
+        tp_blue = TextProperties()
+        tp_blue.setTextColor(0.0, 0.0, 1.0, 1.0)  # Blue
+        tpm.setProperties("blue", tp_blue)
         self.base_frame = DirectFrame(frameColor=(1, 1, 1, 1),
                                       frameSize=(-1.778, 1.778, -1, 1),
                                       pos=(0, 0, 0),
@@ -29,7 +42,6 @@ class Gui:
         self.alignment_heading = NodePath()
         self.alignment_frame = NodePath()
         self.classlist_frame = NodePath()
-        self.label_font = self.base_window.loader.loadFont('../fonts/EBGaramond-VariableFont_wght.ttf')
 
     def clear_gui(self):
         self.base_frame.node().removeAllChildren()
@@ -66,8 +78,8 @@ class Gui:
         self.chargen_screen_frame.guiItem.get_state_def(0).set_tex_scale(TextureStage.getDefault(), 1, 0.53)
         self.abilities_label = DirectLabel(parent=self.chargen_screen_frame,
                                            text_font=self.label_font,
-                                           text="Roll Ability Scores\nStrength:\t\tROLL READY\nIntelligence:\t\tROLL READY\nWisdom:\t\tROLL READY\nDexterity:\t\tROLL READY\nConstitution:\tROLL READY\nCharisma:\t\tROLL READY",
                                            text_scale=(0.07, 0.07),
+                                           text="Roll Ability Scores\nStrength: ROLL READY\nIntelligence: ROLL READY\nWisdom: ROLL READY\nDexterity: ROLL READY\nConstitution: ROLL READY\nCharisma: ROLL READY",
                                            text_align=TextNode.ALeft,
                                            text_pos=(-1.665, 0.85),
                                            frameColor=(0, 0, 0, 0))

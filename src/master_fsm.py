@@ -1,15 +1,18 @@
 #panda3d
-from direct.fsm.FSM import FSM
-from direct.showbase.DirectObject import DirectObject
-#My Stuff
-import gui
-import narrative
-import slideshow
-import covermenu
-import mainmenu
-import chargen
 #python
 import sys
+
+from direct.fsm.FSM import FSM
+from direct.showbase.DirectObject import DirectObject
+
+import chargen
+import covermenu
+
+#My Stuff
+import gui
+import mainmenu
+import narrative
+import slideshow
 
 #NB: FSM uses non-snake function naming with (enterState, exitState, filterState)
 #NB:

@@ -29,6 +29,21 @@ class Race(Enum):
         constitution
         charisma
 """
+def get_stat_mods(race) -> [int]:
+    race_mods = {
+        Race.Drow: [0, 0, 0, 1, -1, 0],
+        Race.Duegar: [0, 0, 0, 0, 1, -1],
+        Race.Dwarf: [0, 0, 0, 0, 1, -1],
+        Race.Elf: [0, 0, 0, 1, 0, -1],
+        Race.Gnome: [0, 0, 0, 0, 0, 0],
+        Race.HalfElf: [0, 0, 0, 0, 0, 0],
+        Race.Halfling: [-1, 0, 0, -1, 0, 0],
+        Race.HalfOrc: [0, 0, 0, 0, 1, -2],
+        Race.Human: [0, 0, 0, 0, 0, 0],
+        Race.Svirfneblin: [0, 0, 0, 0, 0, 0]
+    }
+    return race_mods[race]
+
 def meets_requirements(race, strength, intelligence, wisdom, dexterity, constitution, charisma) -> bool:
     race_requirements = {
         Race.Drow: [0, 9, 0, 0, 0, 0],

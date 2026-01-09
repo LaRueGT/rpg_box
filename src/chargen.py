@@ -31,22 +31,49 @@ class Chargen(DirectObject):
         self.class_buttons = []
         self.selected_classes = []
         self.new_char = character.Character()
+        self.base_stats = {"str": 0, "int": 0, "wis": 0, "dex": 0, "con": 0, "cha": 0}
 
     def handle_roll_button(self):
         print("roll button pressed")
         self.roll_button['state'] = DGG.DISABLED
-        self.new_char.strength = diceroll.roll(3, 6)
-        self.new_char.intelligence = diceroll.roll(3, 6)
-        self.new_char.wisdom = diceroll.roll(3, 6)
-        self.new_char.dexterity = diceroll.roll(3, 6)
-        self.new_char.constitution = diceroll.roll(3, 6)
-        self.new_char.charisma = diceroll.roll(3, 6)
-        self.ability_label.setText(f"Roll Ability Scores\nStrength:\t\t{self.new_char.strength}\nIntelligence:\t\t{self.new_char.intelligence}\nWisdom:\t\t{self.new_char.wisdom}\nDexterity:\t\t{self.new_char.dexterity}\nConstitution:\t{self.new_char.constitution}\nCharisma:\t\t{self.new_char.charisma}",)
+        self.base_stats["str"] = diceroll.roll(3, 6)
+        self.base_stats["int"] = diceroll.roll(3, 6)
+        self.base_stats["wis"] = diceroll.roll(3, 6)
+        self.base_stats["dex"] = diceroll.roll(3, 6)
+        self.base_stats["con"] = diceroll.roll(3, 6)
+        self.base_stats["cha"] = diceroll.roll(3, 6)
+        # Initialize char stats with base rolls
+        self.new_char.strength = self.base_stats["str"]
+        self.new_char.intelligence = self.base_stats["int"]
+        self.new_char.wisdom = self.base_stats["wis"]
+        self.new_char.dexterity = self.base_stats["dex"]
+        self.new_char.constitution = self.base_stats["con"]
+        self.new_char.charisma = self.base_stats["cha"]
+        self.update_ability_label()
         for race_index in range(len(self.races)):
             if race.meets_requirements(self.races[race_index], self.new_char.strength, self.new_char.intelligence, self.new_char.wisdom, self.new_char.dexterity, self.new_char.constitution, self.new_char.charisma):
                 self.race_buttons[race_index]['state'] = DGG.NORMAL
         for btn in self.alignment_buttons:
             btn['state'] = DGG.NORMAL
+
+    def update_ability_label(self):
+        stats = [
+            ("Strength", self.new_char.strength, self.base_stats["str"]),
+            ("Intelligence", self.new_char.intelligence, self.base_stats["int"]),
+            ("Wisdom", self.new_char.wisdom, self.base_stats["wis"]),
+            ("Dexterity", self.new_char.dexterity, self.base_stats["dex"]),
+            ("Constitution", self.new_char.constitution, self.base_stats["con"]),
+            ("Charisma", self.new_char.charisma, self.base_stats["cha"]),
+        ]
+        lines = ["Roll Ability Scores"]
+        for name, current, base in stats:
+            color_tag = ""
+            if current > base:
+                color_tag = "\1green\1"
+            elif current < base:
+                color_tag = "\1red\1"
+            lines.append(f"{name}: {color_tag}{current}\2")
+        self.ability_label['text'] = "\n".join(lines)
 
     def update_class_buttons(self):
         #Enables or disables class buttons based on requirements and the 3-selection limit
@@ -70,10 +97,20 @@ class Chargen(DirectObject):
                 btn['state'] = DGG.NORMAL
 
     def handle_race_button(self, race_index):
-        if self.new_char.char_race == self.races[race_index]:
+        new_race = self.races[race_index]
+        if self.new_char.char_race == new_race:
             return
         self.new_char.char_race = self.races[race_index]
         print(f"Selected race: {self.new_char.char_race.name}")
+        # Apply modifiers from base stats
+        mods = race.get_stat_mods(new_race)
+        self.new_char.strength = self.base_stats["str"] + mods[0]
+        self.new_char.intelligence = self.base_stats["int"] + mods[1]
+        self.new_char.wisdom = self.base_stats["wis"] + mods[2]
+        self.new_char.dexterity = self.base_stats["dex"] + mods[3]
+        self.new_char.constitution = self.base_stats["con"] + mods[4]
+        self.new_char.charisma = self.base_stats["cha"] + mods[5]
+        self.update_ability_label()
         self.update_class_buttons()
         # Clear existing class selections
         self.selected_classes = []
