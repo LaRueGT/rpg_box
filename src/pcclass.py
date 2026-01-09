@@ -88,3 +88,99 @@ def meets_requirements(test_class, test_race, test_alignment, strength, intellig
     }
     result = all(condition() for condition in class_requirements[test_class])
     return result
+
+def prime_requisite_highlighting(test_class, strength, dexterity, constitution, intelligence, wisdom, charisma) -> float:
+    match test_class:
+        case PCClass.Acrobat:
+            return (
+                0.8 if 3<= dexterity <= 5 else
+                0.9 if 6 <= dexterity <= 8 else
+                1 if 9 <= dexterity <=12 else
+                1.05 if 15 <= dexterity <= 15 else
+                1.1 if 16 <= dexterity <= 18 else 1)
+        case PCClass.Assassin:
+            return (
+                0.8 if 3 <= dexterity <= 5 else
+                0.9 if 6 <= dexterity <= 8 else
+                1 if 9 <= dexterity <= 12 else
+                1.05 if 15 <= dexterity <= 15 else
+                1.1 if 16 <= dexterity <= 18 else 1)
+        case PCClass.Barbarian:
+            if strength >= 16 and constitution >= 16:
+                return 1.1
+            elif strength >= 13 or constitution >= 13:
+                return 1.05
+            else:
+                return 1
+        case PCClass.Bard:
+            return (
+                0.8 if 3 <= charisma <= 5 else
+                0.9 if 6 <= charisma <= 8 else
+                1 if 9 <= charisma <= 12 else
+                1.05 if 15 <= charisma <= 15 else
+                1.1 if 16 <= charisma <= 18 else 1)
+        case PCClass.Cleric:
+            return (
+                0.8 if 3 <= wisdom <= 5 else
+                0.9 if 6 <= wisdom <= 8 else
+                1 if 9 <= wisdom <= 12 else
+                1.05 if 15 <= wisdom <= 15 else
+                1.1 if 16 <= wisdom <= 18 else 1)
+        case PCClass.Druid:
+            return (
+                0.8 if 3 <= wisdom <= 5 else
+                0.9 if 6 <= wisdom <= 8 else
+                1 if 9 <= wisdom <= 12 else
+                1.05 if 15 <= wisdom <= 15 else
+                1.1 if 16 <= wisdom <= 18 else 1)
+        case PCClass.Fighter:
+            return (
+                0.8 if 3 <= strength <= 5 else
+                0.9 if 6 <= strength <= 8 else
+                1 if 9 <= strength <= 12 else
+                1.05 if 15 <= strength <= 15 else
+                1.1 if 16 <= strength <= 18 else 1)
+        case PCClass.Illusionist:
+            return (
+                0.8 if 3 <= intelligence <= 5 else
+                0.9 if 6 <= intelligence <= 8 else
+                1 if 9 <= intelligence <= 12 else
+                1.05 if 15 <= intelligence <= 15 else
+                1.1 if 16 <= intelligence <= 18 else 1)
+        case PCClass.Knight:
+            return (
+                0.8 if 3 <= strength <= 5 else
+                0.9 if 6 <= strength <= 8 else
+                1 if 9 <= strength <= 12 else
+                1.05 if 15 <= strength <= 15 else
+                1.1 if 16 <= strength <= 18 else 1)
+        case PCClass.MagicUser:
+            return (
+                0.8 if 3 <= intelligence <= 5 else
+                0.9 if 6 <= intelligence <= 8 else
+                1 if 9 <= intelligence <= 12 else
+                1.05 if 15 <= intelligence <= 15 else
+                1.1 if 16 <= intelligence <= 18 else 1)
+        case PCClass.Paladin:
+            if strength >= 16 and wisdom >= 16:
+                return 1.1
+            elif strength >= 13 or wisdom >= 13:
+                return 1.05
+            else:
+                return 1
+        case PCClass.Ranger:
+            return (
+                0.8 if 3 <= strength <= 5 else
+                0.9 if 6 <= strength <= 8 else
+                1 if 9 <= strength <= 12 else
+                1.05 if 15 <= strength <= 15 else
+                1.1 if 16 <= strength <= 18 else 1)
+        case PCClass.Thief:
+            return (
+                0.8 if 3 <= dexterity <= 5 else
+                0.9 if 6 <= dexterity <= 8 else
+                1 if 9 <= dexterity <= 12 else
+                1.05 if 15 <= dexterity <= 15 else
+                1.1 if 16 <= dexterity <= 18 else 1)
+        case _:
+            return 1

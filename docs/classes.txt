@@ -54,3 +54,9 @@ Alignment Lawful or Neutral
 Thief
 Requirements None
 PrimeReq Dex
+
+Prime Requisite XP Bonuses (Single PR Classes)
+6–8: -10% XP
+9–12: None
+13–15: +5% XP
+16–18: +10% XP
