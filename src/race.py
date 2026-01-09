@@ -19,7 +19,6 @@ class Race(Enum):
             return "Half-Orc"
         return self.name
 
-
 """
     Requirements listed in lists in this order:
         strength
@@ -29,7 +28,7 @@ class Race(Enum):
         constitution
         charisma
 """
-def get_stat_mods(race) -> [int]:
+def get_stat_mods(race) -> list[int]:
     race_mods = {
         Race.Drow: [0, 0, 0, 1, -1, 0],
         Race.Duegar: [0, 0, 0, 0, 1, -1],

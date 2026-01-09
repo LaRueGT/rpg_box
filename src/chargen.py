@@ -174,6 +174,20 @@ class Chargen(DirectObject):
         self.selected_classes.sort(key=lambda c: str(c))
         print(f"Selected classes: {[str(c) for c in self.selected_classes]}")
         self.new_char.char_classes = self.selected_classes
+        # Update experience factors for all selected classes
+        self.new_char.exp_factor = [
+            pcclass.prime_requisite_factor(
+                cls,
+                self.new_char.strength,
+                self.new_char.dexterity,
+                self.new_char.constitution,
+                self.new_char.intelligence,
+                self.new_char.wisdom,
+                self.new_char.charisma
+            )
+            for cls in self.selected_classes
+        ]
+        print(f"XP Factors: {[str(c) for c in self.new_char.exp_factor]}")
         self.update_class_buttons()
 
     def handle_done_button(self):
