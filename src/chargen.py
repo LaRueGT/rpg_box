@@ -49,10 +49,11 @@ class Chargen(DirectObject):
             btn['state'] = DGG.NORMAL
 
     def update_class_buttons(self):
-        """Enables or disables class buttons based on requirements and the 3-selection limit."""
+        #Enables or disables class buttons based on requirements and the 3-selection limit
         if self.new_char.char_race is None or self.new_char.char_alignment is None:
+            for btn in self.class_buttons:
+                btn['state'] = DGG.DISABLED
             return
-
         num_selected = len(self.selected_classes)
         for btn in self.class_buttons:
             cls = btn['extraArgs'][0]
@@ -61,7 +62,6 @@ class Chargen(DirectObject):
                 self.new_char.strength, self.new_char.intelligence, self.new_char.wisdom,
                 self.new_char.dexterity, self.new_char.constitution, self.new_char.charisma
             )
-
             if not meets:
                 btn['state'] = DGG.DISABLED
             elif num_selected >= 3 and cls not in self.selected_classes:
@@ -70,13 +70,29 @@ class Chargen(DirectObject):
                 btn['state'] = DGG.NORMAL
 
     def handle_race_button(self, race_index):
+        if self.new_char.char_race == self.races[race_index]:
+            return
         self.new_char.char_race = self.races[race_index]
         print(f"Selected race: {self.new_char.char_race.name}")
         self.update_class_buttons()
+        # Clear existing class selections
+        self.selected_classes = []
+        for btn in self.class_buttons:
+            btn['indicatorValue'] = 0
+            btn.setIndicatorValue()
+        self.update_class_buttons()
 
     def handle_alignment_button(self, align_index):
+        if self.new_char.char_alignment == self.alignments[align_index]:
+            return
         self.new_char.char_alignment = self.alignments[align_index]
         print(f"Selected alignemnt: {self.new_char.char_alignment.name}")
+        self.update_class_buttons()
+        # Clear existing class selections
+        self.selected_classes = []
+        for btn in self.class_buttons:
+            btn['indicatorValue'] = 0
+            btn.setIndicatorValue()
         self.update_class_buttons()
 
     def handle_class_button(self, status, pc_class):

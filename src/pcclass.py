@@ -33,14 +33,14 @@ class PCClass(Enum):
         charisma
 """
 
-def meets_requirements(test_class, test_race, alignment, strength, intelligence, wisdom, dexterity, constitution, charisma) -> bool:
+def meets_requirements(test_class, test_race, test_alignment, strength, intelligence, wisdom, dexterity, constitution, charisma) -> bool:
     class_requirements = {
         PCClass.Acrobat: [
             lambda: test_race in [race.Race.Drow, race.Race.Elf, race.Race.HalfElf, race.Race.HalfOrc, race.Race.Human]
         ],
         PCClass.Assassin: [
             lambda: test_race in [race.Race.Drow, race.Race.Duegar, race.Race.Dwarf, race.Race.Elf, race.Race.Gnome, race.Race.HalfElf, race.Race.HalfOrc, race.Race.Human, race.Race.Svirfneblin],
-            lambda: alignment != alignment.Alignment.Lawful
+            lambda: test_alignment != alignment.Alignment.Lawful
         ],
         PCClass.Barbarian: [
             lambda: dexterity >= 9,
@@ -55,7 +55,7 @@ def meets_requirements(test_class, test_race, alignment, strength, intelligence,
             lambda: test_race in [race.Race.Drow, race.Race.Duegar, race.Race.Dwarf, race.Race.Elf, race.Race.Gnome, race.Race.HalfElf, race.Race.HalfOrc, race.Race.Human, race.Race.Svirfneblin]
         ],
         PCClass.Druid: [
-            lambda: alignment == alignment.Alignment.Neutral,
+            lambda: test_alignment == alignment.Alignment.Neutral,
             lambda: test_race in [race.Race.Elf, race.Race.HalfElf, race.Race.Halfling, race.Race.Human]
         ],
         PCClass.Fighter: [
@@ -87,3 +87,4 @@ def meets_requirements(test_class, test_race, alignment, strength, intelligence,
         ],
     }
     result = all(condition() for condition in class_requirements[test_class])
+    return result
