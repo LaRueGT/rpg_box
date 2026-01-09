@@ -9,9 +9,15 @@
 - [x] race select radio list
 - [x] racial stats requirements table
 - [x] gray out interactions with stat requirements not met
-- [ ] alignment select radio list  
-- [ ] class select radio list  
+- [x] alignment select radio list  
+- [x] class select radio list  
 
+character creator racial ability modifiers
+prime requisite highlighting in character creator class list
+party composition screen
+styling for bottom of screen buttons multiple screens
+grid paper theming for cover menu
+character sheet styling for character screens
 console panel text interaction- 
 sqlite database with game tables, starting with character races/classes  
 display region, dice rolls  

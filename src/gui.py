@@ -57,9 +57,10 @@ class Gui:
 
     def chargen_frame(self) -> tuple[NodePath, NodePath, NodePath, NodePath, NodePath]:
         self.chargen_screen_frame = DirectFrame(parent=self.base_frame,
-                                             frameColor=(.25, .25, .25, 1),
+                                             frameColor=(.9, .9, .9, 1),
                                              frameSize=(-1.715, 1.715, -.88, .94),
-                                             pos=(0, 0, 0))
+                                             pos=(0, 0, 0),
+                                             frameTexture='../assets/gridpaper_tex.png')
         self.abilities_label = DirectLabel(parent=self.chargen_screen_frame,
                                            text_font=self.label_font,
                                            text="Roll Ability Scores\nStrength:\t\tROLL READY\nIntelligence:\t\tROLL READY\nWisdom:\t\tROLL READY\nDexterity:\t\tROLL READY\nConstitution:\tROLL READY\nCharisma:\t\tROLL READY",

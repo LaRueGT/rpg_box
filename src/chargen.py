@@ -183,6 +183,7 @@ class Chargen(DirectObject):
                                     text=str(class_option),
                                     scale=0.07,
                                     pos=(0.1, 0, -0.05 - (class_index * 0.1)),
+                                    frameSize=(0, 10, -0.5, 1),
                                     text_pos=(1.2, 0),
                                     text_font=self.label_font,
                                     text_align=TextNode.ALeft,
