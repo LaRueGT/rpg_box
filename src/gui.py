@@ -133,6 +133,9 @@ class Gui:
                                            parent=self.base_frame,
                                            frameColor=(0, 0, 0, 0),
                                            frameSize=(-.25, .25, -.25, .25),
+                                           text_font=self.label_font,
+                                           text_scale=0.07,
+                                           text_align=TextNode.ALeft,
                                            pos=(-1.715, 0, -0.91))
         return self.abilities_label, self.racelist_frame, self.alignment_frame, self.gender_frame, self.classlist_frame, self.button_frame
 

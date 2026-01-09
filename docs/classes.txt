@@ -1,15 +1,17 @@
 Acrobat
 Requirements none
 PrimeReq Dex
+can't lower Str
 
 Assassin
 Requirements none
 PrimeReq Dex
 Alignment Not Lawful
+can't lower Str
 
 Barbarian
 Requirements Dex 9
-PrimeReq Con and STR
+PrimeReq Con and Str
 
 Bard
 Requirements Dex 9 Int 9
@@ -54,6 +56,7 @@ Alignment Lawful or Neutral
 Thief
 Requirements None
 PrimeReq Dex
+can't lower Str
 
 Prime Requisite XP Bonuses (Single PR Classes)
 6–8: -10% XP

@@ -1,15 +1,16 @@
-import alignment
-from direct.showbase.DirectObject import DirectObject
-from direct.gui.DirectGui import DirectButton, DGG
-from panda3d.core import TextNode, NodePath
-from direct.gui.DirectRadioButton import DirectRadioButton
 from direct.gui.DirectCheckButton import DirectCheckButton
+from direct.gui.DirectGui import DGG, DirectButton
+from direct.gui.DirectRadioButton import DirectRadioButton
+from direct.showbase.DirectObject import DirectObject
 from direct.showbase.MessengerGlobal import messenger
+from panda3d.core import NodePath, TextNode
 
-import diceroll
+import alignment
 import character
-import race
+import diceroll
 import pcclass
+import race
+
 
 class Chargen(DirectObject):
     def __init__(self, base, ability_label, racelist_frame, alignment_frame, gender_frame, classlist_frame, button_frame):
@@ -202,13 +203,29 @@ class Chargen(DirectObject):
         self.roll_button = DirectButton(
             parent=self.button_frame,
             text="Roll Stats",
-            scale=.05,
+            scale=.07,
             command=self.handle_roll_button,
+            text_font=self.label_font,
+            text_align=TextNode.ALeft,
             text_fg=(0, 0, 0, 1),
             text3_fg=(0.6, 0.6, 0.6, 1)  # Color for state 3 (Disabled)
         )
-        done_button = DirectButton(parent=self.button_frame, text="Done", scale=.05, command=self.handle_done_button)
-        exit_button = DirectButton(parent=self.button_frame, text="Exit", scale=.05, command=self.handle_exit_button)
+        done_button = DirectButton(
+            parent=self.button_frame,
+            text="Done",
+            scale=0.07,
+            command=self.handle_done_button,
+            text_font=self.label_font,
+            text_align=TextNode.ALeft
+        )
+        exit_button = DirectButton(
+            parent=self.button_frame,
+            text="Exit",
+            scale=0.07,
+            command=self.handle_exit_button,
+            text_font=self.label_font,
+            text_align=TextNode.ALeft
+        )
         self.button_frame.addItem(self.roll_button)
         self.button_frame.addItem(done_button)
         self.button_frame.addItem(exit_button)
