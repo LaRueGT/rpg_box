@@ -12,12 +12,13 @@ import race
 import pcclass
 
 class Chargen(DirectObject):
-    def __init__(self, base, ability_label, racelist_frame, alignment_frame, classlist_frame, button_frame):
+    def __init__(self, base, ability_label, racelist_frame, alignment_frame, gender_frame, classlist_frame, button_frame):
         super().__init__()
         self.base = base
         self.ability_label = ability_label
         self.race_list_frame = racelist_frame
         self.alignment_frame = alignment_frame
+        self.gender_frame = gender_frame
         self.class_list_frame = classlist_frame
         self.button_frame = button_frame
         self.roll_button = NodePath()
@@ -28,6 +29,8 @@ class Chargen(DirectObject):
         self.alignments = []
         self.alignment_buttons = []
         self.selected_alignment = [None]
+        self.gender_buttons = []
+        self.selected_gender = [None]
         self.class_buttons = []
         self.selected_classes = []
         self.new_char = character.Character()
@@ -55,6 +58,8 @@ class Chargen(DirectObject):
                 self.race_buttons[race_index]['state'] = DGG.NORMAL
         for btn in self.alignment_buttons:
             btn['state'] = DGG.NORMAL
+        for btn in self.gender_buttons:
+            btn['state'] = DGG.NORMAL
 
     def update_ability_label(self):
         stats = [
@@ -68,11 +73,14 @@ class Chargen(DirectObject):
         lines = ["Roll Ability Scores"]
         for name, current, base in stats:
             color_tag = ""
+            end_tag = ""
             if current > base:
                 color_tag = "\1green\1"
+                end_tag = "\2"
             elif current < base:
                 color_tag = "\1red\1"
-            lines.append(f"{name}: {color_tag}{current}\2")
+                end_tag = "\2"
+            lines.append(f"{name}: {color_tag}{current}{end_tag}")
         self.ability_label['text'] = "\n".join(lines)
 
     def update_class_buttons(self):
@@ -89,12 +97,32 @@ class Chargen(DirectObject):
                 self.new_char.strength, self.new_char.intelligence, self.new_char.wisdom,
                 self.new_char.dexterity, self.new_char.constitution, self.new_char.charisma
             )
+            # Calculate prime requisite factor and determine color
+            factor = pcclass.prime_requisite_factor(
+                cls, self.new_char.strength, self.new_char.dexterity, self.new_char.constitution,
+                self.new_char.intelligence, self.new_char.wisdom, self.new_char.charisma
+            )
+            # color mapping: dark red, red, black, green, blue
+            if factor <= 0.8:
+                color = (0.5, 0, 0, 1)
+            elif factor <= 0.9:
+                color = (1, 0, 0, 1)
+            elif factor >= 1.1:
+                color = (0, 0, 1, 1)
+            elif factor >= 1.05:
+                color = (0, 0.5, 0, 1)
+            else:
+                color = (0, 0, 0, 1)
+            btn['text_fg'] = color
             if not meets:
                 btn['state'] = DGG.DISABLED
+                btn['text_fg'] = (0.6, 0.6, 0.6, 1)  # Force gray if requirements not met
             elif num_selected >= 3 and cls not in self.selected_classes:
                 btn['state'] = DGG.DISABLED
+                btn['text_fg'] = (0.6, 0.6, 0.6, 1)  # Force gray if limit reached
             else:
                 btn['state'] = DGG.NORMAL
+                btn['text_fg'] = color
 
     def handle_race_button(self, race_index):
         new_race = self.races[race_index]
@@ -132,6 +160,10 @@ class Chargen(DirectObject):
             btn.setIndicatorValue()
         self.update_class_buttons()
 
+    def handle_gender_button(self, gender):
+        self.new_char.gender = gender
+        print(f"Selected gender: {gender}")
+
     def handle_class_button(self, status, pc_class):
         if status:
             if pc_class not in self.selected_classes:
@@ -139,8 +171,9 @@ class Chargen(DirectObject):
         else:
             if pc_class in self.selected_classes:
                 self.selected_classes.remove(pc_class)
-
+        self.selected_classes.sort(key=lambda c: str(c))
         print(f"Selected classes: {[str(c) for c in self.selected_classes]}")
+        self.new_char.char_classes = self.selected_classes
         self.update_class_buttons()
 
     def handle_done_button(self):
@@ -212,6 +245,29 @@ class Chargen(DirectObject):
                                     text3_fg=(0.6, 0.6, 0.6, 1))
             btn.setOthers(self.alignment_buttons)
             self.alignment_buttons.append(btn)
+
+    def display_gender_picker(self):
+        genders = ["Male", "Female"]
+        self.gender_buttons = []
+        for g_index, g_name in enumerate(genders):
+            btn = DirectRadioButton(parent=self.gender_frame,
+                                    text=g_name,
+                                    scale=0.07,
+                                    pos=(0.1, 0, -0.05 - (g_index * 0.1)),
+                                    frameSize=(0, 5, -0.5, 1),
+                                    text_pos=(1.2, 0),
+                                    variable=self.selected_gender,
+                                    value=[g_name],
+                                    others=self.gender_buttons,
+                                    text_font=self.label_font,
+                                    text_align=TextNode.ALeft,
+                                    boxPlacement='left',
+                                    state=DGG.DISABLED,
+                                    command=self.handle_gender_button,
+                                    extraArgs=[g_name],
+                                    text3_fg=(0.6, 0.6, 0.6, 1))
+            btn.setOthers(self.gender_buttons)
+            self.gender_buttons.append(btn)
 
     def display_class_picker(self):
         self.class_buttons = []

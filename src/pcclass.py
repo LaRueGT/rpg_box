@@ -89,7 +89,7 @@ def meets_requirements(test_class, test_race, test_alignment, strength, intellig
     result = all(condition() for condition in class_requirements[test_class])
     return result
 
-def prime_requisite_highlighting(test_class, strength, dexterity, constitution, intelligence, wisdom, charisma) -> float:
+def prime_requisite_factor(test_class, strength, dexterity, constitution, intelligence, wisdom, charisma) -> float:
     match test_class:
         case PCClass.Acrobat:
             return (

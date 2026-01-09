@@ -101,11 +101,12 @@ class MasterFSM(FSM, DirectObject):
 
     def enterChargen(self):
         self.accept('chargen_finished', self.handle_chargen_done)
-        ability_label, race_list, alignment_list, class_list, button_row = self.ui.chargen_frame()
-        chargen_screen = chargen.Chargen(self.base_window, ability_label,race_list, alignment_list, class_list,button_row)
+        ability_label, race_list, alignment_list, gender_list, class_list, button_row = self.ui.chargen_frame()
+        chargen_screen = chargen.Chargen(self.base_window, ability_label,race_list, alignment_list, gender_list,class_list,button_row)
         chargen_screen.display_chargen_buttons()
         chargen_screen.display_race_picker()
         chargen_screen.display_alignment_picker()
+        chargen_screen.display_gender_picker()
         chargen_screen.display_class_picker()
 
     def exitChargen(self):

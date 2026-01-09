@@ -13,7 +13,7 @@
 - [x] class select radio list  
 - [x] character creator racial ability modifiers  
 - [ ] separate label for stat numbers to align columns
-prime requisite highlighting in character creator class list   
+- [x] prime requisite highlighting in character creator class list   
 party composition screen  
 styling for bottom of screen buttons multiple screens   
 grid paper theming for cover menu  
