@@ -191,13 +191,13 @@ class Chargen(DirectObject):
         print(f"XP Factors: {[str(c) for c in self.new_char.exp_factor]}")
         self.update_class_buttons()
 
-    def handle_done_button(self):
-        print("done button pressed")
-        messenger.send("chargen_finished")
+    def handle_next_button(self):
+        print("Next button pressed")
+        messenger.send("chargen_continue")
 
-    def handle_exit_button(self):
-        print("exit button pressed")
-        messenger.send("chargen_finished")
+    def handle_cancel_button(self):
+        print("cancel button pressed")
+        messenger.send("chargen_cancel")
 
     def display_chargen_buttons(self):
         self.roll_button = DirectButton(
@@ -210,25 +210,25 @@ class Chargen(DirectObject):
             text_fg=(0, 0, 0, 1),
             text3_fg=(0.6, 0.6, 0.6, 1)  # Color for state 3 (Disabled)
         )
-        done_button = DirectButton(
+        next_button = DirectButton(
             parent=self.button_frame,
-            text="Done",
+            text="Next",
             scale=0.07,
-            command=self.handle_done_button,
+            command=self.handle_next_button,
             text_font=self.label_font,
             text_align=TextNode.ALeft
         )
-        exit_button = DirectButton(
+        cancel_button = DirectButton(
             parent=self.button_frame,
-            text="Exit",
+            text="Cancel",
             scale=0.07,
-            command=self.handle_exit_button,
+            command=self.handle_cancel_button,
             text_font=self.label_font,
             text_align=TextNode.ALeft
         )
         self.button_frame.addItem(self.roll_button)
-        self.button_frame.addItem(done_button)
-        self.button_frame.addItem(exit_button)
+        self.button_frame.addItem(next_button)
+        self.button_frame.addItem(cancel_button)
 
     def display_race_picker(self):
         self.race_buttons = []
