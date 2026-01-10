@@ -139,6 +139,63 @@ class Gui:
                                            pos=(-1.715, 0, -0.91))
         return self.abilities_label, self.racelist_frame, self.alignment_frame, self.gender_frame, self.classlist_frame, self.button_frame
 
+    def chargenp2_frame(self) -> tuple[NodePath, NodePath]:
+        self.chargen_screen_frame = DirectFrame(parent=self.base_frame,
+                                                frameColor=(1, 1, 1, 1),
+                                                frameSize=(-1.715, 1.715, -.88, .94),
+                                                pos=(0, 0, 0),
+                                                frameTexture='../assets/gridpaper_tex.png')
+        self.chargen_screen_frame.guiItem.get_state_def(0).set_tex_scale(TextureStage.getDefault(), 1, 0.53)
+
+        # Mirroring alignment_frame position and size
+        self.ability_adjustment_frame = DirectFrame(parent=self.chargen_screen_frame,
+                                                    frameColor=(.25, .25, .25, 0),
+                                                    frameSize=(0, 0.8, -0.6, .0),
+                                                    pos=(-0.969, 0, 0.15))
+
+        self.adj_heading = DirectLabel(parent=self.ability_adjustment_frame,
+                                       text="Adjust Ability Scores",
+                                       text_font=self.label_font,
+                                       text_scale=0.07,
+                                       text_align=TextNode.ALeft,
+                                       pos=(0, 0, 0.05),
+                                       frameColor=(0, 0, 0, 0))
+
+        # We'll use a Sizer to keep the SpinBoxes and Labels aligned
+        self.adj_list_sizer = DirectBoxSizer(orientation=DGG.VERTICAL,
+                                             parent=self.ability_adjustment_frame,
+                                             pos=(0, 0, -0.1))
+
+        self.spinboxes = {}
+        abilities = ["Strength", "Intelligence", "Wisdom"]
+
+        for abl in abilities:
+            row = DirectBoxSizer(orientation=DGG.HORIZONTAL)
+            label = DirectLabelExt(text=f"{abl}: ",
+                                   text_font=self.label_font,
+                                   text_scale=0.06,
+                                   text_align=TextNode.ALeft,
+                                   frameColor=(0, 0, 0, 0))
+            # SpinBox from DirectGuiExtension
+            sb = DirectSpinBox(scale=0.06,
+                               range=(3, 18),
+                               value=10,
+                               text_font=self.label_font)
+
+            row.addItem(label)
+            row.addItem(sb)
+            self.adj_list_sizer.addItem(row)
+            self.spinboxes[abl] = sb
+
+        self.button_frame = DirectBoxSizer(orientation=DGG.HORIZONTAL,
+                                           parent=self.base_frame,
+                                           frameColor=(0, 0, 0, 0),
+                                           frameSize=(-.25, .25, -.25, .25),
+                                           pos=(-1.715, 0, -0.91))
+
+        return self.ability_adjustment_frame, self.button_frame
+
+
     def main_frame(self) -> tuple[NodePath, NodePath]:
         self.text_frame = DirectFrame(parent=self.base_frame,
                                       frameColor=(0, 1, 1, 1),

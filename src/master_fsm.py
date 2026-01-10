@@ -113,3 +113,11 @@ class MasterFSM(FSM, DirectObject):
         self.ignore('escape')
         self.ignore('chargen_finished')
         self.ui.clear_gui()
+
+    def enterChargenp2(self):
+        self.accept('chargenp2_finished', self.handle_chargen_done)
+
+    def exitChargenp2(self):
+        self.ignore('escape')
+        self.ignore('chargenp2_finished')
+        self.ui.clear_gui()
