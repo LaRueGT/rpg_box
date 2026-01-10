@@ -7,7 +7,7 @@ from direct.gui.DirectRadioButton import DirectRadioButton
 from direct.gui.DirectCheckButton import DirectCheckButton
 
 from DirectGuiExtension.DirectBoxSizer import DirectBoxSizer
-from DirectGuiExtension.DirectSpinBox import DirectSpinBox
+
 from DirectGuiExtension.DirectGridSizer import DirectGridSizer
 
 from panda3d.core import NodePath, TextNode

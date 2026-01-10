@@ -4,6 +4,7 @@ from direct.gui.DirectGui import DirectLabel
 from direct.gui import DirectGuiGlobals as DGG
 from DirectGuiExtension.DirectBoxSizer import DirectBoxSizer
 from DirectGuiExtension.DirectGridSizer import DirectGridSizer
+from DirectGuiExtension.DirectSpinBox import DirectSpinBox
 from panda3d.core import NodePath, TextNode
 from panda3d.core import TextProperties, TextPropertiesManager
 from panda3d.core import TextureStage
@@ -146,7 +147,6 @@ class Gui:
                                                 pos=(0, 0, 0),
                                                 frameTexture='../assets/gridpaper_tex.png')
         self.chargen_screen_frame.guiItem.get_state_def(0).set_tex_scale(TextureStage.getDefault(), 1, 0.53)
-
         # Mirroring alignment_frame position and size
         self.ability_adjustment_frame = DirectFrame(parent=self.chargen_screen_frame,
                                                     frameColor=(.25, .25, .25, 0),
@@ -160,18 +160,15 @@ class Gui:
                                        text_align=TextNode.ALeft,
                                        pos=(0, 0, 0.05),
                                        frameColor=(0, 0, 0, 0))
-
         # We'll use a Sizer to keep the SpinBoxes and Labels aligned
         self.adj_list_sizer = DirectBoxSizer(orientation=DGG.VERTICAL,
                                              parent=self.ability_adjustment_frame,
                                              pos=(0, 0, -0.1))
-
         self.spinboxes = {}
         abilities = ["Strength", "Intelligence", "Wisdom"]
-
         for abl in abilities:
             row = DirectBoxSizer(orientation=DGG.HORIZONTAL)
-            label = DirectLabelExt(text=f"{abl}: ",
+            label = DirectLabel(text=f"{abl}: ",
                                    text_font=self.label_font,
                                    text_scale=0.06,
                                    text_align=TextNode.ALeft,
@@ -194,7 +191,6 @@ class Gui:
                                            pos=(-1.715, 0, -0.91))
 
         return self.ability_adjustment_frame, self.button_frame
-
 
     def main_frame(self) -> tuple[NodePath, NodePath]:
         self.text_frame = DirectFrame(parent=self.base_frame,
