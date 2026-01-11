@@ -37,6 +37,12 @@ class MasterFSM(FSM, DirectObject):
     def cover_demo(self):
         self.request('Demo')
 
+    def handle_chargen_continue(self):
+        self.request('Chargenp2')
+
+    def handle_chargen_cancel(self):
+        self.request('Main')
+
     def handle_chargen_done(self):
         self.request('Main')
 
@@ -100,7 +106,7 @@ class MasterFSM(FSM, DirectObject):
         self.ui.clear_gui()
 
     def enterChargen(self):
-        self.accept('chargen_finished', self.handle_chargen_done)
+        self.accept('chargen_continue', self.handle_chargen_continue)
         ability_label, race_list, alignment_list, gender_list, class_list, button_row = self.ui.chargen_frame()
         chargen_screen = chargen.Chargen(self.base_window, ability_label,race_list, alignment_list, gender_list,class_list,button_row)
         chargen_screen.display_chargen_buttons()

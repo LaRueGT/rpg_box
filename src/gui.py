@@ -44,6 +44,8 @@ class Gui:
         self.alignment_frame = NodePath()
         self.gender_heading = NodePath()
         self.gender_frame = NodePath()
+        self.ability_adjustment_frame = NodePath()
+        self.adjust_heading = NodePath()
         self.classlist_frame = NodePath()
 
     def clear_gui(self):
@@ -151,7 +153,7 @@ class Gui:
                                                     frameColor=(.25, .25, .25, 0),
                                                     frameSize=(0, 0.8, -0.6, .0),
                                                     pos=(-0.969, 0, 0.15))
-        self.adj_heading = DirectLabel(parent=self.ability_adjustment_frame,
+        self.adjust_heading = DirectLabel(parent=self.ability_adjustment_frame,
                                        text="Adjust Ability Scores",
                                        text_font=self.label_font,
                                        text_scale=0.07,

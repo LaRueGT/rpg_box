@@ -14,6 +14,7 @@
 - [x] character creator racial ability modifiers  
 - [ ] separate label for stat numbers to align columns
 - [x] prime requisite highlighting in character creator class list   
+- [ ] character creator ability adjustment buttons
 party composition screen  
 styling for bottom of screen buttons multiple screens   
 grid paper theming for cover menu  
