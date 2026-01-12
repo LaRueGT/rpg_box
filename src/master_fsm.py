@@ -6,6 +6,7 @@ from direct.fsm.FSM import FSM
 from direct.showbase.DirectObject import DirectObject
 
 import chargen
+import chargen_p2
 import covermenu
 
 #My Stuff
@@ -38,7 +39,7 @@ class MasterFSM(FSM, DirectObject):
         self.request('Demo')
 
     def handle_chargen_continue(self):
-        self.request('Chargenp2')
+        self.request('ChargenP2')
 
     def handle_chargen_cancel(self):
         self.request('Main')
@@ -120,10 +121,14 @@ class MasterFSM(FSM, DirectObject):
         self.ignore('chargen_finished')
         self.ui.clear_gui()
 
-    def enterChargenp2(self):
+    def enterChargenP2(self):
         self.accept('chargenp2_finished', self.handle_chargen_done)
+        ability_frame, button_frame = self.ui.chargenp2_frame()
+        chargen_pg2 = chargen_p2.Chargen_p2(self.base_window, ability_frame, button_frame)
+        chargen_pg2.display_adjustment_boxes()
+        chargen_pg2.display_chargen_buttons()
 
-    def exitChargenp2(self):
+    def exitChargenP2(self):
         self.ignore('escape')
         self.ignore('chargenp2_finished')
         self.ui.clear_gui()
