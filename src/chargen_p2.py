@@ -42,7 +42,7 @@ class Chargen_p2(DirectObject):
         messenger.send("chargen_cancel")
 
     def display_adjustment_boxes(self):
-        z_offset = -0.1
+        z_offset = -0.15
         for i, (stat, value) in enumerate(self.base_stats.items()):
             # Create a label for the stat name (e.g., "STR")
             DirectLabel(
@@ -51,14 +51,14 @@ class Chargen_p2(DirectObject):
                 text_font=self.label_font,
                 text_scale=0.06,
                 text_align=TextNode.ALeft,
-                pos=(0.05, 0, z_offset - (i * 0.12)),
+                pos=(0.0, 0, z_offset - (i * 0.12)),
                 frameColor=(0, 0, 0, 0)
             )
             # Create the SpinBox using DirectGuiExtension
             # Note: value is the starting point, items sets the range
             stat_spin = DirectSpinBox(
                 parent=self.ability_frame,
-                pos=(0.4, 0, z_offset - (i * 0.12)),
+                pos=(0.35, 0, z_offset - (i * 0.12)),
                 scale=0.05,
                 value=value,
                 minValue=9,

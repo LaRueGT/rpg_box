@@ -152,7 +152,7 @@ class Gui:
         self.ability_adjustment_frame = DirectFrame(parent=self.chargen_screen_frame,
                                                     frameColor=(.25, .25, .25, 0),
                                                     frameSize=(0, 0.8, -0.6, .0),
-                                                    pos=(-0.969, 0, 0.15))
+                                                    pos=(-1.665, 0, 0.85))
         self.adjust_heading = DirectLabel(parent=self.ability_adjustment_frame,
                                        text="Adjust Ability Scores",
                                        text_font=self.label_font,
