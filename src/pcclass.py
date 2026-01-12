@@ -184,3 +184,34 @@ def prime_requisite_factor(test_class, strength, dexterity, constitution, intell
                 1.1 if 16 <= dexterity <= 18 else 1)
         case _:
             return 1
+
+def is_prime_requisite(test_class, stat) -> bool:
+    match test_class:
+        case PCClass.Acrobat:
+            return stat in 'dexterity'
+        case PCClass.Assassin:
+            return stat in 'dexterity'
+        case PCClass.Barbarian:
+            return stat in 'strength' or stat in 'constitution'
+        case PCClass.Bard:
+            return stat in 'charisma'
+        case PCClass.Cleric:
+            return stat in 'wisdom'
+        case PCClass.Druid:
+            return stat in 'wisdom'
+        case PCClass.Fighter:
+            return stat in 'strength'
+        case PCClass.Illusionist:
+            return stat in 'intelligence'
+        case PCClass.Knight:
+            return stat in 'strength'
+        case PCClass.MagicUser:
+            return stat in 'intelligence'
+        case PCClass.Paladin:
+            return stat in 'strength' or stat in 'wisdom'
+        case PCClass.Ranger:
+            return stat in 'strength'
+        case PCClass.Thief:
+            return stat in 'dexterity'
+        case _:
+            return False
