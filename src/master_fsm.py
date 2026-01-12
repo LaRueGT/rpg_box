@@ -122,11 +122,12 @@ class MasterFSM(FSM, DirectObject):
         self.ui.clear_gui()
 
     def enterChargenP2(self):
+        character_data = self.chargen.new_char
         self.accept('chargenp2_finished', self.handle_chargen_done)
         ability_frame, button_frame = self.ui.chargenp2_frame()
-        chargen_pg2 = chargen_p2.Chargen_p2(self.base_window, ability_frame, button_frame)
-        chargen_pg2.display_adjustment_boxes()
-        chargen_pg2.display_chargen_buttons()
+        self.chargen_pg2 = chargen_p2.Chargen_p2(self.base_window, ability_frame, button_frame, character_data)
+        self.chargen_pg2.display_adjustment_boxes()
+        self.chargen_pg2.display_chargen_buttons()
 
     def exitChargenP2(self):
         self.ignore('escape')

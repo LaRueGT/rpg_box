@@ -21,15 +21,23 @@ import pcclass
 import race
 
 class Chargen_p2(DirectObject):
-    def __init__(self, base, ability_frame, button_frame):
+    def __init__(self, base, ability_frame, button_frame, character_obj):
         super().__init__()
         self.base = base
         self.ability_frame = ability_frame
         self.button_frame = button_frame
         self.label_font = self.base.loader.loadFont('../fonts/EBGaramond-VariableFont_wght.ttf')
         self.done_button = NodePath()
-        self.new_char = character.Character()
-        self.base_stats = {"str": 0, "int": 0, "wis": 0, "dex": 0, "con": 0, "cha": 0}
+        self.new_char = character_obj
+        self.base_stats = {
+            "str": self.new_char.strength,
+            "int": self.new_char.intelligence,
+            "wis": self.new_char.wisdom,
+            "dex": self.new_char.dexterity,
+            "con": self.new_char.constitution,
+            "cha": self.new_char.charisma
+        }
+        self.stat_spinboxes = {}
         self.adjustments = {"str": 0, "int": 0, "wis": 0, "dex": 0, "con": 0, "cha": 0}
         self.adjustment_points = 0
 
@@ -43,11 +51,14 @@ class Chargen_p2(DirectObject):
 
     def display_adjustment_boxes(self):
         z_offset = -0.15
+        # Define which stats can be increased based on class (Prime Requisites)
+        class_names = [str(c) for c in self.new_char.char_classes]
+        # todo prime req logic
         for i, (stat, value) in enumerate(self.base_stats.items()):
             # Create a label for the stat name (e.g., "STR")
             DirectLabel(
                 parent=self.ability_frame,
-                text=stat.upper(),
+                text=stat,
                 text_font=self.label_font,
                 text_scale=0.06,
                 text_align=TextNode.ALeft,
@@ -66,6 +77,17 @@ class Chargen_p2(DirectObject):
                 command=self.update_stat,
                 extraArgs=[stat]
             )
+            self.stat_spinboxes[stat] = stat_spin
+            # Disable the down arrow for DEX, CON, and CHA
+            if stat.lower() in ["dex", "con", "cha"]:
+                stat_spin.decButton['state'] = DGG.DISABLED
+            # RULE: Class-based restriction on STR (e.g., Fighters can't lower STR)
+            if stat == "str" and "Fighter" in class_names:
+                stat_spin.decButton['state'] = DGG.DISABLED
+            # RULE: Only allow increasing Prime Requisites
+            is_prime = any(pcclass.is_prime_requisite(c, stat) for c in self.new_char.char_classes)
+            if not is_prime:
+                stat_spin.incButton['state'] = DGG.DISABLED
 
     def update_stat(self, stat_name):
         # This will be called whenever a spinbox changes
@@ -76,8 +98,18 @@ class Chargen_p2(DirectObject):
         self.done_button = DirectButton(
             parent=self.button_frame,
             text="Next",
-            text_font=self.label_font,
-            text_scale=0.1,
+            scale=0.07,
             command=self.handle_next_button,
-            frameColor=(0, 0, 0, 0)
+            text_font=self.label_font,
+            text_align=TextNode.ALeft
         )
+        cancel_button = DirectButton(
+            parent=self.button_frame,
+            text="Cancel",
+            scale=0.07,
+            command=self.handle_cancel_button,
+            text_font=self.label_font,
+            text_align=TextNode.ALeft
+        )
+        self.button_frame.addItem(self.done_button)
+        self.button_frame.addItem(cancel_button)
