@@ -23,6 +23,7 @@ class MasterFSM(FSM, DirectObject):
         FSM.__init__(self, 'MasterFSM')
         self.base_window = base
         self.ui = gui.Gui(self.base_window)
+        self.chargen_screen = None
         self.request('Intro')
 
     #state transition event handlers
@@ -109,12 +110,12 @@ class MasterFSM(FSM, DirectObject):
     def enterChargen(self):
         self.accept('chargen_continue', self.handle_chargen_continue)
         ability_label, race_list, alignment_list, gender_list, class_list, button_row = self.ui.chargen_frame()
-        chargen_screen = chargen.Chargen(self.base_window, ability_label,race_list, alignment_list, gender_list,class_list,button_row)
-        chargen_screen.display_chargen_buttons()
-        chargen_screen.display_race_picker()
-        chargen_screen.display_alignment_picker()
-        chargen_screen.display_gender_picker()
-        chargen_screen.display_class_picker()
+        self.chargen_screen = chargen.Chargen(self.base_window, ability_label,race_list, alignment_list, gender_list,class_list,button_row)
+        self.chargen_screen.display_chargen_buttons()
+        self.chargen_screen.display_race_picker()
+        self.chargen_screen.display_alignment_picker()
+        self.chargen_screen.display_gender_picker()
+        self.chargen_screen.display_class_picker()
 
     def exitChargen(self):
         self.ignore('escape')
@@ -122,12 +123,12 @@ class MasterFSM(FSM, DirectObject):
         self.ui.clear_gui()
 
     def enterChargenP2(self):
-        character_data = self.chargen.new_char
+        character_data = self.chargen_screen.new_char
         self.accept('chargenp2_finished', self.handle_chargen_done)
         ability_frame, button_frame = self.ui.chargenp2_frame()
-        self.chargen_pg2 = chargen_p2.Chargen_p2(self.base_window, ability_frame, button_frame, character_data)
-        self.chargen_pg2.display_adjustment_boxes()
-        self.chargen_pg2.display_chargen_buttons()
+        chargen_pg2 = chargen_p2.Chargen_p2(self.base_window, ability_frame, button_frame, character_data)
+        chargen_pg2.display_adjustment_boxes()
+        chargen_pg2.display_chargen_buttons()
 
     def exitChargenP2(self):
         self.ignore('escape')
