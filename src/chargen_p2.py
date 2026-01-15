@@ -30,15 +30,15 @@ class Chargen_p2(DirectObject):
         self.done_button = NodePath()
         self.new_char = character_obj
         self.base_stats = {
-            "str": self.new_char.strength,
-            "int": self.new_char.intelligence,
-            "wis": self.new_char.wisdom,
-            "dex": self.new_char.dexterity,
-            "con": self.new_char.constitution,
-            "cha": self.new_char.charisma
+            "Strength": self.new_char.strength,
+            "Intelligence": self.new_char.intelligence,
+            "Wisdom": self.new_char.wisdom,
+            "Dexterity": self.new_char.dexterity,
+            "Constitution": self.new_char.constitution,
+            "Charisma": self.new_char.charisma
         }
         self.stat_spinboxes = {}
-        self.adjustments = {"str": 0, "int": 0, "wis": 0, "dex": 0, "con": 0, "cha": 0}
+        self.adjustments = {"Strength": 0, "Intelligence": 0, "Wisdom": 0, "Dexterity": 0, "Constitution": 0, "Charisma": 0}
         self.adjustment_points = 0
 
     def handle_next_button(self):
@@ -51,7 +51,16 @@ class Chargen_p2(DirectObject):
 
     def display_adjustment_boxes(self):
         z_offset = -0.15
-        # Define which stats can be increased based on class (Prime Requisites)
+        DirectLabel(
+            parent=self.ability_frame,
+            text="Adjust Ability Scores",
+            text_font=self.label_font,
+            text_scale=0.07,
+            text_align=TextNode.ALeft,
+            pos=(0.0, 0, 0),
+            frameColor=(0, 0, 0, 0)
+        )
+        # Define which stats can be increased based on class Prime Requisites
         class_names = [str(c) for c in self.new_char.char_classes]
         # todo prime req logic
         for i, (stat, value) in enumerate(self.base_stats.items()):
@@ -66,10 +75,9 @@ class Chargen_p2(DirectObject):
                 frameColor=(0, 0, 0, 0)
             )
             # Create the SpinBox using DirectGuiExtension
-            # Note: value is the starting point, items sets the range
             stat_spin = DirectSpinBox(
                 parent=self.ability_frame,
-                pos=(0.35, 0, z_offset - (i * 0.12)),
+                pos=(0.45, 0, z_offset - (i * 0.12)),
                 scale=0.05,
                 value=value,
                 minValue=9,
@@ -77,15 +85,17 @@ class Chargen_p2(DirectObject):
                 command=self.update_stat,
                 extraArgs=[stat]
             )
+            # Setting color for state 3 (Disabled)
+            stat_spin.incButton['text3_fg'] = (0.6, 0.6, 0.6, 1)
+            stat_spin.decButton['text3_fg'] = (0.6, 0.6, 0.6, 1)
             self.stat_spinboxes[stat] = stat_spin
-            # Disable the down arrow for DEX, CON, and CHA
-            if stat.lower() in ["dex", "con", "cha"]:
+            if stat.lower() in ["dexterity", "constitution", "charisma"]:
                 stat_spin.decButton['state'] = DGG.DISABLED
-            # RULE: Class-based restriction on STR (e.g., Fighters can't lower STR)
-            if stat == "str" and "Fighter" in class_names:
+            # Class-based restriction on adjustments (e.g Thieves can lower Strength)
+            if not pcclass.can_reduce(self.new_char.char_classes, stat.lower()):
                 stat_spin.decButton['state'] = DGG.DISABLED
-            # RULE: Only allow increasing Prime Requisites
-            is_prime = any(pcclass.is_prime_requisite(c, stat) for c in self.new_char.char_classes)
+            # Only allow increasing Prime Requisites
+            is_prime = any(pcclass.is_prime_requisite(c, stat.lower()) for c in self.new_char.char_classes)
             if not is_prime:
                 stat_spin.incButton['state'] = DGG.DISABLED
 

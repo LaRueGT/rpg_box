@@ -153,13 +153,6 @@ class Gui:
                                                     frameColor=(.25, .25, .25, 0),
                                                     frameSize=(0, 0.8, -0.6, .0),
                                                     pos=(-1.665, 0, 0.85))
-        self.adjust_heading = DirectLabel(parent=self.ability_adjustment_frame,
-                                       text="Adjust Ability Scores",
-                                       text_font=self.label_font,
-                                       text_scale=0.07,
-                                       text_align=TextNode.ALeft,
-                                       pos=(0, 0, 0.05),
-                                       frameColor=(0, 0, 0, 0))
         self.button_frame = DirectBoxSizer(orientation=DGG.HORIZONTAL,
                                            parent=self.base_frame,
                                            frameColor=(0, 0, 0, 0),

@@ -215,3 +215,9 @@ def is_prime_requisite(test_class, stat) -> bool:
             return stat in 'dexterity'
         case _:
             return False
+
+def can_reduce(test_classes, stat) -> bool:
+    if not set(test_classes).isdisjoint([PCClass.Acrobat, PCClass.Assassin, PCClass.Thief]) and stat == 'strength':
+        return False
+    else:
+        return True
