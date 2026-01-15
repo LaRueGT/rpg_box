@@ -40,6 +40,7 @@ class Chargen_p2(DirectObject):
         self.stat_spinboxes = {}
         self.adjustments = {"Strength": 0, "Intelligence": 0, "Wisdom": 0, "Dexterity": 0, "Constitution": 0, "Charisma": 0}
         self.adjustment_points = 0
+        self.points_label = NodePath()
 
     def handle_next_button(self):
         print("Next button pressed")
@@ -60,11 +61,16 @@ class Chargen_p2(DirectObject):
             pos=(0.0, 0, 0),
             frameColor=(0, 0, 0, 0)
         )
-        # Define which stats can be increased based on class Prime Requisites
-        class_names = [str(c) for c in self.new_char.char_classes]
-        # todo prime req logic
+        self.points_label = DirectLabel(
+            parent=self.ability_frame,
+            text=f"Points Available: {self.adjustment_points}",
+            text_font=self.label_font,
+            text_scale=0.05,
+            text_align=TextNode.ALeft,
+            pos=(0.0, 0, -0.08),
+            frameColor=(0, 0, 0, 0)
+        )
         for i, (stat, value) in enumerate(self.base_stats.items()):
-            # Create a label for the stat name (e.g., "STR")
             DirectLabel(
                 parent=self.ability_frame,
                 text=stat,
@@ -74,7 +80,6 @@ class Chargen_p2(DirectObject):
                 pos=(0.0, 0, z_offset - (i * 0.12)),
                 frameColor=(0, 0, 0, 0)
             )
-            # Create the SpinBox using DirectGuiExtension
             stat_spin = DirectSpinBox(
                 parent=self.ability_frame,
                 pos=(0.45, 0, z_offset - (i * 0.12)),
@@ -85,24 +90,33 @@ class Chargen_p2(DirectObject):
                 command=self.update_stat,
                 extraArgs=[stat]
             )
+            # Set up callbacks to pass the stat name and the current value
+            stat_spin['command'] = lambda val, s=stat: self.update_stat(s, val)
+            stat_spin['incButtonCallback'] = lambda s=stat, sp=stat_spin: self.update_stat(s, sp.getValue())
+            stat_spin['decButtonCallback'] = lambda s=stat, sp=stat_spin: self.update_stat(s, sp.getValue())
             # Setting color for state 3 (Disabled)
             stat_spin.incButton['text3_fg'] = (0.6, 0.6, 0.6, 1)
             stat_spin.decButton['text3_fg'] = (0.6, 0.6, 0.6, 1)
             self.stat_spinboxes[stat] = stat_spin
+        self.refresh_ui()
+
+    def update_stat(self, stat_name, value):
+        print(f"Stat Changed: {stat_name} to {value}")
+        self.refresh_ui()
+
+    def refresh_ui(self):
+        if self.points_label:
+            self.points_label['text'] = f"Points Available: {self.adjustment_points}"
+        for stat, spin in self.stat_spinboxes.items():
             if stat.lower() in ["dexterity", "constitution", "charisma"]:
-                stat_spin.decButton['state'] = DGG.DISABLED
-            # Class-based restriction on adjustments (e.g Thieves can lower Strength)
+                spin.decButton['state'] = DGG.DISABLED
+                # Class-based restriction on adjustments (e.g Thieves can lower Strength)
             if not pcclass.can_reduce(self.new_char.char_classes, stat.lower()):
-                stat_spin.decButton['state'] = DGG.DISABLED
-            # Only allow increasing Prime Requisites
+                spin.decButton['state'] = DGG.DISABLED
+                # Only allow increasing Prime Requisites
             is_prime = any(pcclass.is_prime_requisite(c, stat.lower()) for c in self.new_char.char_classes)
             if not is_prime:
-                stat_spin.incButton['state'] = DGG.DISABLED
-
-    def update_stat(self, stat_name):
-        # This will be called whenever a spinbox changes
-        # You'll likely want to add logic here to track 'adjustment_points'
-        print(f"Updated {stat_name}")
+                spin.incButton['state'] = DGG.DISABLED
 
     def display_chargen_buttons(self):
         self.done_button = DirectButton(
