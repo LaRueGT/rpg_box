@@ -51,6 +51,17 @@ class Chargen_p2(DirectObject):
         print("Next button pressed")
         messenger.send("chargenp2_finished")
 
+    def handle_reset_button(self):
+        # Reset points and adjustment dictionary
+        self.adjustment_points = 0
+        for stat in self.adjustments:
+            self.adjustments[stat] = 0
+        # Manually update labels to base values immediately
+        for stat, label in self.stat_value_labels.items():
+            label['text'] = str(self.base_stats[stat])
+
+        self.refresh_ui()
+
     def handle_cancel_button(self):
         print("cancel button pressed")
         messenger.send("chargen_cancel")
@@ -118,17 +129,28 @@ class Chargen_p2(DirectObject):
 
     def adjust_stat(self, stat_name, delta):
         print(f"Adjusting {stat_name} by {delta}")
-        # Only allow change if logic permits (defensive check)
-        if delta > 0 and self.adjustment_points <= 0:
-            return
-        self.adjustments[stat_name] += delta
-        self.adjustment_points -= delta
+        current_val = self.base_stats[stat_name] + self.adjustments[stat_name]
+        if delta > 0:  # Increase stat
+            if self.adjustment_points <= 0 or current_val >= 18:
+                return
+            # undoing a previous reduction costs 1 point to gain 2 stat points back
+            if self.adjustments[stat_name] < 0:
+                self.adjustments[stat_name] += 2
+            else:
+                self.adjustments[stat_name] += 1
+            self.adjustment_points -= 1
+        elif delta < 0:  # Decrease stat
+            if current_val <= 9:
+                return
+            # Lowering the stat by 2 gives the player 1 adjustment point
+            self.adjustments[stat_name] -= 2
+            self.adjustment_points += 1
         # Immediate value update for the label
         new_val = self.base_stats[stat_name] + self.adjustments[stat_name]
         self.stat_value_labels[stat_name]['text'] = str(new_val)
         # Debounce the state-wide UI refresh
         taskMgr.remove("refresh_ui_task")
-        taskMgr.doMethodLater(0.01, self._deferred_refresh, "refresh_ui_task")
+        taskMgr.doMethodLater(0.05, self._deferred_refresh, "refresh_ui_task")
 
     def _deferred_refresh(self, task):
         self.refresh_ui()
@@ -137,7 +159,6 @@ class Chargen_p2(DirectObject):
     def refresh_ui(self):
         if self.points_label:
             self.points_label['text'] = f"Points Available: {self.adjustment_points}"
-
         for stat in self.base_stats.keys():
             current_val = self.base_stats[stat] + self.adjustments[stat]
             inc_btn = self.stat_inc_buttons[stat]
@@ -160,7 +181,7 @@ class Chargen_p2(DirectObject):
             if stat_lower in ["dexterity", "constitution", "charisma"]:
                 dec_btn['state'] = DGG.DISABLED
             is_prime = any(pcclass.is_prime_requisite(c, stat_lower) for c in self.new_char.char_classes)
-            if not is_prime:
+            if not is_prime and self.adjustments[stat] >= 0:
                 inc_btn['state'] = DGG.DISABLED
 
     def display_chargen_buttons(self):
@@ -169,6 +190,14 @@ class Chargen_p2(DirectObject):
             text="Next",
             scale=0.07,
             command=self.handle_next_button,
+            text_font=self.label_font,
+            text_align=TextNode.ALeft
+        )
+        reset_button = DirectButton(
+            parent=self.button_frame,
+            text="Reset",
+            scale=0.07,
+            command=self.handle_reset_button,
             text_font=self.label_font,
             text_align=TextNode.ALeft
         )
@@ -181,4 +210,5 @@ class Chargen_p2(DirectObject):
             text_align=TextNode.ALeft
         )
         self.button_frame.addItem(self.done_button)
+        self.button_frame.addItem(reset_button)
         self.button_frame.addItem(cancel_button)
