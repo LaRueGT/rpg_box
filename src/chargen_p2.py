@@ -94,7 +94,6 @@ class Chargen_p2(DirectObject):
             stat_spin['command'] = lambda val, s=stat: self.update_stat(s, val)
             stat_spin['incButtonCallback'] = lambda s=stat, sp=stat_spin: self.update_stat(s, sp.getValue())
             stat_spin['decButtonCallback'] = lambda s=stat, sp=stat_spin: self.update_stat(s, sp.getValue())
-            # Setting color for state 3 (Disabled)
             stat_spin.incButton['text3_fg'] = (0.6, 0.6, 0.6, 1)
             stat_spin.decButton['text3_fg'] = (0.6, 0.6, 0.6, 1)
             self.stat_spinboxes[stat] = stat_spin
