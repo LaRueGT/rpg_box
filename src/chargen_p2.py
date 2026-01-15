@@ -40,14 +40,16 @@ class Chargen_p2(DirectObject):
             "Constitution": self.new_char.constitution,
             "Charisma": self.new_char.charisma
         }
-        self.stat_spinboxes = {}
+        self.stat_value_labels = {}
+        self.stat_inc_buttons = {}
+        self.stat_dec_buttons = {}
         self.adjustments = {"Strength": 0, "Intelligence": 0, "Wisdom": 0, "Dexterity": 0, "Constitution": 0, "Charisma": 0}
         self.adjustment_points = 0
         self.points_label = NodePath()
 
     def handle_next_button(self):
         print("Next button pressed")
-        messenger.send("chargen_continue")
+        messenger.send("chargenp2_finished")
 
     def handle_cancel_button(self):
         print("cancel button pressed")
@@ -73,44 +75,60 @@ class Chargen_p2(DirectObject):
             pos=(0.0, 0, -0.08),
             frameColor=(0, 0, 0, 0)
         )
-        for i, (stat, value) in enumerate(self.base_stats.items()):
+        for i, stat in enumerate(self.base_stats.keys()):
+            z_pos = z_offset - (i * 0.12)
             DirectLabel(
                 parent=self.ability_frame,
                 text=stat,
                 text_font=self.label_font,
                 text_scale=0.06,
                 text_align=TextNode.ALeft,
-                pos=(0.0, 0, z_offset - (i * 0.12)),
+                pos=(0.0, 0, z_pos),
                 frameColor=(0, 0, 0, 0)
             )
-            stat_spin = DirectSpinBox(
+            self.stat_dec_buttons[stat] = DirectButton(
                 parent=self.ability_frame,
-                pos=(0.45, 0, z_offset - (i * 0.12)),
-                scale=0.05,
-                value=value,
-                minValue=9,
-                maxValue=18,
-                command=self.update_stat,
-                extraArgs=[stat]
+                text="-",
+                scale=0.07,
+                frameSize=(-0.5, 0.5, -0.5, 0.5),
+                pos=(0.40, 0, z_pos + 0.015),
+                command=self.adjust_stat,
+                extraArgs=[stat, -1],
+                text3_fg=(0.6, 0.6, 0.6, 1)
             )
-            # Set up callbacks to pass the stat name and the current value
-            stat_spin['incButtonCallback'] = lambda s=stat, sp=stat_spin: self.update_stat(s)
-            stat_spin['decButtonCallback'] = lambda s=stat, sp=stat_spin: self.update_stat(s)
-            stat_spin.incButton['text3_fg'] = (0.6, 0.6, 0.6, 1)
-            stat_spin.decButton['text3_fg'] = (0.6, 0.6, 0.6, 1)
-            self.stat_spinboxes[stat] = stat_spin
+            self.stat_value_labels[stat] = DirectLabel(
+                parent=self.ability_frame,
+                text=str(self.base_stats[stat]),
+                text_font=self.label_font,
+                text_scale=0.06,
+                pos=(0.50, 0, z_pos),
+                frameColor=(0, 0, 0, 0)
+            )
+            self.stat_inc_buttons[stat] = DirectButton(
+                parent=self.ability_frame,
+                text="+",
+                scale=0.07,
+                frameSize=(-0.5, 0.5, -0.5, 0.5),
+                pos=(0.60, 0, z_pos + 0.015),
+                command=self.adjust_stat,
+                extraArgs=[stat, 1],
+                text3_fg=(0.6, 0.6, 0.6, 1)
+            )
         self.refresh_ui()
 
-    def update_stat(self, stat_name):
-        value = self.stat_spinboxes[stat_name].getValue()
-        print(f"Stat Changed: {stat_name} to {value}")
-        self.adjustments[stat_name] = value - self.base_stats[stat_name]
-        print(f"pending adjustment {stat_name} by {self.adjustments[stat_name]}")
-        if self.adjustments[stat_name] <= 0:
-            self.adjustment_points += 1
-        if self.adjustments[stat_name] >= 0:
-            self.adjustment_points -= 1
-        taskMgr.add(self._deferred_refresh, "refresh_ui_task")
+    def adjust_stat(self, stat_name, delta):
+        print(f"Adjusting {stat_name} by {delta}")
+        # Only allow change if logic permits (defensive check)
+        if delta > 0 and self.adjustment_points <= 0:
+            return
+        self.adjustments[stat_name] += delta
+        self.adjustment_points -= delta
+        # Immediate value update for the label
+        new_val = self.base_stats[stat_name] + self.adjustments[stat_name]
+        self.stat_value_labels[stat_name]['text'] = str(new_val)
+        # Debounce the state-wide UI refresh
+        taskMgr.remove("refresh_ui_task")
+        taskMgr.doMethodLater(0.01, self._deferred_refresh, "refresh_ui_task")
 
     def _deferred_refresh(self, task):
         self.refresh_ui()
@@ -119,24 +137,31 @@ class Chargen_p2(DirectObject):
     def refresh_ui(self):
         if self.points_label:
             self.points_label['text'] = f"Points Available: {self.adjustment_points}"
-        for stat, spin in self.stat_spinboxes.items():
-            if self.adjustment_points >= 0:
-                spin.incButton['state'] = DGG.NORMAL
-            if stat.lower() in ["dexterity", "constitution", "charisma"]:
-                spin.decButton['state'] = DGG.DISABLED
-                # Class-based restriction on adjustments (e.g Thieves can lower Strength)
-            if not pcclass.can_reduce(self.new_char.char_classes, stat.lower()):
-                spin.decButton['state'] = DGG.DISABLED
-                # Only allow increasing Prime Requisites
-            is_prime = any(pcclass.is_prime_requisite(c, stat.lower()) for c in self.new_char.char_classes)
-            if not is_prime:
-                spin.incButton['state'] = DGG.DISABLED
-            if spin.getValue() <= 9:
-                spin.decButton['state'] = DGG.DISABLED
-            if spin.getValue() >= 18:
-                spin.incButton['state'] = DGG.DISABLED
+
+        for stat in self.base_stats.keys():
+            current_val = self.base_stats[stat] + self.adjustments[stat]
+            inc_btn = self.stat_inc_buttons[stat]
+            dec_btn = self.stat_dec_buttons[stat]
+            # Default state
+            inc_btn['state'] = DGG.NORMAL
+            dec_btn['state'] = DGG.NORMAL
+            # 1. Point Availability
             if self.adjustment_points <= 0:
-                spin.incButton['state'] = DGG.DISABLED
+                inc_btn['state'] = DGG.DISABLED
+            # 2. Hard Limits
+            if current_val >= 18:
+                inc_btn['state'] = DGG.DISABLED
+            if current_val <= 9:
+                dec_btn['state'] = DGG.DISABLED
+            # 3. Class-based Restrictions
+            stat_lower = stat.lower()
+            if not pcclass.can_reduce(self.new_char.char_classes, stat_lower):
+                dec_btn['state'] = DGG.DISABLED
+            if stat_lower in ["dexterity", "constitution", "charisma"]:
+                dec_btn['state'] = DGG.DISABLED
+            is_prime = any(pcclass.is_prime_requisite(c, stat_lower) for c in self.new_char.char_classes)
+            if not is_prime:
+                inc_btn['state'] = DGG.DISABLED
 
     def display_chargen_buttons(self):
         self.done_button = DirectButton(
