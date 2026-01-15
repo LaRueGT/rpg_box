@@ -140,7 +140,7 @@ class Chargen_p2(DirectObject):
                 self.adjustments[stat_name] += 1
             self.adjustment_points -= 1
         elif delta < 0:  # Decrease stat
-            if current_val <= 9:
+            if current_val -2 < 9:
                 return
             # Lowering the stat by 2 gives the player 1 adjustment point
             self.adjustments[stat_name] -= 2
@@ -172,7 +172,7 @@ class Chargen_p2(DirectObject):
             # 2. Hard Limits
             if current_val >= 18:
                 inc_btn['state'] = DGG.DISABLED
-            if current_val <= 9:
+            if current_val - 2 < 9:
                 dec_btn['state'] = DGG.DISABLED
             # 3. Class-based Restrictions
             stat_lower = stat.lower()
