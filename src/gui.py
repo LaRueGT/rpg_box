@@ -45,6 +45,7 @@ class Gui:
         self.gender_heading = NodePath()
         self.gender_frame = NodePath()
         self.ability_adjustment_frame = NodePath()
+        self.modifiers_label = NodePath()
         self.adjust_heading = NodePath()
         self.classlist_frame = NodePath()
 
@@ -153,6 +154,13 @@ class Gui:
                                                     frameColor=(.25, .25, .25, 0),
                                                     frameSize=(0, 0.8, -0.6, .0),
                                                     pos=(-1.665, 0, 0.85))
+        self.modifiers_label = DirectLabel(parent=self.chargen_screen_frame,
+                                           text_font=self.label_font,
+                                           text_scale=(0.07, 0.07),
+                                           text="Ability Score Modifiers",
+                                           text_align=TextNode.ALeft,
+                                           pos=(-0.8, 0, 0.85),
+                                           frameColor=(0, 0, 0, 0))
         self.button_frame = DirectBoxSizer(orientation=DGG.HORIZONTAL,
                                            parent=self.base_frame,
                                            frameColor=(0, 0, 0, 0),

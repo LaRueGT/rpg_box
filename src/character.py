@@ -17,3 +17,13 @@ class Character:
         self.level = 1
         self.exp_amount = []
         self.char_alignment = None
+
+    def ability_modifier(self, ability):
+        return (
+            -3 if 3 <= ability < 4 else
+            -2 if 4 <= ability <= 5 else
+            -1 if 6 <= ability <= 8 else
+            0 if 9 <= ability <= 12 else
+            1 if 13 <= ability <= 15 else
+            2 if 16 <= ability <= 17 else
+            3 if 17 < ability <= 18 else 0)

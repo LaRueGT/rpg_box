@@ -24,11 +24,12 @@ import pcclass
 import race
 
 class Chargen_p2(DirectObject):
-    def __init__(self, base, ability_frame, button_frame, character_obj):
+    def __init__(self, base, ability_frame, button_frame, character_obj, modifiers_label):
         super().__init__()
         self.base = base
         self.ability_frame = ability_frame
         self.button_frame = button_frame
+        self.modifiers_label = modifiers_label
         self.label_font = self.base.loader.loadFont('../fonts/EBGaramond-VariableFont_wght.ttf')
         self.done_button = NodePath()
         self.new_char = character_obj
@@ -48,8 +49,8 @@ class Chargen_p2(DirectObject):
         self.points_label = NodePath()
 
     def handle_next_button(self):
-        print("Next button pressed")
-        messenger.send("chargenp2_finished")
+            print("Next button pressed")
+            self.calculate_modifiers()
 
     def handle_reset_button(self):
         # Reset points and adjustment dictionary
@@ -65,6 +66,30 @@ class Chargen_p2(DirectObject):
     def handle_cancel_button(self):
         print("cancel button pressed")
         messenger.send("chargen_cancel")
+
+    def calculate_modifiers(self):
+        # Update character object with final adjusted stats
+        self.new_char.strength = self.base_stats["Strength"] + self.adjustments["Strength"]
+        self.new_char.intelligence = self.base_stats["Intelligence"] + self.adjustments["Intelligence"]
+        self.new_char.wisdom = self.base_stats["Wisdom"] + self.adjustments["Wisdom"]
+        self.new_char.dexterity = self.base_stats["Dexterity"] + self.adjustments["Dexterity"]
+        self.new_char.constitution = self.base_stats["Constitution"] + self.adjustments["Constitution"]
+        self.new_char.charisma = self.base_stats["Charisma"] + self.adjustments["Charisma"]
+        stats = [
+            ("Strength", self.new_char.strength),
+            ("Intelligence", self.new_char.intelligence),
+            ("Wisdom", self.new_char.wisdom),
+            ("Dexterity", self.new_char.dexterity),
+            ("Constitution", self.new_char.constitution),
+            ("Charisma", self.new_char.charisma),
+        ]
+        lines = ["Ability Score Modifiers"]
+        for name, value in stats:
+            mod = self.new_char.ability_modifier(value)
+            sign = "+" if mod > 0 else ""
+            lines.append(f"{name}: {sign}{mod}")
+        if self.modifiers_label:
+            self.modifiers_label['text'] = "\n".join(lines)
 
     def display_adjustment_boxes(self):
         z_offset = -0.15
