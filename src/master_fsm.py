@@ -23,6 +23,7 @@ class MasterFSM(FSM, DirectObject):
         self.base_window = base
         self.ui = gui.Gui(self.base_window)
         self.chargen_screen = None
+        self.created_characters = []
         self.request('Intro')
 
     #state transition event handlers
@@ -45,6 +46,8 @@ class MasterFSM(FSM, DirectObject):
         self.request('Main')
 
     def handle_chargen_done(self):
+        print(f"Adding {character_obj.name} to recruitable list")
+        self.created_characters.append(character_obj)
         self.request('Main')
 
     def main_chargen(self):
@@ -97,7 +100,7 @@ class MasterFSM(FSM, DirectObject):
         self.accept('main_finished', self.handle_main_done)
         self.accept('chargen_button_pressed', self.main_chargen)
         party_label, button_grid = self.ui.main_frame()
-        main_menu = mainmenu.MainMenu(self.base_window, party_label, button_grid)
+        main_menu = mainmenu.MainMenu(self.base_window, party_label, button_grid, self.created_characters)
         main_menu.display_main_menu()
 
     def exitMain(self):
@@ -139,3 +142,9 @@ class MasterFSM(FSM, DirectObject):
         self.ignore('chargenp2_finished')
         self.ignore('chargen_cancel')
         self.ui.clear_gui()
+
+    def enterParty(self):
+        pass
+
+    def exitParty(self):
+        pass

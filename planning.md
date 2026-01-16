@@ -24,6 +24,7 @@
 - [ ] secondary skill table
 - [x] name the character
 - [ ] party composition screen  
+- [ ] graphic for main menu, representing party characters
 styling for bottom of screen buttons multiple screens   
 grid paper theming for cover menu  
 character sheet styling for character screens  

@@ -2,14 +2,18 @@ import sys
 from direct.showbase.MessengerGlobal import messenger
 from direct.gui.DirectGui import DirectButton
 from direct.showbase.DirectObject import DirectObject
+import character
+import party
 
 
 class MainMenu(DirectObject):
-    def __init__(self, base, label, button_frame):
+    def __init__(self, base, label, button_frame, character_list=None):
         super().__init__()
         # setup
         self.base_window = base
         self.cover_label = label
+        self.party: party.Party = party.Party()
+        self.recruitable_characters = character_list if character_list is not None else []
         self.button_frame = button_frame
         self.accept('q', self.handle_quit_button)
         self.accept('escape', self.handle_quit_button)

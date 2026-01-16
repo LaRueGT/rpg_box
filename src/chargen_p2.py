@@ -96,7 +96,9 @@ class Chargen_p2(DirectObject):
             width=15,
             numLines=1,
             focus=1,
-            cursorKeys=1
+            cursorKeys=1,
+            command = self.handle_name_submit,
+            extraArgs = []
         )
         submit_btn = DirectButton(
             parent=self.name_frame,
@@ -125,7 +127,7 @@ class Chargen_p2(DirectObject):
             print(f"Character named: {name}")
             self.new_char.name = name
             # Proceed to next screen or finish chargen
-            messenger.send("chargen_complete", [self.new_char])
+            messenger.send("chargen_done", [self.new_char])
         else:
             print("Name cannot be empty!")
 
