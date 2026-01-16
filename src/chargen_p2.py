@@ -107,9 +107,15 @@ class Chargen_p2(DirectObject):
         sorted_keys = sorted(attacks.keys())
         # Format rows
         row1 = "Attack Values (Target AC: Roll Needed)"
-        # Use string formatting to align columns (width of 4 should suffice for AC and Roll)
-        row2 = "AC:   " + " ".join(f"{str(k):>4}" for k in sorted_keys)
-        row3 = "Roll: " + " ".join(f"{str(attacks[k]):>4}" for k in sorted_keys)
+        header_parts = ["AC:  "]
+        for k in sorted_keys:
+            header_parts.append(f"{k:4}")
+        row2 = "".join(header_parts)
+        # Value row for Rolls: right-aligned in 4 spaces
+        value_parts = ["Roll:"]
+        for k in sorted_keys:
+            value_parts.append(f"{attacks[k]:4}")
+        row3 = "".join(value_parts)
         full_text = f"{row1}\n{row2}\n{row3}"
         if self.attacks_label:
             self.attacks_label['text'] = full_text

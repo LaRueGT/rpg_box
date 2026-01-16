@@ -164,7 +164,7 @@ class Gui:
                                            frameColor=(0, 0, 0, 0))
         self.attack_values_label = DirectLabel(parent=self.chargen_screen_frame,
                                                text_font=self.label_font,
-                                               text_scale=(0.06, 0.06),
+                                               text_scale=(0.07, 0.07),
                                                text="Attack Values",
                                                text_align=TextNode.ALeft,
                                                pos=(-0.8, 0, 0.15),

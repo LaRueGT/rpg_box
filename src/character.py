@@ -33,6 +33,9 @@ class Character:
     def get_attack_values(self, thaco):
         return THACO_DATA[thaco]
 
+    def roll_hp(self):
+        return 10 + self.ability_modifier(self.constitution)
+
 THACO_DATA = {
     20: {-3: 20, -2: 20, -1: 20, 0: 20, 1: 19, 2: 18, 3: 17, 4: 16, 5: 15, 6: 14, 7: 13, 8: 12, 9: 11},
     19: {-3: 20, -2: 20, -1: 20, 0: 19, 1: 18, 2: 17, 3: 16, 4: 15, 5: 14, 6: 13, 7: 12, 8: 11, 9: 10},
