@@ -47,6 +47,7 @@ class Gui:
         self.ability_adjustment_frame = NodePath()
         self.modifiers_label = NodePath()
         self.attack_values_label = NodePath()
+        self.hp_label = NodePath()
         self.adjust_heading = NodePath()
         self.classlist_frame = NodePath()
 
@@ -169,12 +170,18 @@ class Gui:
                                                text_align=TextNode.ALeft,
                                                pos=(-0.8, 0, 0.15),
                                                frameColor=(0, 0, 0, 0))
+        self.hp_label = DirectLabel(parent=self.chargen_screen_frame,
+                                    text_font=self.label_font,
+                                    text_scale=(0.07, 0.07),
+                                    text="HP: ROLL READY",
+                                    text_align=TextNode.ALeft,
+                                    pos=(-0.8, 0, -0.15),
+                                    frameColor=(0, 0, 0, 0))
         self.button_frame = DirectBoxSizer(orientation=DGG.HORIZONTAL,
                                            parent=self.base_frame,
                                            frameColor=(0, 0, 0, 0),
                                            frameSize=(-.25, .25, -.25, .25),
                                            pos=(-1.715, 0, -0.91))
-
         return self.ability_adjustment_frame, self.button_frame
 
     def main_frame(self) -> tuple[NodePath, NodePath]:

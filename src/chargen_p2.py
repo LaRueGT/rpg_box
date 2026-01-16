@@ -24,13 +24,14 @@ import pcclass
 import race
 
 class Chargen_p2(DirectObject):
-    def __init__(self, base, ability_frame, button_frame, character_obj, modifiers_label, attacks_label):
+    def __init__(self, base, ability_frame, button_frame, character_obj, modifiers_label, attacks_label, hp_label):
         super().__init__()
         self.base = base
         self.ability_frame = ability_frame
         self.button_frame = button_frame
         self.modifiers_label = modifiers_label
         self.attacks_label = attacks_label
+        self.hp_label = hp_label
         self.label_font = self.base.loader.loadFont('../fonts/EBGaramond-VariableFont_wght.ttf')
         self.done_button = NodePath()
         self.new_char = character_obj
@@ -50,17 +51,26 @@ class Chargen_p2(DirectObject):
         self.points_label = NodePath()
 
     def handle_next_button(self):
-            print("Next button pressed")
-            self.calculate_modifiers()
-            self.display_attack_values()
-            # Disable all adjustment buttons to "commit" the stats
-            for stat in self.stat_inc_buttons:
-                self.stat_inc_buttons[stat]['state'] = DGG.DISABLED
-                self.stat_dec_buttons[stat]['state'] = DGG.DISABLED
-            # Disable the control buttons
-            self.done_button['state'] = DGG.DISABLED
-            if hasattr(self, 'reset_button'):
-                self.reset_button['state'] = DGG.DISABLED
+        def handle_next_button(self):
+            if self.done_button['text'] == "Next":
+                print("Next button pressed - calculating stats")
+                self.calculate_modifiers()
+                self.display_attack_values()
+                # Disable all adjustment buttons to "commit" the stats
+                for stat in self.stat_inc_buttons:
+                    self.stat_inc_buttons[stat]['state'] = DGG.DISABLED
+                    self.stat_dec_buttons[stat]['state'] = DGG.DISABLED
+                if hasattr(self, 'reset_button'):
+                    self.reset_button['state'] = DGG.DISABLED
+                # Change button to Roll HP mode
+                self.done_button['text'] = "Roll HP"
+                self.done_button['state'] = DGG.NORMAL
+            else:
+                print("Rolling HP...")
+                self.new_char.roll_hp()
+                if self.hp_label:
+                    self.hp_label['text'] = f"HP: {self.new_char.max_hp}"
+                self.done_button['state'] = DGG.DISABLED
 
     def handle_reset_button(self):
         # Reset points and adjustment dictionary

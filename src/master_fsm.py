@@ -129,7 +129,8 @@ class MasterFSM(FSM, DirectObject):
         ability_frame, button_frame = self.ui.chargenp2_frame()
         modifiers_label = self.ui.modifiers_label
         attacks_label = self.ui.attack_values_label
-        chargen_pg2 = chargen_p2.Chargen_p2(self.base_window, ability_frame, button_frame, character_data, modifiers_label, attacks_label)
+        hp_label = self.ui.hp_label
+        chargen_pg2 = chargen_p2.Chargen_p2(self.base_window, ability_frame, button_frame, character_data, modifiers_label, attacks_label, hp_label)
         chargen_pg2.display_adjustment_boxes()
         chargen_pg2.display_chargen_buttons()
 
