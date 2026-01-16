@@ -222,3 +222,23 @@ class Gui:
                                       text_pos=(-1.65, 0.13),
                                       frameColor=(0, 0, 0, 0))
         return self.art_frame, self.text_label
+
+    def party_assign_frame(self) -> tuple[NodePath, NodePath, NodePath]:
+        self.cover_label_frame = DirectFrame(parent=self.base_frame,
+                                             frameColor=(.25, .25, .25, 1),
+                                             frameSize=(-1.715, 1.715, -.88, .94),
+                                             pos=(0, 0, 0))
+        self.cover_label = DirectLabel(parent=self.cover_label_frame,
+                                       text="Select up to 6 Characters",
+                                       text_scale=(0.1, 0.1),
+                                       pos=(0, 0, 0.8))
+        self.text_frame = DirectGridSizer(numColumns=3, numRows=10,
+                                          parent=self.cover_label_frame,
+                                          frameColor=(0, 0, 0, 0),
+                                          pos=(0, 0, 0.6))
+        self.button_frame = DirectBoxSizer(orientation=DGG.HORIZONTAL,
+                                           parent=self.base_frame,
+                                           frameColor=(0, 0, 0, 1),
+                                           frameSize=(-.25, .25, -.25, .25),
+                                           pos=(-1.715, 0, -0.91))
+        return self.cover_label, self.text_frame, self.button_frame

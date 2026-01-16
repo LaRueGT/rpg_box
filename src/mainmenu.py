@@ -41,6 +41,7 @@ class MainMenu(DirectObject):
 
     def handle_add_button(self):
         print("add button pressed")
+        messenger.send("party_assign_button_pressed")
 
     def handle_remove_button(self):
         print("remove button pressed")
