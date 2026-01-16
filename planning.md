@@ -14,8 +14,16 @@
 - [x] character creator racial ability modifiers  
 - [ ] separate label for stat numbers to align columns
 - [x] prime requisite highlighting in character creator class list   
-- [ ] character creator ability adjustment buttons
-party composition screen  
+- [x] character creator ability adjustment buttons
+- [ ] roll for hp
+- [ ] saving throws tables
+- [ ] race / class abilities
+- [ ] character languages
+- [ ] character wealth roll, shop for initial equipment
+- [ ] armor class
+- [ ] secondary skill table
+- [ ] name the character
+- [ ] party composition screen  
 styling for bottom of screen buttons multiple screens   
 grid paper theming for cover menu  
 character sheet styling for character screens  
@@ -23,3 +31,4 @@ console panel text interaction
 sqlite database with game tables  
 display region, dice rolls  
 physics dice roll simulation ?  
+character sheet exporter  
