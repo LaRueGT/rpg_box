@@ -15,14 +15,14 @@
 - [ ] separate label for stat numbers to align columns
 - [x] prime requisite highlighting in character creator class list   
 - [x] character creator ability adjustment buttons
-- [ ] roll for hp
+- [x] roll for hp
 - [ ] saving throws tables
 - [ ] race / class abilities
 - [ ] character languages
 - [ ] character wealth roll, shop for initial equipment
 - [ ] armor class
 - [ ] secondary skill table
-- [ ] name the character
+- [x] name the character
 - [ ] party composition screen  
 styling for bottom of screen buttons multiple screens   
 grid paper theming for cover menu  

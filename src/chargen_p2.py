@@ -1,21 +1,17 @@
 from direct.showbase.DirectObject import DirectObject
 from direct.showbase.MessengerGlobal import messenger
 
+from direct.gui import DirectGuiGlobals as DGG
 from direct.gui.DirectGui import DirectLabel
 from direct.gui.DirectGui import DirectButton
-from direct.gui.DirectRadioButton import DirectRadioButton
-from direct.gui.DirectCheckButton import DirectCheckButton
+from direct.gui.DirectGui import DirectEntry
+
+from DirectGuiExtension.DirectBoxSizer import DirectBoxSizer
 
 from direct.task import Task
 from direct.task.TaskManagerGlobal import taskMgr
 
-from DirectGuiExtension.DirectBoxSizer import DirectBoxSizer
-from DirectGuiExtension.DirectSpinBox import DirectSpinBox
-from DirectGuiExtension.DirectGridSizer import DirectGridSizer
-
 from panda3d.core import NodePath, TextNode
-
-from direct.gui import DirectGuiGlobals as DGG
 
 import alignment
 import character
@@ -24,9 +20,10 @@ import pcclass
 import race
 
 class Chargen_p2(DirectObject):
-    def __init__(self, base, ability_frame, button_frame, character_obj, modifiers_label, attacks_label, hp_label):
+    def __init__(self, base, screen_frame, ability_frame, button_frame, character_obj, modifiers_label, attacks_label, hp_label):
         super().__init__()
         self.base = base
+        self.screen_frame = screen_frame
         self.ability_frame = ability_frame
         self.button_frame = button_frame
         self.modifiers_label = modifiers_label
@@ -74,6 +71,43 @@ class Chargen_p2(DirectObject):
             if self.hp_label:
                 self.hp_label['text'] = f"HP: {self.new_char.max_hp}"
             self.done_button['state'] = DGG.DISABLED
+            self.reveal_name_entry()
+
+    def reveal_name_entry(self):
+        # Create a container frame just above the button_frame
+        self.name_frame = DirectBoxSizer(
+            orientation=DGG.HORIZONTAL,
+            parent=self.screen_frame,
+            frameColor=(0, 0, 0, 0),
+            pos=(-1.665, 0, -0.75)
+        )
+        DirectLabel(
+            parent=self.name_frame,
+            text="Character Name: ",
+            text_font=self.label_font,
+            text_scale=0.07,
+            text_align=TextNode.ALeft,
+            frameColor=(0, 0, 0, 0)
+        )
+        self.name_entry = DirectEntry(
+            parent=self.name_frame,
+            text_font=self.label_font,
+            scale=0.07,
+            width=15,
+            numLines=1,
+            focus=1,
+            cursorKeys=1
+        )
+        submit_btn = DirectButton(
+            parent=self.name_frame,
+            text="Submit",
+            scale=0.07,
+            text_font=self.label_font,
+            command=self.handle_name_submit,
+            extraArgs=[]
+        )
+        self.name_frame.addItem(self.name_entry)
+        self.name_frame.addItem(submit_btn)
 
     def handle_reset_button(self):
         # Reset points and adjustment dictionary
@@ -84,6 +118,16 @@ class Chargen_p2(DirectObject):
         for stat, label in self.stat_value_labels.items():
             label['text'] = str(self.base_stats[stat])
         self.refresh_ui()
+
+    def handle_name_submit(self):
+        name = self.name_entry.get()
+        if name.strip():
+            print(f"Character named: {name}")
+            self.new_char.name = name
+            # Proceed to next screen or finish chargen
+            messenger.send("chargen_complete", [self.new_char])
+        else:
+            print("Name cannot be empty!")
 
     def handle_cancel_button(self):
         print("cancel button pressed")

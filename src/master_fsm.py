@@ -15,8 +15,7 @@ import mainmenu
 import narrative
 import slideshow
 
-#NB: FSM uses non-snake function naming with (enterState, exitState, filterState)
-#NB:
+#NB: Panda3d FSM uses non-snake function naming with (enterState, exitState, filterState)
 
 class MasterFSM(FSM, DirectObject):
     def __init__(self, base):
@@ -127,10 +126,11 @@ class MasterFSM(FSM, DirectObject):
         self.accept('chargenp2_finished', self.handle_chargen_done)
         self.accept('chargen_cancel', self.handle_chargen_cancel)
         ability_frame, button_frame = self.ui.chargenp2_frame()
+        screen_frame = self.ui.chargen_screen_frame
         modifiers_label = self.ui.modifiers_label
         attacks_label = self.ui.attack_values_label
         hp_label = self.ui.hp_label
-        chargen_pg2 = chargen_p2.Chargen_p2(self.base_window, ability_frame, button_frame, character_data, modifiers_label, attacks_label, hp_label)
+        chargen_pg2 = chargen_p2.Chargen_p2(self.base_window, screen_frame, ability_frame, button_frame, character_data, modifiers_label, attacks_label, hp_label)
         chargen_pg2.display_adjustment_boxes()
         chargen_pg2.display_chargen_buttons()
 
