@@ -24,12 +24,13 @@ import pcclass
 import race
 
 class Chargen_p2(DirectObject):
-    def __init__(self, base, ability_frame, button_frame, character_obj, modifiers_label):
+    def __init__(self, base, ability_frame, button_frame, character_obj, modifiers_label, attacks_label):
         super().__init__()
         self.base = base
         self.ability_frame = ability_frame
         self.button_frame = button_frame
         self.modifiers_label = modifiers_label
+        self.attacks_label = attacks_label
         self.label_font = self.base.loader.loadFont('../fonts/EBGaramond-VariableFont_wght.ttf')
         self.done_button = NodePath()
         self.new_char = character_obj
@@ -51,6 +52,15 @@ class Chargen_p2(DirectObject):
     def handle_next_button(self):
             print("Next button pressed")
             self.calculate_modifiers()
+            self.display_attack_values()
+            # Disable all adjustment buttons to "commit" the stats
+            for stat in self.stat_inc_buttons:
+                self.stat_inc_buttons[stat]['state'] = DGG.DISABLED
+                self.stat_dec_buttons[stat]['state'] = DGG.DISABLED
+            # Disable the control buttons
+            self.done_button['state'] = DGG.DISABLED
+            if hasattr(self, 'reset_button'):
+                self.reset_button['state'] = DGG.DISABLED
 
     def handle_reset_button(self):
         # Reset points and adjustment dictionary
@@ -60,7 +70,6 @@ class Chargen_p2(DirectObject):
         # Manually update labels to base values immediately
         for stat, label in self.stat_value_labels.items():
             label['text'] = str(self.base_stats[stat])
-
         self.refresh_ui()
 
     def handle_cancel_button(self):
@@ -90,6 +99,20 @@ class Chargen_p2(DirectObject):
             lines.append(f"{name}: {sign}{mod}")
         if self.modifiers_label:
             self.modifiers_label['text'] = "\n".join(lines)
+
+    def display_attack_values(self):
+        thaco = 19
+        attacks = self.new_char.get_attack_values(thaco)
+        # Sort keys to ensure they line up correctly
+        sorted_keys = sorted(attacks.keys())
+        # Format rows
+        row1 = "Attack Values (Target AC: Roll Needed)"
+        # Use string formatting to align columns (width of 4 should suffice for AC and Roll)
+        row2 = "AC:   " + " ".join(f"{str(k):>4}" for k in sorted_keys)
+        row3 = "Roll: " + " ".join(f"{str(attacks[k]):>4}" for k in sorted_keys)
+        full_text = f"{row1}\n{row2}\n{row3}"
+        if self.attacks_label:
+            self.attacks_label['text'] = full_text
 
     def display_adjustment_boxes(self):
         z_offset = -0.15
@@ -184,6 +207,12 @@ class Chargen_p2(DirectObject):
     def refresh_ui(self):
         if self.points_label:
             self.points_label['text'] = f"Points Available: {self.adjustment_points}"
+            # Only enable the Next button if all points are spent
+            if self.done_button:
+                if self.adjustment_points == 0:
+                    self.done_button['state'] = DGG.NORMAL
+                else:
+                    self.done_button['state'] = DGG.DISABLED
         for stat in self.base_stats.keys():
             current_val = self.base_stats[stat] + self.adjustments[stat]
             inc_btn = self.stat_inc_buttons[stat]
@@ -216,7 +245,8 @@ class Chargen_p2(DirectObject):
             scale=0.07,
             command=self.handle_next_button,
             text_font=self.label_font,
-            text_align=TextNode.ALeft
+            text_align=TextNode.ALeft,
+            text3_fg = (0.6, 0.6, 0.6, 1)
         )
         reset_button = DirectButton(
             parent=self.button_frame,
@@ -224,7 +254,8 @@ class Chargen_p2(DirectObject):
             scale=0.07,
             command=self.handle_reset_button,
             text_font=self.label_font,
-            text_align=TextNode.ALeft
+            text_align=TextNode.ALeft,
+            text3_fg=(0.6, 0.6, 0.6, 1)
         )
         cancel_button = DirectButton(
             parent=self.button_frame,
@@ -232,8 +263,11 @@ class Chargen_p2(DirectObject):
             scale=0.07,
             command=self.handle_cancel_button,
             text_font=self.label_font,
-            text_align=TextNode.ALeft
+            text_align=TextNode.ALeft,
+            text3_fg=(0.6, 0.6, 0.6, 1)
         )
         self.button_frame.addItem(self.done_button)
         self.button_frame.addItem(reset_button)
         self.button_frame.addItem(cancel_button)
+        # Initial UI refresh to set the Next button state
+        self.refresh_ui()

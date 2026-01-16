@@ -17,6 +17,8 @@ class Character:
         self.level = 1
         self.exp_amount = []
         self.char_alignment = None
+        self.thaco = 19
+        self.attack_values = {}
 
     def ability_modifier(self, ability):
         return (
@@ -27,6 +29,9 @@ class Character:
             1 if 13 <= ability <= 15 else
             2 if 16 <= ability <= 17 else
             3 if 17 < ability <= 18 else 0)
+
+    def get_attack_values(self, thaco):
+        return THACO_DATA[thaco]
 
 THACO_DATA = {
     20: {-3: 20, -2: 20, -1: 20, 0: 20, 1: 19, 2: 18, 3: 17, 4: 16, 5: 15, 6: 14, 7: 13, 8: 12, 9: 11},
