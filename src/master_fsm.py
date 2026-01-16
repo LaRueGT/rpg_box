@@ -5,15 +5,16 @@ import sys
 from direct.fsm.FSM import FSM
 from direct.showbase.DirectObject import DirectObject
 
+import gui
+
 import chargen
 import chargen_p2
 import covermenu
-
-#My Stuff
-import gui
 import mainmenu
 import narrative
+import party_assign
 import slideshow
+import party
 
 #NB: Panda3d FSM uses non-snake function naming with (enterState, exitState, filterState)
 
@@ -23,7 +24,9 @@ class MasterFSM(FSM, DirectObject):
         self.base_window = base
         self.ui = gui.Gui(self.base_window)
         self.chargen_screen = None
-        self.created_characters = []
+        self.main_menu = None
+        self.character_list = []
+        self.adventure_party = party.Party()
         self.request('Intro')
 
     #state transition event handlers
@@ -52,6 +55,9 @@ class MasterFSM(FSM, DirectObject):
 
     def main_chargen(self):
         self.request('Chargen')
+
+    def main_party_assign(self):
+        self.request('Party')
 
     def handle_main_done(self):
         sys.exit(0)
@@ -99,9 +105,11 @@ class MasterFSM(FSM, DirectObject):
     def enterMain(self):
         self.accept('main_finished', self.handle_main_done)
         self.accept('chargen_button_pressed', self.main_chargen)
+        self.accept('party_assign_button_pressed', self.main_party_assign)
         party_label, button_grid = self.ui.main_frame()
-        main_menu = mainmenu.MainMenu(self.base_window, party_label, button_grid, self.created_characters)
-        main_menu.display_main_menu()
+        self.main_menu = mainmenu.MainMenu(self.base_window, party_label, button_grid, self.character_list)
+        self.main_menu.party = self.adventure_party
+        self.main_menu.display_main_menu()
 
     def exitMain(self):
         self.ignore('escape')
@@ -144,7 +152,10 @@ class MasterFSM(FSM, DirectObject):
         self.ui.clear_gui()
 
     def enterParty(self):
-        pass
+        party_label, box_frame, button_frame = self.ui.party_assign_frame()
+        party_page = party_assign.PartyAssign(self.base_window, party_label, box_frame, button_frame, self.character_list,
+            self.adventure_party)
+        party_page.display_party_assign()
 
     def exitParty(self):
         pass
