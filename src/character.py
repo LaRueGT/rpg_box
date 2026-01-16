@@ -1,6 +1,7 @@
 import race
 import alignment
 import pcclass
+import diceroll
 
 class Character:
     def __init__(self):
@@ -19,6 +20,8 @@ class Character:
         self.char_alignment = None
         self.thaco = 19
         self.attack_values = {}
+        self.max_hp = 0
+        self.hp_fraction = 0
 
     def ability_modifier(self, ability):
         return (
@@ -34,7 +37,25 @@ class Character:
         return THACO_DATA[thaco]
 
     def roll_hp(self):
-        return 10 + self.ability_modifier(self.constitution)
+        num_classes = len(self.char_classes)
+        for charclass in self.char_classes:
+            quantity, size = pcclass.get_hit_die(charclass, self.level)
+            total = 0
+            for _ in range(quantity):
+                die_roll = diceroll.roll(1, size)
+                # Reroll 1s once if level is 3 or less
+                if self.level <= 3 and die_roll == 1:
+                    die_roll = diceroll.roll(1, size)
+                total += die_roll
+            # Divide total by number of classes
+            share = total / num_classes
+            self.max_hp += int(share)
+            self.hp_fraction += share - int(share)
+            # If fractions add up to nearly 1 (using 0.9 as a safe threshold for floating point)
+            if self.hp_fraction >= 0.9:
+                self.max_hp += 1
+                self.hp_fraction = 0
+
 
 THACO_DATA = {
     20: {-3: 20, -2: 20, -1: 20, 0: 20, 1: 19, 2: 18, 3: 17, 4: 16, 5: 15, 6: 14, 7: 13, 8: 12, 9: 11},
