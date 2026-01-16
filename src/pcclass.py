@@ -89,6 +89,37 @@ def meets_requirements(test_class, test_race, test_alignment, strength, intellig
     result = all(condition() for condition in class_requirements[test_class])
     return result
 
+def get_hit_die(test_class, level) -> tuple[int, int]:
+    match test_class:
+        case PCClass.Acrobat:
+            return 1, 4
+        case PCClass.Assassin:
+            return 1, 4
+        case PCClass.Barbarian:
+            return 1, 8
+        case PCClass.Bard:
+            return 1, 6
+        case PCClass.Cleric:
+            return 1, 6
+        case PCClass.Druid:
+            return 1, 6
+        case PCClass.Fighter:
+            return 1, 8
+        case PCClass.Illusionist:
+            return 1, 4
+        case PCClass.Knight:
+            return 1, 8
+        case PCClass.MagicUser:
+            return 1, 4
+        case PCClass.Paladin:
+            return 1, 8
+        case PCClass.Ranger:
+            return 1, 8
+        case PCClass.Thief:
+            return 1, 4
+        case _:
+            return 1, 4
+
 def prime_requisite_factor(test_class, strength, dexterity, constitution, intelligence, wisdom, charisma) -> float:
     match test_class:
         case PCClass.Acrobat:
