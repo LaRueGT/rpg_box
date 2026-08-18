@@ -7,12 +7,12 @@ from direct.showbase.DirectObject import DirectObject
 
 from ui import gui
 
-from ui.pages import chargen
+from ui.pages import chargen_page
 from ui.pages import chargen_p2
-from ui.pages import covermenu
-from ui.pages import mainmenu
-from ui.pages import narrative
-from ui.pages import party_assign
+from ui.pages import cover_page
+from ui.pages import main_menu_page
+from ui.pages import narrative_page
+from ui.pages import party_assign_page
 from ui.pages import slideshow
 from model import party
 
@@ -79,7 +79,7 @@ class MasterFSM(FSM, DirectObject):
         self.accept('play_button_pressed', self.cover_play)
         self.accept('demo_button_pressed', self.cover_demo)
         cover_label, cover_button_frame = self.ui.cover_frame()
-        cover = covermenu.CoverMenu(self.base_window, cover_label, cover_button_frame)
+        cover = cover_page.CoverMenu(self.base_window, cover_label, cover_button_frame)
         cover.display_cover_menu()
 
     def exitCover(self):
@@ -93,7 +93,7 @@ class MasterFSM(FSM, DirectObject):
     def enterDemo(self):
         self.accept('demo_finished', self.handle_intro_done)
         narrative_frame, text_label = self.ui.narrative_frame()
-        test_narrative = narrative.Narrative(self.base_window, narrative_frame, text_label)
+        test_narrative = narrative_page.Narrative(self.base_window, narrative_frame, text_label)
         test_narrative.display_dummy_narrative()
 
     def exitDemo(self):
@@ -107,7 +107,7 @@ class MasterFSM(FSM, DirectObject):
         self.accept('chargen_button_pressed', self.main_chargen)
         self.accept('party_assign_button_pressed', self.main_party_assign)
         party_label, button_grid = self.ui.main_frame()
-        self.main_menu = mainmenu.MainMenu(self.base_window, party_label, button_grid, self.character_list)
+        self.main_menu = main_menu_page.MainMenu(self.base_window, party_label, button_grid, self.character_list)
         self.main_menu.party = self.adventure_party
         self.main_menu.display_main_menu()
 
@@ -120,7 +120,7 @@ class MasterFSM(FSM, DirectObject):
     def enterChargen(self):
         self.accept('chargen_continue', self.handle_chargen_continue)
         ability_label, race_list, alignment_list, gender_list, class_list, button_row = self.ui.chargen_frame()
-        self.chargen_screen = chargen.Chargen(self.base_window, ability_label,race_list, alignment_list, gender_list,class_list,button_row)
+        self.chargen_screen = chargen_page.Chargen(self.base_window, ability_label, race_list, alignment_list, gender_list, class_list, button_row)
         self.chargen_screen.display_chargen_buttons()
         self.chargen_screen.display_race_picker()
         self.chargen_screen.display_alignment_picker()
@@ -134,7 +134,7 @@ class MasterFSM(FSM, DirectObject):
 
     def enterChargenP2(self):
         character_data = self.chargen_screen.new_char
-        self.accept('chargenp2_finished', self.handle_chargen_done)
+        self.accept("chargen_done", self.handle_chargen_done)
         self.accept('chargen_cancel', self.handle_chargen_cancel)
         ability_frame, button_frame = self.ui.chargenp2_frame()
         screen_frame = self.ui.chargen_screen_frame
@@ -147,14 +147,14 @@ class MasterFSM(FSM, DirectObject):
 
     def exitChargenP2(self):
         self.ignore('escape')
-        self.ignore('chargenp2_finished')
+        self.ignore('chargen_done')
         self.ignore('chargen_cancel')
         self.ui.clear_gui()
 
     def enterParty(self):
         party_label, box_frame, button_frame = self.ui.party_assign_frame()
-        party_page = party_assign.PartyAssign(self.base_window, party_label, box_frame, button_frame, self.character_list,
-            self.adventure_party)
+        party_page = party_assign_page.PartyAssign(self.base_window, party_label, box_frame, button_frame, self.character_list,
+                                                   self.adventure_party)
         party_page.display_party_assign()
 
     def exitParty(self):

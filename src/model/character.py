@@ -1,5 +1,5 @@
 from model import race, alignment, pcclass
-from rules import diceroll
+from rules import dice
 
 class Character:
     def __init__(self):
@@ -20,6 +20,7 @@ class Character:
         self.attack_values = {}
         self.max_hp = 0
         self.hp_fraction = 0
+        self.name = ""
 
     def ability_modifier(self, ability):
         return (
@@ -40,10 +41,10 @@ class Character:
             quantity, size = pcclass.get_hit_die(charclass, self.level)
             total = 0
             for _ in range(quantity):
-                die_roll = diceroll.roll(1, size)
+                die_roll = dice.roll(1, size)
                 # Reroll 1s once if level is 3 or less
                 if self.level <= 3 and die_roll == 1:
-                    die_roll = diceroll.roll(1, size)
+                    die_roll = dice.roll(1, size)
                 total += die_roll
             # Divide total by number of classes
             share = total / num_classes

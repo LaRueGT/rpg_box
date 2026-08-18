@@ -103,7 +103,6 @@ class Chargen_p2(DirectObject):
             scale=0.07,
             text_font=self.label_font,
             command=self.handle_name_submit,
-            extraArgs=[]
         )
         self.name_frame.addItem(self.name_entry)
         self.name_frame.addItem(submit_btn)
@@ -118,8 +117,8 @@ class Chargen_p2(DirectObject):
             label['text'] = str(self.base_stats[stat])
         self.refresh_ui()
 
-    def handle_name_submit(self):
-        name = self.name_entry.get()
+    def handle_name_submit(self, submitted_text=None):
+        name = submitted_text if submitted_text is not None else self.name_entry.get()
         if name.strip():
             print(f"Character named: {name}")
             self.new_char.name = name

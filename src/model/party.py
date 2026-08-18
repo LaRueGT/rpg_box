@@ -1,5 +1,5 @@
 from model import race, alignment, pcclass, character
-from rules import diceroll
+from rules import dice
 
 class Party:
     def __init__(self):
