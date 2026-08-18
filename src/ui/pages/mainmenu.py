@@ -2,8 +2,7 @@ import sys
 from direct.showbase.MessengerGlobal import messenger
 from direct.gui.DirectGui import DirectButton
 from direct.showbase.DirectObject import DirectObject
-import character
-import party
+from model import character, party
 
 
 class MainMenu(DirectObject):

@@ -13,11 +13,8 @@ from direct.task.TaskManagerGlobal import taskMgr
 
 from panda3d.core import NodePath, TextNode
 
-import alignment
-import character
-import diceroll
-import pcclass
-import race
+from model import pcclass
+from rules import character_creation
 
 class Chargen_p2(DirectObject):
     def __init__(self, base, screen_frame, ability_frame, button_frame, character_obj, modifiers_label, attacks_label, hp_label):

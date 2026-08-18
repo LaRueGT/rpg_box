@@ -5,16 +5,16 @@ import sys
 from direct.fsm.FSM import FSM
 from direct.showbase.DirectObject import DirectObject
 
-import gui
+from ui import gui
 
-import chargen
-import chargen_p2
-import covermenu
-import mainmenu
-import narrative
-import party_assign
-import slideshow
-import party
+from ui.pages import chargen
+from ui.pages import chargen_p2
+from ui.pages import covermenu
+from ui.pages import mainmenu
+from ui.pages import narrative
+from ui.pages import party_assign
+from ui.pages import slideshow
+from model import party
 
 #NB: Panda3d FSM uses non-snake function naming with (enterState, exitState, filterState)
 
@@ -48,9 +48,9 @@ class MasterFSM(FSM, DirectObject):
     def handle_chargen_cancel(self):
         self.request('Main')
 
-    def handle_chargen_done(self):
+    def handle_chargen_done(self, character_obj):
         print(f"Adding {character_obj.name} to recruitable list")
-        self.created_characters.append(character_obj)
+        self.character_list.append(character_obj)
         self.request('Main')
 
     def main_chargen(self):

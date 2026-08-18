@@ -25,6 +25,7 @@
 - [x] name the character
 - [ ] party composition screen  
 - [ ] graphic for main menu, representing party characters
+- [ ] refactor gui code / gameplay code separation
 styling for bottom of screen buttons multiple screens   
 grid paper theming for cover menu  
 character sheet styling for character screens  

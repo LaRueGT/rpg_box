@@ -1,7 +1,5 @@
-import race
-import alignment
-import pcclass
-import diceroll
+from model import race, alignment, pcclass
+from rules import diceroll
 
 class Character:
     def __init__(self):

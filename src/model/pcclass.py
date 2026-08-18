@@ -1,7 +1,6 @@
 from enum import Enum
 
-import race
-import alignment
+from model import race, alignment
 
 class PCClass(Enum):
     Acrobat = 1

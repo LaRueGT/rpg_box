@@ -5,12 +5,11 @@ from direct.showbase.DirectObject import DirectObject
 from direct.showbase.MessengerGlobal import messenger
 from panda3d.core import NodePath, TextNode
 
-import alignment
-import character
-import diceroll
-import pcclass
-import race
-
+from model import alignment
+from model import pcclass
+from model import race
+from model.character import Character
+from rules import diceroll
 
 class Chargen(DirectObject):
     def __init__(self, base, ability_label, racelist_frame, alignment_frame, gender_frame, classlist_frame, button_frame):
