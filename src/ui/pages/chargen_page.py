@@ -34,7 +34,10 @@ class Chargen(DirectObject):
         self.class_buttons = []
         self.selected_classes = []
         self.new_char = Character()
-        self.base_stats = {"str": 0, "int": 0, "wis": 0, "dex": 0, "con": 0, "cha": 0}
+        self.base_stats = {
+            ability_name: 0
+            for ability_name in character_creation.ABILITY_NAMES
+        }
 
     def handle_roll_button(self):
         print("roll button pressed")

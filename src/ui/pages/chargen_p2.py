@@ -29,18 +29,14 @@ class Chargen_p2(DirectObject):
         self.label_font = self.base.loader.loadFont('../fonts/EBGaramond-VariableFont_wght.ttf')
         self.done_button = NodePath()
         self.new_char = character_obj
-        self.base_stats = {
-            "Strength": self.new_char.strength,
-            "Intelligence": self.new_char.intelligence,
-            "Wisdom": self.new_char.wisdom,
-            "Dexterity": self.new_char.dexterity,
-            "Constitution": self.new_char.constitution,
-            "Charisma": self.new_char.charisma
-        }
+        self.base_stats = character_creation.get_base_stats(self.new_char)
         self.stat_value_labels = {}
         self.stat_inc_buttons = {}
         self.stat_dec_buttons = {}
-        self.adjustments = {"Strength": 0, "Intelligence": 0, "Wisdom": 0, "Dexterity": 0, "Constitution": 0, "Charisma": 0}
+        self.adjustments = {
+            ability_name: 0
+            for ability_name in character_creation.ABILITY_NAMES
+        }
         self.adjustment_points = 0
         self.points_label = NodePath()
 
@@ -132,26 +128,12 @@ class Chargen_p2(DirectObject):
         messenger.send("chargen_cancel")
 
     def calculate_modifiers(self):
-        # Update character object with final adjusted stats
-        self.new_char.strength = self.base_stats["Strength"] + self.adjustments["Strength"]
-        self.new_char.intelligence = self.base_stats["Intelligence"] + self.adjustments["Intelligence"]
-        self.new_char.wisdom = self.base_stats["Wisdom"] + self.adjustments["Wisdom"]
-        self.new_char.dexterity = self.base_stats["Dexterity"] + self.adjustments["Dexterity"]
-        self.new_char.constitution = self.base_stats["Constitution"] + self.adjustments["Constitution"]
-        self.new_char.charisma = self.base_stats["Charisma"] + self.adjustments["Charisma"]
-        stats = [
-            ("Strength", self.new_char.strength),
-            ("Intelligence", self.new_char.intelligence),
-            ("Wisdom", self.new_char.wisdom),
-            ("Dexterity", self.new_char.dexterity),
-            ("Constitution", self.new_char.constitution),
-            ("Charisma", self.new_char.charisma),
-        ]
-        lines = ["Ability Score Modifiers"]
-        for name, value in stats:
-            mod = self.new_char.ability_modifier(value)
-            sign = "+" if mod > 0 else ""
-            lines.append(f"{name}: {sign}{mod}")
+        character_creation.apply_ability_adjustments(
+            self.new_char,
+            self.base_stats,
+            self.adjustments,
+        )
+        lines = character_creation.build_modifier_lines(self.new_char)
         if self.modifiers_label:
             self.modifiers_label['text'] = "\n".join(lines)
 
