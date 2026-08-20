@@ -119,6 +119,7 @@ class MasterFSM(FSM, DirectObject):
 
     def enterChargen(self):
         self.accept('chargen_continue', self.handle_chargen_continue)
+        self.accept("chargen_cancel", self.handle_chargen_cancel)
         ability_label, race_list, alignment_list, gender_list, class_list, button_row = self.ui.chargen_frame()
         self.chargen_screen = chargen_page.Chargen(self.base_window, ability_label, race_list, alignment_list, gender_list, class_list, button_row)
         self.chargen_screen.display_chargen_buttons()
@@ -129,7 +130,8 @@ class MasterFSM(FSM, DirectObject):
 
     def exitChargen(self):
         self.ignore('escape')
-        self.ignore('chargen_finished')
+        self.ignore("chargen_continue")
+        self.ignore("chargen_cancel")
         self.ui.clear_gui()
 
     def enterChargenP2(self):

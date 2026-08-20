@@ -14,7 +14,7 @@ from direct.task.TaskManagerGlobal import taskMgr
 from panda3d.core import NodePath, TextNode
 
 from model import pcclass
-from rules import character_creation
+from rules import character_creation, leveling_rules
 
 class Chargen_p2(DirectObject):
     def __init__(self, base, screen_frame, ability_frame, button_frame, character_obj, modifiers_label, attacks_label, hp_label):
@@ -60,7 +60,7 @@ class Chargen_p2(DirectObject):
             self.done_button['state'] = DGG.NORMAL
         elif current_text == "Roll HP":
             print("Rolling HP...")
-            self.new_char.roll_hp()
+            leveling_rules.roll_hp_for_character(self.new_char)
             if self.hp_label:
                 self.hp_label['text'] = f"HP: {self.new_char.max_hp}"
             self.done_button['state'] = DGG.DISABLED
@@ -139,7 +139,7 @@ class Chargen_p2(DirectObject):
 
     def display_attack_values(self):
         thaco = 19
-        attacks = self.new_char.get_attack_values(thaco)
+        attacks = leveling_rules.get_attack_values(self.new_char.thaco)
         # Sort keys to ensure they line up correctly
         sorted_keys = sorted(attacks.keys())
         # Format rows
