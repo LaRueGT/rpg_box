@@ -23,9 +23,9 @@
 - [ ] armor class
 - [ ] secondary skill table
 - [x] name the character
-- [ ] party composition screen  
+- [x] party composition screen  
 - [ ] graphic for main menu, representing party characters
-- [ ] refactor gui code / gameplay code separation
+- [x] refactor gui code / gameplay code separation
 - [ ] leveling rules roll_hp, accommodate multiclass leveling at different rates
 - [ ] pccclass hit die, accommodate levels beyond 1
 - 

@@ -3,11 +3,12 @@ from direct.showbase.MessengerGlobal import messenger
 from direct.task import Task
 from direct.task.TaskManagerGlobal import taskMgr
 from panda3d.core import CardMaker
-from panda3d.core import NodePath
+from panda3d.core import NodePath, TextNode
+from direct.gui.DirectGui import DirectLabel
 
 
 class Narrative(DirectObject):
-    def __init__(self, base, frame, label):
+    def __init__(self, base, ui):
         #placeholders and defaults
         super().__init__()
         self.picture_sequence = []
@@ -20,8 +21,15 @@ class Narrative(DirectObject):
         self.page_flag = False
         #setup
         self.base_window = base
-        self.art_frame = frame
-        self.label = label
+        self.ui = ui
+        self.art_frame = ui.make_content_frame(frame_color=(0, 0, 1, 1))
+        self.text_frame = ui.make_content_frame(frame_color=(0, 1, 0, 1),
+                                                 frame_size=(-1.715, 1.715, -.205, .205),
+                                                 pos=(0, 0, -0.675))
+        self.label = DirectLabel(parent=self.text_frame, text_font=ui.label_font,
+                                 text="Initial Text", text_scale=(0.07, 0.07),
+                                 text_align=TextNode.ALeft, text_wordwrap=48,
+                                 text_pos=(-1.65, 0.13), frameColor=(0, 0, 0, 0))
         self.accept('enter', self.page_turn)
         self.accept('space', self.page_turn)
 

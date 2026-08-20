@@ -9,6 +9,7 @@ from ui import gui
 
 from ui.pages import chargen_page
 from ui.pages import cover_page
+from ui.pages import delete_character_page
 from ui.pages import main_menu_page
 from ui.pages import narrative_page
 from ui.pages import party_assign_page
@@ -21,7 +22,7 @@ class MasterFSM(FSM, DirectObject):
     def __init__(self, base):
         FSM.__init__(self, 'MasterFSM')
         self.base_window = base
-        self.ui = gui.Gui(self.base_window)
+        self.ui = gui.GuiRoot(self.base_window)
         self.chargen_screen = None
         self.main_menu = None
         self.character_list = []
@@ -58,13 +59,31 @@ class MasterFSM(FSM, DirectObject):
     def main_party_assign(self):
         self.request('Party')
 
+    def main_delete_character(self):
+        self.request('DeleteCharacter')
+
+    def handle_party_done(self):
+        self.request('Main')
+
+    def handle_delete_characters(self, characters):
+        party_members = set(self.adventure_party.members)
+        characters_to_delete = {
+            character for character in characters
+            if character not in party_members
+        }
+        self.character_list[:] = [
+            character for character in self.character_list
+            if character not in characters_to_delete
+        ]
+        self.request('Main')
+
     def handle_main_done(self):
         sys.exit(0)
 
     #state methods
     def enterIntro(self):
         self.accept('slides_finished', self.handle_intro_done)
-        slide_frame = self.ui.centerfold_frame()
+        slide_frame = self.ui.make_full_page_frame()
         intro = slideshow.Slideshow(self.base_window, slide_frame)
         intro.display_intro_sequence()
 
@@ -77,8 +96,7 @@ class MasterFSM(FSM, DirectObject):
     def enterCover(self):
         self.accept('play_button_pressed', self.cover_play)
         self.accept('demo_button_pressed', self.cover_demo)
-        cover_label, cover_button_frame = self.ui.cover_frame()
-        cover = cover_page.CoverMenu(self.base_window, cover_label, cover_button_frame)
+        cover = cover_page.CoverMenu(self.base_window, self.ui)
         cover.display_cover_menu()
 
     def exitCover(self):
@@ -91,8 +109,7 @@ class MasterFSM(FSM, DirectObject):
 
     def enterDemo(self):
         self.accept('demo_finished', self.handle_intro_done)
-        narrative_frame, text_label = self.ui.narrative_frame()
-        test_narrative = narrative_page.Narrative(self.base_window, narrative_frame, text_label)
+        test_narrative = narrative_page.Narrative(self.base_window, self.ui)
         test_narrative.display_dummy_narrative()
 
     def exitDemo(self):
@@ -105,8 +122,8 @@ class MasterFSM(FSM, DirectObject):
         self.accept('main_finished', self.handle_main_done)
         self.accept('chargen_button_pressed', self.main_chargen)
         self.accept('party_assign_button_pressed', self.main_party_assign)
-        party_label, button_grid = self.ui.main_frame()
-        self.main_menu = main_menu_page.MainMenu(self.base_window, party_label, button_grid, self.character_list)
+        self.accept('delete_character_button_pressed', self.main_delete_character)
+        self.main_menu = main_menu_page.MainMenu(self.base_window, self.ui, self.character_list)
         self.main_menu.party = self.adventure_party
         self.main_menu.display_main_menu()
 
@@ -116,13 +133,13 @@ class MasterFSM(FSM, DirectObject):
         self.ignore('main_finished')
         self.ignore('chargen_button_pressed')
         self.ignore('party_assign_button_pressed')
+        self.ignore('delete_character_button_pressed')
         self.ui.clear_gui()
 
     def enterChargen(self):
         self.accept('chargen_continue', self.handle_chargen_continue)
         self.accept("chargen_cancel", self.handle_chargen_cancel)
-        screen_frame, button_frame = self.ui.chargen_frame()
-        self.chargen_screen = chargen_page.Chargen(self.base_window, screen_frame, button_frame)
+        self.chargen_screen = chargen_page.Chargen(self.base_window, self.ui)
         self.chargen_screen.display_first_page()
 
     def exitChargen(self):
@@ -135,10 +152,7 @@ class MasterFSM(FSM, DirectObject):
         character_data = self.chargen_screen.new_char
         self.accept("chargen_done", self.handle_chargen_done)
         self.accept('chargen_cancel', self.handle_chargen_cancel)
-        screen_frame, button_frame = self.ui.chargen_frame()
-        self.chargen_screen = chargen_page.Chargen(
-            self.base_window, screen_frame, button_frame, character_data
-        )
+        self.chargen_screen = chargen_page.Chargen(self.base_window, self.ui, character_data)
         self.chargen_screen.display_second_page()
 
     def exitChargenP2(self):
@@ -148,10 +162,27 @@ class MasterFSM(FSM, DirectObject):
         self.ui.clear_gui()
 
     def enterParty(self):
-        party_label, box_frame, button_frame = self.ui.party_assign_frame()
-        party_page = party_assign_page.PartyAssign(self.base_window, party_label, box_frame, button_frame, self.character_list,
-                                                   self.adventure_party)
+        self.accept('main_menu_requested', self.handle_party_done)
+        party_page = party_assign_page.PartyAssign(self.base_window, self.ui,
+                                                   self.character_list, self.adventure_party)
         party_page.display_party_assign()
 
     def exitParty(self):
+        self.ignore('main_menu_requested')
+        self.ui.clear_gui()
+
+    def enterDeleteCharacter(self):
+        self.accept('delete_characters_requested', self.handle_delete_characters)
+        self.accept('main_menu_requested', self.handle_party_done)
+        delete_page = delete_character_page.DeleteCharacter(
+            self.base_window,
+            self.ui,
+            self.character_list,
+            self.adventure_party,
+        )
+        delete_page.display_delete_characters()
+
+    def exitDeleteCharacter(self):
+        self.ignore('delete_characters_requested')
+        self.ignore('main_menu_requested')
         self.ui.clear_gui()

@@ -21,13 +21,14 @@ class Chargen(DirectObject):
     actions into the chargen events consumed by masterFSM.
     """
 
-    def __init__(self, base, screen_frame, button_frame=None, character_obj=None):
+    def __init__(self, base, ui, character_obj=None):
         super().__init__()
         self.base = base
-        self.screen_frame = screen_frame
-        self.button_frame = button_frame
+        self.ui = ui
+        self.screen_frame = ui.make_grid_paper_page()
+        self.button_frame = ui.make_button_row(frame_color=(0, 0, 0, 0))
         self.roll_button = NodePath()
-        self.label_font = self.base.loader.loadFont('../fonts/EBGaramond-VariableFont_wght.ttf')
+        self.label_font = ui.label_font
         self.races = []
         self.race_buttons = []
         self.selected_race = [None]
