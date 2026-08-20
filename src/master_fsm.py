@@ -8,7 +8,6 @@ from direct.showbase.DirectObject import DirectObject
 from ui import gui
 
 from ui.pages import chargen_page
-from ui.pages import chargen_p2
 from ui.pages import cover_page
 from ui.pages import main_menu_page
 from ui.pages import narrative_page
@@ -115,18 +114,16 @@ class MasterFSM(FSM, DirectObject):
         self.ignore('escape')
         self.ignore('space')
         self.ignore('main_finished')
+        self.ignore('chargen_button_pressed')
+        self.ignore('party_assign_button_pressed')
         self.ui.clear_gui()
 
     def enterChargen(self):
         self.accept('chargen_continue', self.handle_chargen_continue)
         self.accept("chargen_cancel", self.handle_chargen_cancel)
-        ability_label, race_list, alignment_list, gender_list, class_list, button_row = self.ui.chargen_frame()
-        self.chargen_screen = chargen_page.Chargen(self.base_window, ability_label, race_list, alignment_list, gender_list, class_list, button_row)
-        self.chargen_screen.display_chargen_buttons()
-        self.chargen_screen.display_race_picker()
-        self.chargen_screen.display_alignment_picker()
-        self.chargen_screen.display_gender_picker()
-        self.chargen_screen.display_class_picker()
+        screen_frame, button_frame = self.ui.chargen_frame()
+        self.chargen_screen = chargen_page.Chargen(self.base_window, screen_frame, button_frame)
+        self.chargen_screen.display_first_page()
 
     def exitChargen(self):
         self.ignore('escape')
@@ -138,14 +135,11 @@ class MasterFSM(FSM, DirectObject):
         character_data = self.chargen_screen.new_char
         self.accept("chargen_done", self.handle_chargen_done)
         self.accept('chargen_cancel', self.handle_chargen_cancel)
-        ability_frame, button_frame = self.ui.chargenp2_frame()
-        screen_frame = self.ui.chargen_screen_frame
-        modifiers_label = self.ui.modifiers_label
-        attacks_label = self.ui.attack_values_label
-        hp_label = self.ui.hp_label
-        chargen_pg2 = chargen_p2.Chargen_p2(self.base_window, screen_frame, ability_frame, button_frame, character_data, modifiers_label, attacks_label, hp_label)
-        chargen_pg2.display_adjustment_boxes()
-        chargen_pg2.display_chargen_buttons()
+        screen_frame, button_frame = self.ui.chargen_frame()
+        self.chargen_screen = chargen_page.Chargen(
+            self.base_window, screen_frame, button_frame, character_data
+        )
+        self.chargen_screen.display_second_page()
 
     def exitChargenP2(self):
         self.ignore('escape')
@@ -160,4 +154,4 @@ class MasterFSM(FSM, DirectObject):
         party_page.display_party_assign()
 
     def exitParty(self):
-        pass
+        self.ui.clear_gui()

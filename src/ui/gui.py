@@ -37,19 +37,6 @@ class Gui:
         self.text_frame = NodePath()
         self.text_label = NodePath()
         self.chargen_screen_frame = NodePath()
-        self.abilities_label = NodePath()
-        self.race_heading = NodePath()
-        self.racelist_frame = NodePath()
-        self.alignment_heading = NodePath()
-        self.alignment_frame = NodePath()
-        self.gender_heading = NodePath()
-        self.gender_frame = NodePath()
-        self.ability_adjustment_frame = NodePath()
-        self.modifiers_label = NodePath()
-        self.attack_values_label = NodePath()
-        self.hp_label = NodePath()
-        self.adjust_heading = NodePath()
-        self.classlist_frame = NodePath()
 
     def clear_gui(self):
         self.base_frame.node().removeAllChildren()
@@ -77,112 +64,26 @@ class Gui:
                                            pos=(-1.715, 0, -0.91))
         return self.cover_label, self.button_frame
 
-    def chargen_frame(self) -> tuple[NodePath, NodePath, NodePath, NodePath, NodePath, NodePath]:
+    def chargen_frame(self) -> tuple[NodePath, NodePath]:
+        """Return the shared paper frame used by both chargen stages.
+
+        Controls and labels belong to the chargen page.  Keeping only this
+        common frame here lets the page own its widgets and presentation.
+        """
         self.chargen_screen_frame = DirectFrame(parent=self.base_frame,
                                              frameColor=(1, 1, 1, 1),
                                              frameSize=(-1.715, 1.715, -.88, .94),
                                              pos=(0, 0, 0),
                                              frameTexture='../assets/gridpaper_tex.png')
         self.chargen_screen_frame.guiItem.get_state_def(0).set_tex_scale(TextureStage.getDefault(), 1, 0.53)
-        self.abilities_label = DirectLabel(parent=self.chargen_screen_frame,
-                                           text_font=self.label_font,
-                                           text_scale=(0.07, 0.07),
-                                           text="Roll Ability Scores\nStrength: ROLL READY\nIntelligence: ROLL READY\nWisdom: ROLL READY\nDexterity: ROLL READY\nConstitution: ROLL READY\nCharisma: ROLL READY",
-                                           text_align=TextNode.ALeft,
-                                           text_pos=(-1.665, 0.85),
-                                           frameColor=(0, 0, 0, 0))
-        self.racelist_frame = DirectFrame(parent=self.chargen_screen_frame,
-                                          frameColor=(.25, .25, .25, 0),
-                                          frameSize=(0, 0.8, -0.8, .0),
-                                          pos=(-1.665, 0, 0.15))
-        self.race_heading = DirectLabel(parent=self.racelist_frame,
-                                   text="Choose Race",
-                                   text_font=self.label_font,
-                                   text_scale=0.07,
-                                   text_align=TextNode.ALeft,
-                                   pos=(0, 0, 0.05),
-                                   frameColor=(0, 0, 0, 0))
-        self.alignment_frame = DirectFrame(parent=self.chargen_screen_frame,
-                                           frameColor=(.25, .25, .25, 0),
-                                           frameSize=(0, 0.8, -0.3, .0),
-                                           pos=(-0.969, 0, 0.15))
-        self.alignment_heading = DirectLabel(parent=self.alignment_frame,
-                                             text="Choose Alignment",
-                                             text_font=self.label_font,
-                                             text_scale=0.07,
-                                             text_align=TextNode.ALeft,
-                                             pos=(0, 0, 0.05),
-                                             frameColor=(0, 0, 0, 0))
-        self.gender_frame = DirectFrame(parent=self.chargen_screen_frame,
-                                        frameColor=(.25, .25, .25, 0),
-                                        frameSize=(0, 0.8, -0.2, .0),
-                                        pos=(-0.969, 0, -0.35))
-        self.gender_heading = DirectLabel(parent=self.gender_frame,
-                                          text="Choose Gender",
-                                          text_font=self.label_font,
-                                          text_scale=0.07,
-                                          text_align=TextNode.ALeft,
-                                          pos=(0, 0, 0.05),
-                                          frameColor=(0, 0, 0, 0))
-        self.classlist_frame = DirectFrame(parent=self.chargen_screen_frame,
-                                           frameColor=(.25, .25, .25, 0),
-                                           frameSize=(0, 0.8, -1.4, .0),
-                                           pos=(-.19, 0, 0.8))
-        self.class_heading = DirectLabel(parent=self.classlist_frame,
-                                         text="Choose Classes (Max 3)",
-                                         text_font=self.label_font,
-                                         text_scale=0.07,
-                                         text_align=TextNode.ALeft,
-                                         pos=(0, 0, 0.05),
-                                         frameColor=(0, 0, 0, 0))
-        self.button_frame = DirectBoxSizer(orientation=DGG.HORIZONTAL,
-                                           parent=self.base_frame,
-                                           frameColor=(0, 0, 0, 0),
-                                           frameSize=(-.25, .25, -.25, .25),
-                                           text_font=self.label_font,
-                                           text_scale=0.07,
-                                           text_align=TextNode.ALeft,
-                                           pos=(-1.715, 0, -0.91))
-        return self.abilities_label, self.racelist_frame, self.alignment_frame, self.gender_frame, self.classlist_frame, self.button_frame
-
-    def chargenp2_frame(self) -> tuple[NodePath, NodePath]:
-        self.chargen_screen_frame = DirectFrame(parent=self.base_frame,
-                                                frameColor=(1, 1, 1, 1),
-                                                frameSize=(-1.715, 1.715, -.88, .94),
-                                                pos=(0, 0, 0),
-                                                frameTexture='../assets/gridpaper_tex.png')
-        self.chargen_screen_frame.guiItem.get_state_def(0).set_tex_scale(TextureStage.getDefault(), 1, 0.53)
-        self.ability_adjustment_frame = DirectFrame(parent=self.chargen_screen_frame,
-                                                    frameColor=(.25, .25, .25, 0),
-                                                    frameSize=(0, 0.8, -0.6, .0),
-                                                    pos=(-1.665, 0, 0.85))
-        self.modifiers_label = DirectLabel(parent=self.chargen_screen_frame,
-                                           text_font=self.label_font,
-                                           text_scale=(0.07, 0.07),
-                                           text="Ability Score Modifiers",
-                                           text_align=TextNode.ALeft,
-                                           pos=(-0.8, 0, 0.85),
-                                           frameColor=(0, 0, 0, 0))
-        self.attack_values_label = DirectLabel(parent=self.chargen_screen_frame,
-                                               text_font=self.label_font,
-                                               text_scale=(0.07, 0.07),
-                                               text="Attack Values",
-                                               text_align=TextNode.ALeft,
-                                               pos=(-0.8, 0, 0.15),
-                                               frameColor=(0, 0, 0, 0))
-        self.hp_label = DirectLabel(parent=self.chargen_screen_frame,
-                                    text_font=self.label_font,
-                                    text_scale=(0.07, 0.07),
-                                    text="HP: ROLL READY",
-                                    text_align=TextNode.ALeft,
-                                    pos=(-0.8, 0, -0.15),
-                                    frameColor=(0, 0, 0, 0))
-        self.button_frame = DirectBoxSizer(orientation=DGG.HORIZONTAL,
-                                           parent=self.base_frame,
-                                           frameColor=(0, 0, 0, 0),
-                                           frameSize=(-.25, .25, -.25, .25),
-                                           pos=(-1.715, 0, -0.91))
-        return self.ability_adjustment_frame, self.button_frame
+        self.chargen_button_frame = DirectBoxSizer(
+            orientation=DGG.HORIZONTAL,
+            parent=self.base_frame,
+            frameColor=(0, 0, 0, 0),
+            frameSize=(-.25, .25, -.25, .25),
+            pos=(-1.715, 0, -.91),
+        )
+        return self.chargen_screen_frame, self.chargen_button_frame
 
     def main_frame(self) -> tuple[NodePath, NodePath]:
         self.text_frame = DirectFrame(parent=self.base_frame,

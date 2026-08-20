@@ -13,7 +13,7 @@ class Character:
         self.gender = None
         self.char_classes = []
         self.exp_factor = []
-        self.level = 1
+        self.level = [1]
         self.exp_amount = []
         self.char_alignment = None
         self.thaco = 19
