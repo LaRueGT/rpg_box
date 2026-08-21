@@ -4,6 +4,7 @@ from direct.gui.DirectGui import DirectButton, DirectLabel
 from DirectGuiExtension.DirectGridSizer import DirectGridSizer
 from direct.showbase.DirectObject import DirectObject
 from model import party
+from rules import ability_rules
 
 
 class MainMenu(DirectObject):
@@ -46,6 +47,7 @@ class MainMenu(DirectObject):
 
     def handle_view_button(self):
         print("view button pressed")
+        messenger.send("view_character_button_pressed")
 
     def handle_play_button(self):
         print("play button pressed")
@@ -95,10 +97,21 @@ class MainMenu(DirectObject):
 
     def update_party_display(self):
         """Refresh the party summary shown in the main-menu content frame."""
-        heading = "{:<24}{}".format("Name", "Max HP")
+        heading = "{:<24}{:>4}{:>8}".format("Name", "AC", "Max HP")
         members = "\n".join(
-            "{:<24}{}".format(member.name, member.max_hp)
+            "{:<24}{:>4}{:>8}".format(
+                member.name,
+                self._armor_class(member),
+                member.max_hp,
+            )
             for member in self.party.members
         )
         party_text = "Party Members\n\n" + heading
         self.cover_label['text'] = party_text + ("\n" + members if members else "\n(None selected)")
+
+    @staticmethod
+    def _armor_class(character):
+        try:
+            return ability_rules.armor_class(character.dexterity)
+        except (AttributeError, TypeError, ValueError):
+            return "-"

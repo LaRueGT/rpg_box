@@ -8,6 +8,7 @@ from direct.showbase.DirectObject import DirectObject
 from ui import gui
 
 from ui.pages import chargen_page
+from ui.pages import character_sheet_page
 from ui.pages import cover_page
 from ui.pages import delete_character_page
 from ui.pages import main_menu_page
@@ -61,6 +62,9 @@ class MasterFSM(FSM, DirectObject):
 
     def main_delete_character(self):
         self.request('DeleteCharacter')
+
+    def main_view_character(self):
+        self.request('CharacterSheet')
 
     def handle_party_done(self):
         self.request('Main')
@@ -123,6 +127,7 @@ class MasterFSM(FSM, DirectObject):
         self.accept('chargen_button_pressed', self.main_chargen)
         self.accept('party_assign_button_pressed', self.main_party_assign)
         self.accept('delete_character_button_pressed', self.main_delete_character)
+        self.accept('view_character_button_pressed', self.main_view_character)
         self.main_menu = main_menu_page.MainMenu(self.base_window, self.ui, self.character_list)
         self.main_menu.party = self.adventure_party
         self.main_menu.display_main_menu()
@@ -134,6 +139,7 @@ class MasterFSM(FSM, DirectObject):
         self.ignore('chargen_button_pressed')
         self.ignore('party_assign_button_pressed')
         self.ignore('delete_character_button_pressed')
+        self.ignore('view_character_button_pressed')
         self.ui.clear_gui()
 
     def enterChargen(self):
@@ -185,4 +191,16 @@ class MasterFSM(FSM, DirectObject):
     def exitDeleteCharacter(self):
         self.ignore('delete_characters_requested')
         self.ignore('main_menu_requested')
+        self.ui.clear_gui()
+
+    def enterCharacterSheet(self):
+        self.accept('main_menu_requested', self.handle_party_done)
+        character_sheet = character_sheet_page.CharacterSheet(
+            self.base_window, self.ui, self.character_list,
+        )
+        character_sheet.display_character_sheet()
+
+    def exitCharacterSheet(self):
+        self.ignore('main_menu_requested')
+        self.ignore('escape')
         self.ui.clear_gui()

@@ -1,0 +1,166 @@
+"""Character sheet display used by the main-menu View Character action."""
+
+from direct.gui.DirectGui import DirectButton, DirectFrame, DirectLabel
+from direct.showbase.DirectObject import DirectObject
+from direct.showbase.MessengerGlobal import messenger
+from panda3d.core import TextNode
+
+from rules import ability_rules, leveling_rules
+from rules.character_creation import ABILITY_ATTRS
+
+
+class CharacterSheet(DirectObject):
+    """Display the currently selected character and allow switching characters."""
+
+    SAVE_LABELS = (
+        ("death_poison", "Death / Poison"),
+        ("wands", "Wands"),
+        ("paralysis_petrify", "Paralysis / Petrify"),
+        ("breath", "Breath"),
+        ("spells_rods_staves", "Spells / Rods / Staves"),
+    )
+
+    def __init__(self, base, ui, character_list):
+        super().__init__()
+        self.base_window = base
+        self.ui = ui
+        self.characters = list(character_list)
+        self.selected_character = self.characters[0] if self.characters else None
+
+        self.page_frame = ui.make_grid_paper_page()
+        # Light panels echo the reference sheet while keeping the graph-paper
+        # page visible. Labels stay parented to page_frame; see _make_label.
+        self._make_panel((-1.62, -0.04, .34, .55))
+        self._make_panel((.04, 1.62, .34, .55))
+        self._make_panel((-1.62, -0.04, -.73, .27))
+        self._make_panel((.04, 1.62, -.73, .27))
+        self.button_frame = ui.make_button_row(frame_color=(0, 0, 0, 0))
+        self.title_label = self._make_label(self.page_frame, .055, (-1.53, 0, .79))
+        self.combat_label = self._make_label(self.page_frame, .04, (-1.51, 0, .48))
+        self.ability_label = self._make_label(self.page_frame, .04, (.11, 0, .48))
+        self.inventory_label = self._make_label(self.page_frame, .04, (-1.51, 0, .18))
+        self.future_label = self._make_label(self.page_frame, .04, (.11, 0, .18))
+        self.accept("escape", self.handle_back)
+
+    def display_character_sheet(self):
+        """Create the picker and render the first available character."""
+        DirectLabel(
+            parent=self.page_frame, text="View Character:",
+            text_font=self.ui.label_font, text_scale=.05,
+            pos=(-1.53, 0, .65), frameColor=(0, 0, 0, 0),
+        )
+        for index, character in enumerate(self.characters):
+            button = DirectButton(
+                parent=self.page_frame, text=character.name or "Unnamed",
+                text_font=self.ui.label_font, scale=.045,
+                pos=(-.74 + index * .42, 0, .65),
+                command=self.select_character, extraArgs=[character],
+            )
+            # Keep the buttons visible even when there are more characters than
+            # fit on the first row; this is primarily a small-party interface.
+            if index >= 6:
+                button.setZ(.65 - ((index - 5) // 6) * .1)
+
+        back_button = DirectButton(
+            parent=self.button_frame, text="Back to Menu", scale=.06,
+            text_font=self.ui.label_font, command=self.handle_back,
+        )
+        self.button_frame.addItem(back_button)
+        self.refresh_sheet()
+
+    def _make_panel(self, frame_size):
+        DirectFrame(
+            parent=self.page_frame, frameColor=(1, 1, 1, .28),
+            frameSize=frame_size, pos=(0, 0, 0),
+        )
+
+    def _make_label(self, parent, scale, pos):
+        return DirectLabel(
+            parent=parent, text="", text_font=self.ui.label_font,
+            text_scale=(scale, scale),
+            text_align=TextNode.ALeft, text_pos=(0, 0), pos=pos,
+            frameColor=(0, 0, 0, 0),
+        )
+
+    def select_character(self, character):
+        self.selected_character = character
+        self.refresh_sheet()
+
+    def refresh_sheet(self):
+        character = self.selected_character
+        if character is None:
+            self.title_label["text"] = "CHARACTER SHEET"
+            self.combat_label["text"] = "No characters have been created yet."
+            self.ability_label["text"] = ""
+            self.inventory_label["text"] = ""
+            self.future_label["text"] = ""
+            return
+
+        # Characters created by the current chargen flow already have these
+        # values. Recalculate saves here as a safe fallback for older objects.
+        if character.char_classes:
+            leveling_rules.update_saving_throws(character)
+
+        abilities = self._ability_lines(character)
+        saves = self._saving_throw_lines(character)
+        classes = ", ".join(str(value) for value in character.char_classes) or "None"
+        levels = ", ".join(str(value) for value in character.level) or "1"
+        race = str(character.char_race) if character.char_race else "-"
+        alignment = str(character.char_alignment) if character.char_alignment else "-"
+        ac = self._armor_class(character)
+
+        self.title_label["text"] = f"{character.name or 'Unnamed'}    {race}    {alignment}"
+        self.combat_label["text"] = (
+            f"Class: {classes}    Level: {levels}\n"
+            "COMBAT\n"
+            f"HP: {character.max_hp}\n"
+            f"Armor Class: {ac} (unarmored)\n"
+            f"THAC0: {character.thaco}\n"
+            f"Melee Attack Bonus: {self._modifier(character.strength)}\n"
+            f"Missile Attack Bonus: {self._modifier(character.dexterity)}"
+        )
+        self.ability_label["text"] = "ABILITY SCORES\n" + abilities + "\n\nSAVING THROWS\n" + saves
+        self.inventory_label["text"] = (
+            "EQUIPMENT\n"
+            "Not implemented\n\n"
+            "MONEY / ENCUMBRANCE\n"
+            "Not implemented"
+        )
+        self.future_label["text"] = (
+            "FUTURE FEATURES\n"
+            "Skills, weapons, portrait\n"
+            "Not implemented"
+        )
+
+    @staticmethod
+    def _modifier(score):
+        try:
+            value = ability_rules.ability_modifier(score)
+        except (TypeError, ValueError):
+            return "-"
+        return f"{value:+d}"
+
+    @classmethod
+    def _armor_class(cls, character):
+        try:
+            return ability_rules.armor_class(character.dexterity)
+        except (TypeError, ValueError):
+            return "-"
+
+    @classmethod
+    def _ability_lines(cls, character):
+        return "\n".join(
+            f"{name[:3].upper():<4} {getattr(character, attr):>2}  {cls._modifier(getattr(character, attr)):>2}"
+            for name, attr in ABILITY_ATTRS.items()
+        )
+
+    @staticmethod
+    def _saving_throw_lines(character):
+        return "\n".join(
+            f"{label:<24} {character.saving_throws.get(key, '-') or '-'}"
+            for key, label in CharacterSheet.SAVE_LABELS
+        )
+
+    def handle_back(self):
+        self.ignore("escape")
+        messenger.send("main_menu_requested")

@@ -78,6 +78,11 @@ def dexterity_ac_modifier(dexterity: int) -> int:
     return ability_modifier(dexterity)
 
 
+def armor_class(dexterity: int, base_ac: int = 9) -> int:
+    """Return descending unarmored AC, where a lower value is better."""
+    return base_ac - dexterity_ac_modifier(dexterity)
+
+
 def dexterity_initiative_modifier(dexterity: int) -> int:
     score = _score(dexterity)
     if score == 3:
@@ -154,6 +159,7 @@ additional_languages = intelligence_additional_languages
 magic_save_modifier = wisdom_magic_save_modifier
 missile_attack_modifier = dexterity_missile_modifier
 ac_modifier = dexterity_ac_modifier
+unarmored_armor_class = armor_class
 initiative_modifier = dexterity_initiative_modifier
 hit_point_modifier = constitution_hit_point_modifier
 reaction_modifier = charisma_reaction_modifier
