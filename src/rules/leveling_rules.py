@@ -1,8 +1,45 @@
 from model import pcclass
 from model.character import Character
 from rules import dice
+from rules.ability_rules import constitution_hit_points
+from rules.combat_rules import SAVING_THROW_TYPES, get_saving_throw_values
+
+
+def update_saving_throws(character: Character) -> dict[str, int | None]:
+    """Recalculate saving throws after class or class-level changes.
+
+    Multiclass characters use the lowest (best) target independently for
+    each saving-throw category.
+    """
+    if not character.char_classes:
+        character.saving_throws = {save.value: None for save in SAVING_THROW_TYPES}
+        return character.saving_throws
+
+    class_rows = []
+    for class_index, charclass in enumerate(character.char_classes):
+        class_level = character.level[class_index] if class_index < len(character.level) else 1
+        class_rows.append(get_saving_throw_values(charclass, class_level))
+
+    character.saving_throws = {
+        save.value: min(row[save] for row in class_rows)
+        for save in SAVING_THROW_TYPES
+    }
+    return character.saving_throws
+
+
+def set_class_level(character: Character, class_index: int, level: int) -> None:
+    """Set one class level and refresh the character's saving throws."""
+    if class_index < 0 or class_index >= len(character.char_classes):
+        raise IndexError("class index is out of range")
+    if level < 1:
+        raise ValueError("class level must be at least 1")
+    while len(character.level) < len(character.char_classes):
+        character.level.append(1)
+    character.level[class_index] = level
+    update_saving_throws(character)
 
 def roll_hp_for_character(character: Character) -> None:
+    update_saving_throws(character)
     num_classes = len(character.char_classes)
     if num_classes == 0:
         return
@@ -18,11 +55,7 @@ def roll_hp_for_character(character: Character) -> None:
             # Reroll 1s once if level is 3 or less.
             if class_level <= 3 and die_roll == 1:
                 die_roll = dice.roll(1, size)
-            total += die_roll
-
-    # Constitution modifies the combined pool once before it is averaged
-    # across the character's classes.
-    total += character.ability_modifier(character.constitution)
+            total += constitution_hit_points(die_roll, character.constitution)
 
     # Divide the final pool by the number of classes.
     share = total / num_classes

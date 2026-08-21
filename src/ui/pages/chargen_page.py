@@ -224,6 +224,7 @@ class Chargen(DirectObject):
         # level 1 in every selected class, rather than only in the default
         # single-class slot created by Character.
         self.new_char.level = [1] * len(self.selected_classes)
+        leveling_rules.update_saving_throws(self.new_char)
         # Update experience factors for all selected classes
         self.new_char.exp_factor = character_creation.calculate_exp_factors(
             self.new_char,

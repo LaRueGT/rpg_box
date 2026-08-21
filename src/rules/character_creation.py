@@ -1,6 +1,7 @@
 from model.character import Character
 from model import pcclass
 from rules import dice
+from rules.ability_rules import ability_modifier
 
 ABILITY_NAMES = [
     "Strength",
@@ -67,7 +68,7 @@ def build_modifier_lines(character):
     lines = ["Ability Score Modifiers"]
     for ability_name, attr_name in ABILITY_ATTRS.items():
         value = getattr(character, attr_name)
-        modifier = character.ability_modifier(value)
+        modifier = ability_modifier(value)
         sign = "+" if modifier > 0 else ""
         lines.append(f"{ability_name}: {sign}{modifier}")
     return lines
