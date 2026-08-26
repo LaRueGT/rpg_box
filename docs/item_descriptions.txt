@@ -1,0 +1,59 @@
+Backpack: Has two straps and can be worn on the back, keeping the hands free. Holds up to 400 coins.
+Barrel: A wooden barrel that holds 40 gallons (320 pints) of liquid.
+Bedroll: A heavy wooden blanket with a small pillow.
+Bell: A 1” brass bell.
+Belt pouch: A leather pouch that holds up to 50 coins.
+Block and tackle: Used for hauling or lifting heavy objects. Reduces the effective weight by 1/4. Requires 4 times as much rope.
+Box, iron: A solid iron casket. A large box can hold up to 800 coins; a small box can hold up to 250 coins.
+Caltrops: Small metal spikes sufficient to cover a 5’ square area. Creatures moving through the area have a 2-in-6 chance of treading on a spike. Victims suffer a 50% reduction of movement rate until they are healed.
+Candle: A candle casts a dim light in a 5’ radius and burns for 1 hour.
+Chain: A 10’ length of heavy, iron chain.
+Chalk: Useful for making markings on stone.
+Chest, wooden: A large chest can hold up to 1,000 coins; a small chest can hold up to 300 coins.
+Chisel: Used with a hammer for chipping away stone.
+Cooking pots: Pots and pans for campfire cooking.
+Crowbar: 2–3’ long and made of solid iron. Can be used for forcing doors and other objects open.
+Firewood: A bundle of dry wood. Burns for 8 hours.
+Fishing rod and tackle: A rod, line, hook, and bait box.
+Grappling hook: Made of solid iron, with 3 or 4 prongs. Useful for anchoring ropes.
+Hammer: Can be used for construction or as a mallet with iron or wooden spikes.
+Holy symbol: Some divine spell casters are required to own a holy symbol, often worn as a necklace. The quality of a holy symbol may optionally alter its effectiveness when used by a character attempting to turn the undead. A gold holy symbol grants a +1 bonus to the 2d6 roll for the affected Hit Dice of undead monsters. A wooden holy symbol incurs a –1 penalty to the 2d6 roll which determines the success of the turning attempt.
+Holy water: Water from a holy spring. It is used in some religious rituals and inflicts damage on undead monsters (see Weapon Combat Stats in Old-School Essentials). Holy water does not retain its power if stored in any other container than the special vials it is blessed in.
+Ink: A vial of black ink. Coloured ink costs double. Sufficient for about 50 pages of writing.
+Iron spikes: May be used for wedging doors open or shut, as an anchor to attach a rope to, and many other purposes.
+Ladder: Simple wooden construction. Very encumbering.
+Lantern: Can be closed to hide the light. Burns one oil flask every four hours (24 turns). Casts light in a 30’ radius.
+Lantern, bullseye: Can be closed to hide the light. Burns one oil flask every four hours (24 turns) (1 turn = 10 m in). Casts light in a narrow beam, 100’ long and 20’ wide at the end.
+Lock: A basic iron lock with a key.
+Magnifying glass: Used for studying fine details.
+Manacles: Iron manacles with a chain. Used for binding hands or feet.
+Marbles: A bag of colourful glass beads.
+Mining pick: For breaking rock.
+Mirror: Useful for looking around corners or for reflecting a gaze attack.
+Musical instrument: A stringed instrument (e.g. a lute or mandolin) or a wind instrument (e.g. a flute or pipe). The listed price is for an instrument of basic quality. Higher quality instruments can cost up to ten times as much.
+Oil flask: A flask of oil fuels a lantern for four hours (24 turns). In addition to fuelling lanterns, oil can be used as a weapon:
+▶ Throwing: An oil flask may be lit on fire and thrown (see Weapon Combat Stats in Old-School Essentials).
+▶ Pools: Oil that is poured on the ground and lit covers a diameter of 3 feet and burns for 1 turn, inflicting damage on any character or monster moving through the pool.
+▶ Immunity: Burning oil does not harm monsters that have a natural flame attack.
+Paper or parchment: Approximately 1’-square sheets.
+Pole, 10’: A 2” thick wooden pole useful for poking and prodding suspicious items in a dungeon.
+Quill: A large feather sharpened into a writing point.
+Rations, iron: Dried and preserved food to be carried on long voyages when securing fresh food may be uncertain.
+Rations, standard: Fresh, unpreserved food.
+Rope: Can hold the weight of approximately three human-sized beings.
+Sack: A large sack can hold up to 600 coins; a small sack up to 200 coins.
+Saw: A hand saw for cutting wood.
+Scroll case: An oiled leather tube with a cap. Not completely watertight.
+Sledgehammer: A big heavy hammer for breaking rock.
+Spade or shovel: For excavating earth.
+Stakes and mallet: A wooden mallet and three 18” long stakes. Valuable when confronting vampires.
+Tent: Large enough for 2 adult humans.
+Thieves’ tools: This kit contains all of the tools needed to pick locks.
+Tinder box: Used to light fires, including torches. Using a tinder box takes one round. There is a 2-in-6 chance of success per round.
+Torch: A torch burns for 1 hour (6 turns), clearly illuminating a 30’ radius. Torches may also be used in combat (see Weapon Combat Stats in Old-School Essentials).
+Twine: A wound ball of thin cord or string. Can support up to 30 pounds of weight.
+Vial: A glass vial that can hold up to half a pint of liquid.
+Waterskin: A container, made of hide, that holds 2 pints (1 quart) of fluid.
+Whistle: Useful for signalling or faking bird calls.
+Wolfsbane: This herb can be used to repel lycanthropes. The creature must be hit with the herb in melee combat.
+
