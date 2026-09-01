@@ -45,8 +45,8 @@ class DeleteCharacter(DirectObject):
             check_button = DirectCheckButton(
                 parent=self.list_frame,
                 text=character.name,
-                scale=ui.BUTTON,
-                text_font=ui.label_font,
+                scale=self.ui.BUTTON,
+                text_font=self.ui.label_font,
                 command=self.handle_check,
                 extraArgs=[character],
             )
@@ -56,13 +56,13 @@ class DeleteCharacter(DirectObject):
         delete_button = DirectButton(
             parent=self.button_frame,
             text="[D] Delete Selected",
-            scale=ui.BUTTON, text_font=ui.label_font,
+            scale=self.ui.BUTTON, text_font=self.ui.label_font,
             command=self.handle_delete,
         )
         back_button = DirectButton(
             parent=self.button_frame,
             text="[B] Back to Menu",
-            scale=ui.BUTTON, text_font=ui.label_font,
+            scale=self.ui.BUTTON, text_font=self.ui.label_font,
             command=self.handle_back,
         )
         self.button_frame.addItem(delete_button)

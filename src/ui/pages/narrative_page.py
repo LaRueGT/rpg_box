@@ -22,7 +22,7 @@ class Narrative(DirectObject):
         #setup
         self.base_window = base
         self.ui = ui
-        self.art_frame = ui.make_content_frame(frame_color=(0, 0, 1, 1))
+        self.art_frame = ui.make_content_frame(frame_color=(0, 0, 0, 0))
         self.text_frame = ui.make_content_frame(frame_color=ui.PANEL,
                                                  frame_size=(-1.18, 1.18, -.18, .18),
                                                  pos=(0, 0, -0.68))

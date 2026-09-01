@@ -39,7 +39,8 @@ class CharacterSheet(DirectObject):
         self.combat_label = self._make_label(self.page_frame, ui.SMALL, (-1.12, 0, .48))
         self.ability_label = self._make_label(self.page_frame, ui.SMALL, (.11, 0, .48))
         self.inventory_label = self._make_label(self.page_frame, ui.SMALL, (-1.12, 0, .14))
-        self.future_label = self._make_label(self.page_frame, ui.SMALL, (.11, 0, .14))
+        self.saving_label = self._make_label(self.page_frame, ui.SMALL, (.11, 0, .14))
+        self.future_label = self._make_label(self.page_frame, ui.SMALL, (.11, 0, -.45))
         self.accept("escape", self.handle_back)
 
     def display_character_sheet(self):
@@ -98,6 +99,7 @@ class CharacterSheet(DirectObject):
             self.combat_label["text"] = "No characters have been created yet."
             self.ability_label["text"] = ""
             self.inventory_label["text"] = ""
+            self.saving_label["text"] = ""
             self.future_label["text"] = ""
             return
 
@@ -124,7 +126,8 @@ class CharacterSheet(DirectObject):
             f"Melee Attack Bonus: {self._modifier(character.strength)}\n"
             f"Missile Attack Bonus: {self._modifier(character.dexterity)}"
         )
-        self.ability_label["text"] = "ABILITY SCORES\n" + abilities + "\n\nSAVING THROWS\n" + saves
+        self.ability_label["text"] = "ABILITY SCORES\n" + abilities
+        self.saving_label["text"] = "SAVING THROWS\n" + saves
         self.inventory_label["text"] = (
             "EQUIPMENT\n"
             + self._equipment_lines(character) + "\n\n"

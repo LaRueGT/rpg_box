@@ -57,8 +57,11 @@ class ItemManagement(DirectObject):
         self.refresh()
 
     def refresh(self):
+        # Refreshing the inventory must not append another copy of the Back
+        # button to the persistent bottom bar.
+        self.buttons.clear_items()
         for child in list(self.content.getChildren()):
-            if child != self.status.node():
+            if child != self.status:
                 child.removeNode()
         char = self.selected_character
         if char is None:
@@ -113,6 +116,7 @@ class ItemManagement(DirectObject):
             text=f"[{text[0]}] {text[1:]}",
             scale=self.ui.SMALL,
             text_font=self.ui.label_font,
+            frameSize=(-6.0, 6.0, -1.0, 1.0),
             command=command,
             extraArgs=[item],
         )

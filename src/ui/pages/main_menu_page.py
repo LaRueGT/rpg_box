@@ -28,7 +28,8 @@ class MainMenu(DirectObject):
                                             parent=ui.base_frame,
                                             frameColor=(0, 0, 0, 0),
                                             frameSize=(-1.12, 1.12, -.16, .16),
-                                            pos=(0, 0, -0.68))
+                                            pos=(0, 0, -0.18), pad=(-.70, 0), boxAlign=TextNode.ACenter,
+                                            autoUpdateFrameSize=False)
         self.accept('q', self.handle_quit_button)
         self.accept('escape', self.handle_quit_button)
 
@@ -88,6 +89,11 @@ class MainMenu(DirectObject):
         save_button = DirectButton(parent=self.button_frame, text="[S] Save Game", text_font=self.ui.label_font, scale=self.ui.BUTTON,
                                    command=self.handle_save_button)
         quit_button = DirectButton(parent=self.button_frame, text="[Q] Quit", text_font=self.ui.label_font, scale=self.ui.BUTTON, command=self.handle_quit_button)
+        # Fixed cells keep both columns aligned regardless of label length.
+        for button in (create_button, delete_button, modify_button, view_button,
+                       play_button, assign_party_button, load_button, save_button,
+                       quit_button):
+            button['frameSize'] = (-7.0, 7.0, -1.35, 1.35)
         self.button_frame.addItem(create_button, 0, 0)
         self.button_frame.addItem(delete_button, 1, 0)
         self.button_frame.addItem(modify_button, 2, 0)

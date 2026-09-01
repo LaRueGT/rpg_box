@@ -77,15 +77,15 @@ class Chargen(DirectObject):
         self.ability_frame = self._picker_frame((-1.12, 0, 0.56), .72, -.70)
         self.modifiers_label = DirectLabel(parent=self.screen_frame, text_font=self.label_font,
                                            text_scale=self.ui.BODY, text="Ability Score Modifiers",
-                                           text_align=TextNode.ALeft, pos=(-0.8, 0, 0.85),
+                                           text_align=TextNode.ALeft, pos=(0.12, 0, 0.72),
                                            frameColor=(0, 0, 0, 0))
         self.attacks_label = DirectLabel(parent=self.screen_frame, text_font=self.label_font,
                                          text_scale=self.ui.BODY, text="Attack Values",
-                                         text_align=TextNode.ALeft, pos=(-0.8, 0, 0.15),
+                                         text_align=TextNode.ALeft, pos=(0.12, 0, 0.34),
                                          frameColor=(0, 0, 0, 0))
         self.hp_label = DirectLabel(parent=self.screen_frame, text_font=self.label_font,
                                     text_scale=self.ui.BODY, text="HP: ROLL READY",
-                                    text_align=TextNode.ALeft, pos=(-0.8, 0, -0.15),
+                                    text_align=TextNode.ALeft, pos=(0.12, 0, 0.06),
                                     frameColor=(0, 0, 0, 0))
         self.button_frame = self._button_frame()
         self.base_stats = character_creation.get_base_stats(self.new_char)
@@ -107,7 +107,9 @@ class Chargen(DirectObject):
         return self.button_frame or DirectBoxSizer(
             orientation=DGG.HORIZONTAL, parent=self.screen_frame,
             frameColor=(0, 0, 0, 0), frameSize=(-1.12, 1.12, -.13, .13),
-            pos=(0, 0, -.77), itemMargin=(.035, .035, .02, .02))
+            pos=(0, 0, -.77), itemMargin=(.035, .035, .02, .02),
+            autoUpdateFrameSize=False,
+            itemAlign=DirectBoxSizer.A_Center | DirectBoxSizer.A_Middle)
 
     def handle_roll_button(self):
         print("roll button pressed")
@@ -278,10 +280,10 @@ class Chargen(DirectObject):
             self.races.append(race_option)
             btn = DirectRadioButton(parent=self.race_list_frame,
                                     text=str(race_option),
-                                    scale=0.07,
+                                    scale=self.ui.SMALL,
                                     pos=(0.1, 0, -0.05 - (race_index * 0.1)),
-                                    frameSize=(0, 6, -0.5, 1),
-                                    text_pos=(1.2, 0),
+                                    frameSize=(0, 5, -.45, .45),
+                                    text_pos=(.65, 0),
                                     variable=self.selected_race,
                                     value=[race_option.value],
                                     others=self.race_buttons,
@@ -302,10 +304,10 @@ class Chargen(DirectObject):
             self.alignments.append(align_name)
             btn = DirectRadioButton(parent=self.alignment_frame,
                                     text=str(align_name),
-                                    scale=0.07,
+                                    scale=self.ui.SMALL,
                                     pos=(0.1, 0, -0.05 - (align_index * 0.1)),
-                                    frameSize=(0, 5, -0.5, 1),
-                                    text_pos=(1.2, 0),
+                                    frameSize=(0, 4.5, -.45, .45),
+                                    text_pos=(.65, 0),
                                     variable=self.selected_alignment,
                                     value=[align_name],
                                     others=self.alignment_buttons,
@@ -325,10 +327,10 @@ class Chargen(DirectObject):
         for g_index, g_name in enumerate(genders):
             btn = DirectRadioButton(parent=self.gender_frame,
                                     text=g_name,
-                                    scale=0.07,
+                                    scale=self.ui.SMALL,
                                     pos=(0.1, 0, -0.05 - (g_index * 0.1)),
-                                    frameSize=(0, 5, -0.5, 1),
-                                    text_pos=(1.2, 0),
+                                    frameSize=(0, 4.5, -.45, .45),
+                                    text_pos=(.65, 0),
                                     variable=self.selected_gender,
                                     value=[g_name],
                                     others=self.gender_buttons,
@@ -347,10 +349,10 @@ class Chargen(DirectObject):
         for class_index, class_option in enumerate(pcclass.PCClass):
             btn = DirectCheckButton(parent=self.class_list_frame,
                                     text=str(class_option),
-                                    scale=0.07,
+                                    scale=self.ui.SMALL,
                                     pos=(0.1, 0, -0.05 - (class_index * 0.1)),
-                                    frameSize=(0, 7, -0.5, 1),
-                                    text_pos=(1.2, 0),
+                                    frameSize=(0, 6.5, -.45, .45),
+                                    text_pos=(.65, 0),
                                     text_font=self.label_font,
                                     text_align=TextNode.ALeft,
                                     boxPlacement='left',
@@ -372,13 +374,13 @@ class Chargen(DirectObject):
         for index, stat in enumerate(self.base_stats):
             z_pos = -0.15 - index * 0.12
             DirectLabel(parent=self.ability_frame, text=stat, text_font=self.label_font,
-                        text_scale=0.06, text_align=TextNode.ALeft, pos=(0, 0, z_pos),
+                        text_scale=self.ui.SMALL, text_align=TextNode.ALeft, pos=(0, 0, z_pos),
                         frameColor=(0, 0, 0, 0))
             self.stat_dec_buttons[stat] = DirectButton(parent=self.ability_frame, text="-",
                 scale=self.ui.BUTTON, text_font=self.label_font, pos=(.40, 0, z_pos + .015), command=self.adjust_stat,
                 extraArgs=[stat, -1], text3_fg=(.6, .6, .6, 1))
             self.stat_value_labels[stat] = DirectLabel(parent=self.ability_frame,
-                text=str(self.base_stats[stat]), text_font=self.label_font, text_scale=.06,
+                text=str(self.base_stats[stat]), text_font=self.label_font, text_scale=self.ui.BODY,
                 pos=(.50, 0, z_pos), frameColor=(0, 0, 0, 0))
             self.stat_inc_buttons[stat] = DirectButton(parent=self.ability_frame, text="+",
                 scale=self.ui.BUTTON, text_font=self.label_font, pos=(.60, 0, z_pos + .015), command=self.adjust_stat,
@@ -468,7 +470,7 @@ class Chargen(DirectObject):
 
     def reveal_name_entry(self):
         frame = DirectBoxSizer(orientation=DGG.HORIZONTAL, parent=self.screen_frame,
-                               frameColor=(0, 0, 0, 0), pos=(-1.665, 0, -.75))
+                               frameColor=(0, 0, 0, 0), pos=(-.55, 0, -.74))
         DirectLabel(parent=frame, text="Character Name: ", text_font=self.label_font,
                     text_scale=self.ui.BODY, frameColor=(0, 0, 0, 0))
         self.name_entry = DirectEntry(parent=frame, text_font=self.label_font, scale=self.ui.BODY,
