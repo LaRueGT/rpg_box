@@ -21,9 +21,9 @@ class ActionBar(DirectFrame):
         if current_scale < 0.5:
             element["text_scale"] = (current_scale, current_scale)
         element.setScale(1)
-        element["frameSize"] = (-0.40, 0.40, -0.10, 0.10)
+        element["frameSize"] = (-0.23, 0.23, -0.07, 0.07)
         element.reparentTo(self)
-        element.setPos(0.43 + len(self._items) * 0.87, 0, 0)
+        element.setPos(0.27 + len(self._items) * 0.49, 0, 0)
         self._items.append(element)
 
     def clear_items(self):
@@ -86,7 +86,7 @@ class GuiRoot:
             parent=parent, text=shown, text_font=self.label_font,
             text_scale=(scale, scale), text_fg=self.INK,
             frameColor=(0.78, 0.58, 0.25, 0.92),
-            frameSize=(-0.42, 0.42, -0.11, 0.11), relief=DGG.RAISED,
+            frameSize=(-0.23, 0.23, -0.07, 0.07), relief=DGG.FLAT,
             command=command, extraArgs=extra_args or [],
         )
 
@@ -107,10 +107,12 @@ class GuiRoot:
         return frame
 
     def make_button_row(self, parent=None, frame_color=(0, 0, 0, 0)) -> NodePath:
+        # The first cell sits just inside the physical left edge; this also
+        # keeps the bar correct when the window is wider than 4:3.
         return ActionBar(parent=parent if parent is not None else self.base_frame,
                          frameColor=frame_color,
-                         frameSize=(0, 3.0, -0.13, 0.13),
-                         pos=(-1.25, 0, -0.77))
+                         frameSize=(0, 2.0, -0.09, 0.09),
+                         pos=(-self.screen_bounds[1] + 0.05, 0, -0.86))
 
     def make_content_frame(self, frame_color=PANEL,
                            frame_size=(-1.18, 1.18, -0.62, 0.70), pos=(0, 0, 0)) -> NodePath:
