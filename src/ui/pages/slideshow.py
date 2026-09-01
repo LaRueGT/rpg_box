@@ -27,7 +27,7 @@ class Slideshow(DirectObject):
     def display_intro_sequence(self):
         self.sequence = ['../assets/slide1.png', '../assets/slide2.png', '../assets/slide3.png', '../assets/slide4.png', '../assets/slide5.png']
         cm = CardMaker("card")
-        cm.setFrame(-1.715, 1.715, -.88, .94)
+        cm.setFrame(-1.18, 1.18, -.50, .60)
         self.card = self.art_frame.attachNewNode(cm.generate())
         taskMgr.add(self.display_slides, "display_slides")
 

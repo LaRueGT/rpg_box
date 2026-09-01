@@ -30,29 +30,29 @@ class CharacterSheet(DirectObject):
         self.page_frame = ui.make_grid_paper_page()
         # Light panels echo the reference sheet while keeping the graph-paper
         # page visible. Labels stay parented to page_frame; see _make_label.
-        self._make_panel((-1.62, -0.04, .34, .55))
-        self._make_panel((.04, 1.62, .34, .55))
-        self._make_panel((-1.62, -0.04, -.73, .27))
-        self._make_panel((.04, 1.62, -.73, .27))
+        self._make_panel((-1.20, -.03, .22, .55))
+        self._make_panel((.03, 1.20, .22, .55))
+        self._make_panel((-1.20, -.03, -.62, .16))
+        self._make_panel((.03, 1.20, -.62, .16))
         self.button_frame = ui.make_button_row(frame_color=(0, 0, 0, 0))
-        self.title_label = self._make_label(self.page_frame, .055, (-1.53, 0, .79))
-        self.combat_label = self._make_label(self.page_frame, .04, (-1.51, 0, .48))
-        self.ability_label = self._make_label(self.page_frame, .04, (.11, 0, .48))
-        self.inventory_label = self._make_label(self.page_frame, .04, (-1.51, 0, .18))
-        self.future_label = self._make_label(self.page_frame, .04, (.11, 0, .18))
+        self.title_label = self._make_label(self.page_frame, ui.TITLE, (-1.12, 0, .78))
+        self.combat_label = self._make_label(self.page_frame, ui.SMALL, (-1.12, 0, .48))
+        self.ability_label = self._make_label(self.page_frame, ui.SMALL, (.11, 0, .48))
+        self.inventory_label = self._make_label(self.page_frame, ui.SMALL, (-1.12, 0, .14))
+        self.future_label = self._make_label(self.page_frame, ui.SMALL, (.11, 0, .14))
         self.accept("escape", self.handle_back)
 
     def display_character_sheet(self):
         """Create the picker and render the first available character."""
         DirectLabel(
             parent=self.page_frame, text="View Character:",
-            text_font=self.ui.label_font, text_scale=.05,
-            pos=(-1.53, 0, .65), frameColor=(0, 0, 0, 0),
+            text_font=self.ui.label_font, text_scale=self.ui.BODY,
+            pos=(-1.12, 0, .64), frameColor=(0, 0, 0, 0),
         )
         for index, character in enumerate(self.characters):
             button = DirectButton(
                 parent=self.page_frame, text=character.name or "Unnamed",
-                text_font=self.ui.label_font, scale=.045,
+                text_font=self.ui.label_font, scale=self.ui.BUTTON,
                 pos=(-.74 + index * .42, 0, .65),
                 command=self.select_character, extraArgs=[character],
             )
@@ -62,12 +62,12 @@ class CharacterSheet(DirectObject):
                 button.setZ(.65 - ((index - 5) // 6) * .1)
 
         back_button = DirectButton(
-            parent=self.button_frame, text="Back to Menu", scale=.06,
+            parent=self.button_frame, text="[B] Back to Menu", scale=self.ui.BUTTON,
             text_font=self.ui.label_font, command=self.handle_back,
         )
         self.button_frame.addItem(back_button)
         items_button = DirectButton(
-            parent=self.button_frame, text="Manage Items", scale=.06,
+            parent=self.button_frame, text="[M] Manage Items", scale=self.ui.BUTTON,
             text_font=self.ui.label_font, command=self.handle_items,
         )
         self.button_frame.addItem(items_button)

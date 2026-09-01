@@ -23,13 +23,14 @@ class Narrative(DirectObject):
         self.base_window = base
         self.ui = ui
         self.art_frame = ui.make_content_frame(frame_color=(0, 0, 1, 1))
-        self.text_frame = ui.make_content_frame(frame_color=(0, 1, 0, 1),
-                                                 frame_size=(-1.715, 1.715, -.205, .205),
-                                                 pos=(0, 0, -0.675))
+        self.text_frame = ui.make_content_frame(frame_color=ui.PANEL,
+                                                 frame_size=(-1.18, 1.18, -.18, .18),
+                                                 pos=(0, 0, -0.68))
         self.label = DirectLabel(parent=self.text_frame, text_font=ui.label_font,
-                                 text="Initial Text", text_scale=(0.07, 0.07),
-                                 text_align=TextNode.ALeft, text_wordwrap=48,
-                                 text_pos=(-1.65, 0.13), frameColor=(0, 0, 0, 0))
+                                 text="Initial Text", text_scale=(ui.BODY, ui.BODY),
+                                 text_align=TextNode.ALeft, text_wordwrap=42,
+                                 text_pos=(-1.08, 0.08), text_fg=ui.PAPER,
+                                 frameColor=(0, 0, 0, 0))
         self.accept('enter', self.page_turn)
         self.accept('space', self.page_turn)
 
@@ -45,7 +46,7 @@ class Narrative(DirectObject):
                                3: ['slide4 - page1'],
                                4: ['slide5 - page1', 'slide5 - page2', 'slide5 - page3', 'slide5 - page4', 'slide5 - page5']}
         cm = CardMaker("card")
-        cm.setFrame(-1.715, 1.715, -.46, .94)
+        cm.setFrame(-1.18, 1.18, -.50, .60)
         self.card = self.art_frame.attachNewNode(cm.generate())
         # Load the initial texture
         # initial_tex = self.base_window.loader.loadTexture(self.picture_sequence[0])

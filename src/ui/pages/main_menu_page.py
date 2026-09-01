@@ -5,6 +5,7 @@ from DirectGuiExtension.DirectGridSizer import DirectGridSizer
 from direct.showbase.DirectObject import DirectObject
 from model import party
 from rules import ability_rules
+from panda3d.core import TextNode
 
 
 class MainMenu(DirectObject):
@@ -13,19 +14,21 @@ class MainMenu(DirectObject):
         # setup
         self.base_window = base
         self.ui = ui
-        self.text_frame = ui.make_content_frame(frame_color=(0, 1, 1, 1))
+        self.text_frame = ui.make_content_frame(frame_color=ui.PANEL,
+                                                frame_size=(-1.08, 1.08, -.55, .70))
         self.cover_label = DirectLabel(parent=self.text_frame, text_font=ui.label_font,
-                                       text="", text_scale=(0.065, 0.065),
-                                       text_pos=(0, -0.025), pos=(0, 0, 0.35),
+                                       text="", text_scale=(ui.BODY, ui.BODY),
+                                       text_fg=ui.PAPER, text_align=TextNode.ALeft,
+                                       text_pos=(-.95, -.02), pos=(0, 0, 0.50),
                                        frameColor=(0, 0, 0, 0))
         self.party: party.Party = party.Party()
         self.recruitable_characters = character_list if character_list is not None else []
         self.button_frame = DirectGridSizer(numColumns=2, numRows=5,
                                             itemMargin=[0.01, 0.01, 0.01, 0.01],
                                             parent=ui.base_frame,
-                                            frameColor=(0, 1, 0, 1),
-                                            frameSize=(-1.715, 1.715, -.205, .205),
-                                            pos=(0, 0, -0.675))
+                                            frameColor=(0, 0, 0, 0),
+                                            frameSize=(-1.12, 1.12, -.16, .16),
+                                            pos=(0, 0, -0.68))
         self.accept('q', self.handle_quit_button)
         self.accept('escape', self.handle_quit_button)
 
@@ -66,25 +69,25 @@ class MainMenu(DirectObject):
     def display_main_menu(self):
         self.update_party_display()
         ##column 1
-        create_button = DirectButton(parent=self.button_frame, text="Create Character", scale=.05,
+        create_button = DirectButton(parent=self.button_frame, text="[C] Create Character", text_font=self.ui.label_font, scale=self.ui.BUTTON,
                                      command=self.handle_create_button)
-        delete_button = DirectButton(parent=self.button_frame, text="Delete Character", scale=.05,
+        delete_button = DirectButton(parent=self.button_frame, text="[D] Delete Character", text_font=self.ui.label_font, scale=self.ui.BUTTON,
                                      command=self.handle_delete_button)
-        modify_button = DirectButton(parent=self.button_frame, text="Modify Character", scale=.05,
+        modify_button = DirectButton(parent=self.button_frame, text="[M] Modify Character", text_font=self.ui.label_font, scale=self.ui.BUTTON,
                                      command=self.handle_modify_button)
-        view_button = DirectButton(parent=self.button_frame, text="View Character", scale=.05,
+        view_button = DirectButton(parent=self.button_frame, text="[V] View Character", text_font=self.ui.label_font, scale=self.ui.BUTTON,
                                    command=self.handle_view_button)
-        play_button = DirectButton(parent=self.button_frame, text="Begin Adventuring", scale=.05,
+        play_button = DirectButton(parent=self.button_frame, text="[B] Begin Adventuring", text_font=self.ui.label_font, scale=self.ui.BUTTON,
                                    command=self.handle_play_button)
         ## column 2
         assign_party_button = DirectButton(
-            parent=self.button_frame, text="Assign Party", scale=.05,
+            parent=self.button_frame, text="[A] Assign Party", text_font=self.ui.label_font, scale=self.ui.BUTTON,
             command=self.handle_assign_party_button)
-        load_button = DirectButton(parent=self.button_frame, text="Load Saved Game", scale=.05,
+        load_button = DirectButton(parent=self.button_frame, text="[L] Load Saved Game", text_font=self.ui.label_font, scale=self.ui.BUTTON,
                                    command=self.handle_load_button)
-        save_button = DirectButton(parent=self.button_frame, text="Save Game", scale=.05,
+        save_button = DirectButton(parent=self.button_frame, text="[S] Save Game", text_font=self.ui.label_font, scale=self.ui.BUTTON,
                                    command=self.handle_save_button)
-        quit_button = DirectButton(parent=self.button_frame, text="Quit", scale=.05, command=self.handle_quit_button)
+        quit_button = DirectButton(parent=self.button_frame, text="[Q] Quit", text_font=self.ui.label_font, scale=self.ui.BUTTON, command=self.handle_quit_button)
         self.button_frame.addItem(create_button, 0, 0)
         self.button_frame.addItem(delete_button, 1, 0)
         self.button_frame.addItem(modify_button, 2, 0)

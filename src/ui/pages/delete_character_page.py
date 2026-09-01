@@ -22,14 +22,14 @@ class DeleteCharacter(DirectObject):
         self.page_frame = DirectFrame(
             parent=ui.base_frame,
             frameColor=(.25, .25, .25, 1),
-            frameSize=(-1.715, 1.715, -.88, .94),
+            frameSize=ui.SAFE,
         )
         self.label = DirectLabel(
             parent=self.page_frame,
             text="Select Characters to Delete",
             text_font=ui.label_font,
-            text_scale=(0.1, 0.1),
-            pos=(0, 0, 0.8),
+            text_scale=(ui.TITLE, ui.TITLE), text_fg=ui.GOLD,
+            text_align=2, pos=(0, 0, 0.72),
         )
         self.list_frame = DirectGridSizer(
             numColumns=3,
@@ -45,7 +45,8 @@ class DeleteCharacter(DirectObject):
             check_button = DirectCheckButton(
                 parent=self.list_frame,
                 text=character.name,
-                scale=0.05,
+                scale=ui.BUTTON,
+                text_font=ui.label_font,
                 command=self.handle_check,
                 extraArgs=[character],
             )
@@ -54,14 +55,14 @@ class DeleteCharacter(DirectObject):
 
         delete_button = DirectButton(
             parent=self.button_frame,
-            text="Delete Selected",
-            scale=0.05,
+            text="[D] Delete Selected",
+            scale=ui.BUTTON, text_font=ui.label_font,
             command=self.handle_delete,
         )
         back_button = DirectButton(
             parent=self.button_frame,
-            text="Back to Menu",
-            scale=0.05,
+            text="[B] Back to Menu",
+            scale=ui.BUTTON, text_font=ui.label_font,
             command=self.handle_back,
         )
         self.button_frame.addItem(delete_button)

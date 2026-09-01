@@ -48,21 +48,21 @@ class Chargen(DirectObject):
     def display_first_page(self):
         """Build the race, alignment, gender, and class selection page."""
         self.ability_label = DirectLabel(parent=self.screen_frame, text_font=self.label_font,
-                                         text_scale=(0.07, 0.07),
+                                         text_scale=(self.ui.BODY, self.ui.BODY),
                                          text="Roll Ability Scores\n" + "\n".join(
                                              f"{name.title()}: ROLL READY"
                                              for name in character_creation.ABILITY_NAMES),
-                                         text_align=TextNode.ALeft, text_pos=(-1.665, 0.85),
+                                         text_align=TextNode.ALeft, text_pos=(-1.12, 0.78),
                                          frameColor=(0, 0, 0, 0))
-        self.race_list_frame = self._picker_frame((-1.665, 0, 0.15), 0.8, -0.8)
-        self.alignment_frame = self._picker_frame((-0.969, 0, 0.15), 0.8, -0.3)
-        self.gender_frame = self._picker_frame((-0.969, 0, -0.35), 0.8, -0.2)
-        self.class_list_frame = self._picker_frame((-.19, 0, 0.8), 0.8, -1.4)
+        self.race_list_frame = self._picker_frame((-1.12, 0, 0.48), .52, -.62)
+        self.alignment_frame = self._picker_frame((-.48, 0, 0.48), .52, -.30)
+        self.gender_frame = self._picker_frame((-.48, 0, .08), .52, -.24)
+        self.class_list_frame = self._picker_frame((.12, 0, 0.48), 1.03, -.62)
         for frame, title in ((self.race_list_frame, "Choose Race"),
                              (self.alignment_frame, "Choose Alignment"),
                              (self.gender_frame, "Choose Gender"),
                              (self.class_list_frame, "Choose Classes (Max 3)")):
-            DirectLabel(parent=frame, text=title, text_font=self.label_font, text_scale=0.07,
+            DirectLabel(parent=frame, text=title, text_font=self.label_font, text_scale=self.ui.BODY,
                         text_align=TextNode.ALeft, pos=(0, 0, 0.05), frameColor=(0, 0, 0, 0))
         self.button_frame = self._button_frame()
         self.display_chargen_buttons()
@@ -74,17 +74,17 @@ class Chargen(DirectObject):
     def display_second_page(self):
         """Replace the first page with the ability adjustment page."""
         self.screen_frame.node().removeAllChildren()
-        self.ability_frame = self._picker_frame((-1.665, 0, 0.85), 0.8, -0.6)
+        self.ability_frame = self._picker_frame((-1.12, 0, 0.56), .72, -.70)
         self.modifiers_label = DirectLabel(parent=self.screen_frame, text_font=self.label_font,
-                                           text_scale=0.07, text="Ability Score Modifiers",
+                                           text_scale=self.ui.BODY, text="Ability Score Modifiers",
                                            text_align=TextNode.ALeft, pos=(-0.8, 0, 0.85),
                                            frameColor=(0, 0, 0, 0))
         self.attacks_label = DirectLabel(parent=self.screen_frame, text_font=self.label_font,
-                                         text_scale=0.07, text="Attack Values",
+                                         text_scale=self.ui.BODY, text="Attack Values",
                                          text_align=TextNode.ALeft, pos=(-0.8, 0, 0.15),
                                          frameColor=(0, 0, 0, 0))
         self.hp_label = DirectLabel(parent=self.screen_frame, text_font=self.label_font,
-                                    text_scale=0.07, text="HP: ROLL READY",
+                                    text_scale=self.ui.BODY, text="HP: ROLL READY",
                                     text_align=TextNode.ALeft, pos=(-0.8, 0, -0.15),
                                     frameColor=(0, 0, 0, 0))
         self.button_frame = self._button_frame()
@@ -106,8 +106,8 @@ class Chargen(DirectObject):
     def _button_frame(self):
         return self.button_frame or DirectBoxSizer(
             orientation=DGG.HORIZONTAL, parent=self.screen_frame,
-            frameColor=(0, 0, 0, 0), frameSize=(-.25, .25, -.25, .25),
-            pos=(-1.715, 0, -.91))
+            frameColor=(0, 0, 0, 0), frameSize=(-1.12, 1.12, -.13, .13),
+            pos=(0, 0, -.77), itemMargin=(.035, .035, .02, .02))
 
     def handle_roll_button(self):
         print("roll button pressed")
@@ -245,7 +245,7 @@ class Chargen(DirectObject):
         self.roll_button = DirectButton(
             parent=self.button_frame,
             text="Roll Stats",
-            scale=.07,
+            scale=self.ui.BUTTON,
             command=self.handle_roll_button,
             text_font=self.label_font,
             text_align=TextNode.ALeft,
@@ -375,13 +375,13 @@ class Chargen(DirectObject):
                         text_scale=0.06, text_align=TextNode.ALeft, pos=(0, 0, z_pos),
                         frameColor=(0, 0, 0, 0))
             self.stat_dec_buttons[stat] = DirectButton(parent=self.ability_frame, text="-",
-                scale=.07, pos=(.40, 0, z_pos + .015), command=self.adjust_stat,
+                scale=self.ui.BUTTON, text_font=self.label_font, pos=(.40, 0, z_pos + .015), command=self.adjust_stat,
                 extraArgs=[stat, -1], text3_fg=(.6, .6, .6, 1))
             self.stat_value_labels[stat] = DirectLabel(parent=self.ability_frame,
                 text=str(self.base_stats[stat]), text_font=self.label_font, text_scale=.06,
                 pos=(.50, 0, z_pos), frameColor=(0, 0, 0, 0))
             self.stat_inc_buttons[stat] = DirectButton(parent=self.ability_frame, text="+",
-                scale=.07, pos=(.60, 0, z_pos + .015), command=self.adjust_stat,
+                scale=self.ui.BUTTON, text_font=self.label_font, pos=(.60, 0, z_pos + .015), command=self.adjust_stat,
                 extraArgs=[stat, 1], text3_fg=(.6, .6, .6, 1))
         self.refresh_ui()
 
@@ -419,12 +419,12 @@ class Chargen(DirectObject):
             self.done_button['state'] = DGG.NORMAL if self.adjustment_points == 0 else DGG.DISABLED
 
     def display_second_page_buttons(self):
-        self.done_button = DirectButton(parent=self.button_frame, text="Next", scale=.07,
+        self.done_button = DirectButton(parent=self.button_frame, text="[N] Next", scale=self.ui.BUTTON,
                                         command=self.handle_next_button, text_font=self.label_font,
                                         text_align=TextNode.ALeft, text3_fg=(.6, .6, .6, 1))
-        self.reset_button = DirectButton(parent=self.button_frame, text="Reset", scale=.07,
+        self.reset_button = DirectButton(parent=self.button_frame, text="[R] Reset", scale=self.ui.BUTTON,
                                          command=self.handle_reset_button, text_font=self.label_font)
-        cancel_button = DirectButton(parent=self.button_frame, text="Cancel", scale=.07,
+        cancel_button = DirectButton(parent=self.button_frame, text="[C] Cancel", scale=self.ui.BUTTON,
                                      command=self.handle_cancel_button, text_font=self.label_font)
         for button in (self.done_button, self.reset_button, cancel_button):
             self.button_frame.addItem(button)
@@ -440,6 +440,7 @@ class Chargen(DirectObject):
     def handle_next_button(self):
         current = self.done_button['text']
         current = current[0] if isinstance(current, tuple) else current
+        current = current.split("] ", 1)[-1]
         if current == "Next":
             self.calculate_modifiers()
             self.display_attack_values()
@@ -469,11 +470,11 @@ class Chargen(DirectObject):
         frame = DirectBoxSizer(orientation=DGG.HORIZONTAL, parent=self.screen_frame,
                                frameColor=(0, 0, 0, 0), pos=(-1.665, 0, -.75))
         DirectLabel(parent=frame, text="Character Name: ", text_font=self.label_font,
-                    text_scale=.07, frameColor=(0, 0, 0, 0))
-        self.name_entry = DirectEntry(parent=frame, text_font=self.label_font, scale=.07,
+                    text_scale=self.ui.BODY, frameColor=(0, 0, 0, 0))
+        self.name_entry = DirectEntry(parent=frame, text_font=self.label_font, scale=self.ui.BODY,
                                       width=15, numLines=1, focus=1, cursorKeys=1,
                                       command=self.handle_name_submit)
-        submit = DirectButton(parent=frame, text="Submit", scale=.07,
+        submit = DirectButton(parent=frame, text="[S] Submit", scale=self.ui.BUTTON,
                               text_font=self.label_font, command=self.handle_name_submit)
         for item in (self.name_entry, submit):
             frame.addItem(item)

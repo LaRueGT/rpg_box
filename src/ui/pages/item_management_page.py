@@ -40,14 +40,14 @@ class ItemManagement(DirectObject):
         self.selected_character = self.characters[0] if self.characters else None
         self.page_frame = ui.make_grid_paper_page()
         self.content = ui.make_content_frame(
-            frame_color=(0, 0, 0, 0.78), frame_size=(-1.6, 1.6, -0.72, 0.82)
+            frame_color=ui.PANEL, frame_size=(-1.18, 1.18, -0.70, 0.70)
         )
         self.status = DirectLabel(
             parent=self.content,
             text="",
             text_font=ui.label_font,
             text_scale=0.04,
-            pos=(-1.48, 0, 0.68),
+            pos=(-1.08, 0, 0.58),
             frameColor=(0, 0, 0, 0),
         )
         self.buttons = ui.make_button_row(frame_color=(0, 0, 0, 0))
@@ -79,9 +79,9 @@ class ItemManagement(DirectObject):
         ]
         self.status["text"] = "\n".join(lines)
         for index, item in enumerate(char.inventory.items):
-            y = 0.27 - index * 0.065
+            y = 0.32 - index * 0.075
             self._button(f"Equip {item.name}", self.handle_equip, item).setPos(
-                -0.7, 0, y
+                -0.62, 0, y
             )
             self._button("Drop", self.handle_drop, item).setPos(0.35, 0, y)
             if len(self.characters) > 1:
@@ -91,17 +91,17 @@ class ItemManagement(DirectObject):
             text="TEST SHOP",
             text_font=self.ui.label_font,
             text_scale=0.04,
-            pos=(-1.45, 0, -0.54),
+            pos=(-1.08, 0, -0.40),
             frameColor=(0, 0, 0, 0),
         )
         for index, item in enumerate(self.SHOP_ITEMS):
             self._button(f"Take {item.name}", self.handle_shop, item).setPos(
-                -0.75 + (index % 3) * 0.55, 0, -0.62 - (index // 3) * 0.065
+                -0.72 + (index % 3) * 0.55, 0, -0.50 - (index // 3) * 0.065
             )
         back = DirectButton(
             parent=self.buttons,
-            text="Back",
-            scale=0.055,
+            text="[B] Back",
+            scale=self.ui.BUTTON,
             text_font=self.ui.label_font,
             command=self.handle_back,
         )
@@ -110,8 +110,8 @@ class ItemManagement(DirectObject):
     def _button(self, text, command, item):
         return DirectButton(
             parent=self.content,
-            text=text,
-            scale=0.035,
+            text=f"[{text[0]}] {text[1:]}",
+            scale=self.ui.SMALL,
             text_font=self.ui.label_font,
             command=command,
             extraArgs=[item],

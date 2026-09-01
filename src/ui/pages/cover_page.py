@@ -11,10 +11,11 @@ class CoverMenu(DirectObject):
         self.ui = ui
         self.cover_label_frame = DirectFrame(parent=ui.base_frame,
                                              frameColor=(.25, .25, .25, 1),
-                                             frameSize=(-1.715, 1.715, -.88, .94))
+                                             frameSize=ui.SAFE)
         self.cover_label = DirectLabel(parent=self.cover_label_frame,
                                        text="Initial Text", text_font=ui.label_font,
-                                       text_scale=(0.1, 0.1), pos=(0, 0, 0))
+                                       text_scale=(ui.TITLE, ui.TITLE), text_fg=ui.GOLD,
+                                       text_align=2, pos=(0, 0, 0.12), frameColor=(0, 0, 0, 0))
         self.button_frame = ui.make_button_row()
         self.accept('p', self.handle_play_button)
         self.accept('d', self.handle_demo_button)
@@ -35,9 +36,9 @@ class CoverMenu(DirectObject):
 
     def display_cover_menu(self):
         self.cover_label.setText("RPG Box v0 06/20/2026")
-        play_button = DirectButton(parent=self.button_frame, text="Play", scale=.05, command=self.handle_play_button)
-        demo_button = DirectButton(parent=self.button_frame, text="Demo", scale=.05, command=self.handle_demo_button)
-        quit_button = DirectButton(parent=self.button_frame, text="Quit", scale=.05, command=self.handle_quit_button)
+        play_button = self.ui.make_button(self.button_frame, "Play", self.handle_play_button, hotkey=True)
+        demo_button = self.ui.make_button(self.button_frame, "Demo", self.handle_demo_button, hotkey=True)
+        quit_button = self.ui.make_button(self.button_frame, "Quit", self.handle_quit_button, hotkey=True)
         self.button_frame.addItem(play_button)
         self.button_frame.addItem(demo_button)
         self.button_frame.addItem(quit_button)

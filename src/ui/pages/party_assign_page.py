@@ -15,11 +15,12 @@ class PartyAssign(DirectObject):
         self.ui = ui
         self.cover_label_frame = DirectFrame(parent=ui.base_frame,
                                              frameColor=(.25, .25, .25, 1),
-                                             frameSize=(-1.715, 1.715, -.88, .94))
+                                             frameSize=ui.SAFE)
         self.label = DirectLabel(parent=self.cover_label_frame,
                                  text="Select up to 6 Characters",
-                                 text_font=ui.label_font, text_scale=(0.1, 0.1),
-                                 pos=(0, 0, 0.8))
+                                 text_font=ui.label_font, text_scale=(ui.TITLE, ui.TITLE),
+                                 text_fg=ui.GOLD, text_align=2, pos=(0, 0, 0.72),
+                                 frameColor=(0, 0, 0, 0))
         self.list_frame = DirectGridSizer(
                                           numColumns=3,
                                           numRows=max(1, (len(character_list) + 2) // 3),
@@ -37,7 +38,7 @@ class PartyAssign(DirectObject):
             cb = DirectCheckButton(
                 parent=self.list_frame,
                 text=char.name,
-                scale=0.05,
+                scale=self.ui.BUTTON, text_font=self.ui.label_font,
                 indicatorValue=is_in_party,
                 command=self.handle_check,
                 extraArgs=[char],
@@ -47,8 +48,8 @@ class PartyAssign(DirectObject):
 
         back_button = DirectButton(
             parent=self.button_frame,
-            text="Back to Menu",
-            scale=0.05,
+            text="[B] Back to Menu",
+            scale=self.ui.BUTTON, text_font=self.ui.label_font,
             command=self.handle_back,
         )
         self.button_frame.addItem(back_button)
