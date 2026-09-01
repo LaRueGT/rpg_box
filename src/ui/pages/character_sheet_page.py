@@ -66,6 +66,11 @@ class CharacterSheet(DirectObject):
             text_font=self.ui.label_font, command=self.handle_back,
         )
         self.button_frame.addItem(back_button)
+        items_button = DirectButton(
+            parent=self.button_frame, text="Manage Items", scale=.06,
+            text_font=self.ui.label_font, command=self.handle_items,
+        )
+        self.button_frame.addItem(items_button)
         self.refresh_sheet()
 
     def _make_panel(self, frame_size):
@@ -107,14 +112,14 @@ class CharacterSheet(DirectObject):
         levels = ", ".join(str(value) for value in character.level) or "1"
         race = str(character.char_race) if character.char_race else "-"
         alignment = str(character.char_alignment) if character.char_alignment else "-"
-        ac = self._armor_class(character)
+        ac = character.armor_class
 
         self.title_label["text"] = f"{character.name or 'Unnamed'}    {race}    {alignment}"
         self.combat_label["text"] = (
             f"Class: {classes}    Level: {levels}\n"
             "COMBAT\n"
             f"HP: {character.max_hp}\n"
-            f"Armor Class: {ac} (unarmored)\n"
+            f"Armor Class: {ac} (descending)\n"
             f"THAC0: {character.thaco}\n"
             f"Melee Attack Bonus: {self._modifier(character.strength)}\n"
             f"Missile Attack Bonus: {self._modifier(character.dexterity)}"
@@ -122,14 +127,22 @@ class CharacterSheet(DirectObject):
         self.ability_label["text"] = "ABILITY SCORES\n" + abilities + "\n\nSAVING THROWS\n" + saves
         self.inventory_label["text"] = (
             "EQUIPMENT\n"
-            "Not implemented\n\n"
+            + self._equipment_lines(character) + "\n\n"
             "MONEY / ENCUMBRANCE\n"
-            "Not implemented"
+            f"{character.encumbrance}/{character.carrying_capacity} coins\n"
+            f"Movement: {character.movement_rate}"
         )
         self.future_label["text"] = (
             "FUTURE FEATURES\n"
             "Skills, weapons, portrait\n"
             "Not implemented"
+        )
+
+    @staticmethod
+    def _equipment_lines(character):
+        return "\n".join(
+            f"{slot.value.replace('_', ' '):<12}: {item.name if item else '-'}"
+            for slot, item in character.inventory.equipped.items()
         )
 
     @staticmethod
@@ -164,3 +177,6 @@ class CharacterSheet(DirectObject):
     def handle_back(self):
         self.ignore("escape")
         messenger.send("main_menu_requested")
+
+    def handle_items(self):
+        messenger.send("item_management_requested")

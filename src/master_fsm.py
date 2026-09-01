@@ -9,6 +9,7 @@ from ui import gui
 
 from ui.pages import chargen_page
 from ui.pages import character_sheet_page
+from ui.pages import item_management_page
 from ui.pages import cover_page
 from ui.pages import delete_character_page
 from ui.pages import main_menu_page
@@ -65,6 +66,9 @@ class MasterFSM(FSM, DirectObject):
 
     def main_view_character(self):
         self.request('CharacterSheet')
+
+    def main_item_management(self):
+        self.request('ItemManagement')
 
     def handle_party_done(self):
         self.request('Main')
@@ -195,12 +199,27 @@ class MasterFSM(FSM, DirectObject):
 
     def enterCharacterSheet(self):
         self.accept('main_menu_requested', self.handle_party_done)
+        self.accept('item_management_requested', self.main_item_management)
         character_sheet = character_sheet_page.CharacterSheet(
             self.base_window, self.ui, self.character_list,
         )
         character_sheet.display_character_sheet()
 
     def exitCharacterSheet(self):
+        self.ignore('main_menu_requested')
+        self.ignore('item_management_requested')
+        self.ignore('escape')
+        self.ui.clear_gui()
+
+    def enterItemManagement(self):
+        self.accept('main_menu_requested', self.handle_party_done)
+        item_page = item_management_page.ItemManagement(
+            self.base_window, self.ui,
+            self.adventure_party.members or self.character_list,
+        )
+        item_page.display()
+
+    def exitItemManagement(self):
         self.ignore('main_menu_requested')
         self.ignore('escape')
         self.ui.clear_gui()

@@ -27,3 +27,41 @@ class Character:
         self.max_hp = 0
         self.hp_fraction = 0
         self.name = ""
+        from model.inventory import Inventory
+
+        self.inventory = Inventory(owner=self)
+
+    def add_item(self, item, quantity=1, weight=None):
+        """Add a small inventory entry; rules resolve its weight later."""
+        from model.item import Item
+
+        if isinstance(item, Item):
+            if quantity != 1:
+                item.quantity = quantity
+            self.inventory.add(item)
+            return item
+        from rules.encumbrance_rules import InventoryItem
+
+        self.inventory.append(InventoryItem(item, quantity, weight))
+
+    @property
+    def encumbrance(self):
+        from rules.encumbrance_rules import total_encumbrance
+
+        return total_encumbrance(self.inventory)
+
+    @property
+    def movement_rate(self):
+        from rules.encumbrance_rules import movement_rate
+
+        return movement_rate(self.encumbrance)
+
+    @property
+    def armor_class(self):
+        from rules.equipment_rules import armor_class
+        return armor_class(self)
+
+    @property
+    def carrying_capacity(self):
+        from rules.encumbrance_rules import carrying_capacity
+        return carrying_capacity(self.strength)
