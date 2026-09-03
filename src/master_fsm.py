@@ -14,6 +14,7 @@ from ui.pages import cover_page
 from ui.pages import delete_character_page
 from ui.pages import main_menu_page
 from ui.pages import narrative_page
+from ui.pages import matte_menu_page
 from ui.pages import party_assign_page
 from ui.pages import slideshow
 from model import party
@@ -69,6 +70,10 @@ class MasterFSM(FSM, DirectObject):
 
     def main_item_management(self):
         self.request('ItemManagement')
+
+    def main_begin_adventuring(self):
+        if self.adventure_party.members:
+            self.request('MatteMenu')
 
     def handle_party_done(self):
         self.request('Main')
@@ -132,6 +137,7 @@ class MasterFSM(FSM, DirectObject):
         self.accept('party_assign_button_pressed', self.main_party_assign)
         self.accept('delete_character_button_pressed', self.main_delete_character)
         self.accept('view_character_button_pressed', self.main_view_character)
+        self.accept('begin_adventuring_button_pressed', self.main_begin_adventuring)
         self.main_menu = main_menu_page.MainMenu(self.base_window, self.ui, self.character_list)
         self.main_menu.party = self.adventure_party
         self.main_menu.display_main_menu()
@@ -144,6 +150,26 @@ class MasterFSM(FSM, DirectObject):
         self.ignore('party_assign_button_pressed')
         self.ignore('delete_character_button_pressed')
         self.ignore('view_character_button_pressed')
+        self.ignore('begin_adventuring_button_pressed')
+        self.ui.clear_gui()
+
+    def enterMatteMenu(self):
+        self.accept('main_menu_requested', self.handle_party_done)
+        self.accept('matte_menu_choice', self.handle_matte_menu_choice)
+        page = matte_menu_page.MatteMenu(self.base_window, self.ui, self.adventure_party)
+        page.display()
+
+    def handle_matte_menu_choice(self, choice):
+        # Scene/world systems can subscribe to this event later.  Keeping the
+        # page open lets a choice lead to another data-driven scene page.
+        pass
+
+    def exitMatteMenu(self):
+        self.ignore('main_menu_requested')
+        self.ignore('matte_menu_choice')
+        self.ignore('enter')
+        self.ignore('space')
+        self.ignore('escape')
         self.ui.clear_gui()
 
     def enterChargen(self):

@@ -16,7 +16,7 @@
 - [x] prime requisite highlighting in character creator class list   
 - [x] character creator ability adjustment buttons
 - [x] roll for hp
-- [ ] saving throws tables
+- [x] saving throws tables
 - [ ] race / class abilities
 - [ ] character languages
 - [ ] character wealth roll, shop for initial equipment
@@ -28,7 +28,10 @@
 - [x] refactor gui code / gameplay code separation
 - [ ] leveling rules roll_hp, accommodate multiclass leveling at different rates
 - [ ] pccclass hit die, accommodate levels beyond 1
-- 
+- [ ] exploration screens, matte cutscene menu
+- [ ] exploration screens, 3d viewport grid walker
+- [ ] world data, connecting maps together, map locations with encounter scenes
+- [ ] story encounter, shop encounter, text encounter, etc
 - styling for bottom of screen buttons multiple screens   
 grid paper theming for cover menu  
 character sheet styling for character screens  

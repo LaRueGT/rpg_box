@@ -55,6 +55,10 @@ class MainMenu(DirectObject):
 
     def handle_play_button(self):
         print("play button pressed")
+        if self.party.members:
+            messenger.send("begin_adventuring_button_pressed")
+        else:
+            self.cover_label["text"] = "Party Members\n\nAssign at least one character before beginning an adventure."
 
     def handle_assign_party_button(self):
         print("assign party button pressed")
